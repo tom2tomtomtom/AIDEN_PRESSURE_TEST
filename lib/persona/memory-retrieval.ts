@@ -3,7 +3,7 @@
  * Retrieves relevant phantom memories for persona context
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { extractKeywords, calculateKeywordScore } from './keyword-extractor'
 import { detectClaims, getClaimTriggerMapping, type ClaimType } from './claim-detector'
 
@@ -53,7 +53,7 @@ export async function retrieveMemories(
   category: string = 'fmcg',
   limit: number = 5
 ): Promise<RetrievalResult> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // Extract keywords from stimulus
   const extracted = extractKeywords(stimulusText)
@@ -141,7 +141,7 @@ async function fallbackRetrieval(
   claims: { type: ClaimType; confidence: number }[],
   preferredArchetypeId?: string
 ): Promise<RetrievalResult> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // Get random memories from the category
   let query = supabase

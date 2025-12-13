@@ -3,7 +3,7 @@
  * Loads persona archetypes from database with caching
  */
 
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export interface PersonaArchetype {
   id: string
@@ -64,7 +64,7 @@ export async function loadAllArchetypes(): Promise<PersonaArchetype[]> {
     return Array.from(archetypeCache.values())
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data, error } = await supabase
     .from('persona_archetypes')
@@ -96,7 +96,7 @@ export async function loadArchetypeById(id: string): Promise<PersonaArchetype | 
     return archetypeCache.get(id) || null
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data, error } = await supabase
     .from('persona_archetypes')
@@ -132,7 +132,7 @@ export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetyp
     return archetypeCache.get(slug) || null
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data, error } = await supabase
     .from('persona_archetypes')
@@ -163,7 +163,7 @@ export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetyp
  * Load archetypes with memory counts
  */
 export async function loadArchetypesWithStats(): Promise<ArchetypeWithStats[]> {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // Get archetypes
   const { data: archetypes, error: archError } = await supabase
@@ -217,7 +217,7 @@ export async function loadArchetypesByIds(ids: string[]): Promise<PersonaArchety
     }
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data, error } = await supabase
     .from('persona_archetypes')

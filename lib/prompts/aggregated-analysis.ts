@@ -173,7 +173,37 @@ Categorize fixes by:
 
 Consider effort level for each recommendation.
 
-Provide your analysis as a comprehensive JSON object.`
+Respond with a JSON object with EXACTLY this structure (all fields required):
+
+{
+  "pressure_score": <number 0-100>,
+  "gut_attraction_index": <number 0-100>,
+  "credibility_score": <number 0-100>,
+  "purchase_intent_avg": <number 1-10 calculated from responses>,
+  "purchase_intent_distribution": {
+    "high": <count of responses with intent 7-10>,
+    "medium": <count of responses with intent 4-6>,
+    "low": <count of responses with intent 1-3>
+  },
+  "key_strengths": [
+    {"point": "strength description", "evidence": ["quote1", "quote2"], "confidence": "high|medium|low"}
+  ],
+  "key_weaknesses": [
+    {"point": "weakness description", "evidence": ["quote1", "quote2"], "severity": "critical|major|minor"}
+  ],
+  "credibility_gaps": [
+    {"claim": "claim text", "issue": "why not believable", "suggested_fix": "how to fix"}
+  ],
+  "friction_points": [
+    {"friction": "friction description", "affected_segments": ["segment1"], "impact": "high|medium|low"}
+  ],
+  "recommendations": [
+    {"recommendation": "what to do", "rationale": "why", "priority": "must_fix|should_improve|nice_to_have", "effort": "low|medium|high"}
+  ],
+  "one_line_verdict": "Single sentence summary of whether concept is ready",
+  "would_proceed": <boolean - would you launch this concept>,
+  "proceed_conditions": ["condition 1 if would_proceed is conditional"]
+}`
 }
 
 /**
