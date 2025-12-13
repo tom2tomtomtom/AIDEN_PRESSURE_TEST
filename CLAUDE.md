@@ -46,7 +46,7 @@ For complete stack details: `.claude/STACK.md`
 ## Current Focus
 
 **Active Phase:** Phase 3 - Test Execution
-**Active Task File:** `.claude/tasks/phase-3-execution.md`
+**Active Task File:** `.claude/tasks/phase-3-features.md`
 **Blockers:** None
 
 ## Session Startup Checklist
