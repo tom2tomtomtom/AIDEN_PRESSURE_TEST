@@ -1,0 +1,161 @@
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { TestActions } from '@/components/features/test-actions'
+import { TestResults } from '@/components/features/test-results'
+import { PersonaResponses } from '@/components/features/persona-responses'
+
+interface TestPageProps {
+  params: Promise<{ id: string; testId: string }>
+}
+
+const statusColors: Record<string, string> = {
+  draft: 'bg-gray-100 text-gray-800',
+  running: 'bg-blue-100 text-blue-800',
+  completed: 'bg-green-100 text-green-800',
+  failed: 'bg-red-100 text-red-800',
+  cancelled: 'bg-yellow-100 text-yellow-800'
+}
+
+const stimulusLabels: Record<string, string> = {
+  concept: 'Concept Test',
+  claim: 'Claim Validation',
+  product: 'Product Test',
+  ad: 'Ad Test'
+}
+
+export default async function TestPage({ params }: TestPageProps) {
+  const { id, testId } = await params
+  const supabase = await createClient()
+
+  // Get project
+  const { data: project } = await supabase
+    .from('projects')
+    .select('id, name')
+    .eq('id', id)
+    .single()
+
+  if (!project) {
+    notFound()
+  }
+
+  // Get test with results
+  const { data: test, error } = await supabase
+    .from('pressure_tests')
+    .select('*')
+    .eq('id', testId)
+    .eq('project_id', id)
+    .single()
+
+  if (error || !test) {
+    notFound()
+  }
+
+  // Get test results if completed
+  const { data: results } = await supabase
+    .from('test_results')
+    .select('*')
+    .eq('test_id', testId)
+    .single()
+
+  // Get persona responses
+  const { data: responses } = await supabase
+    .from('persona_responses')
+    .select(`
+      *,
+      archetype:archetypes(id, name, slug, category, baseline_skepticism)
+    `)
+    .eq('test_id', testId)
+    .order('created_at', { ascending: true })
+
+  return (
+    <div className="space-y-6">
+      {/* Breadcrumb */}
+      <div className="flex items-center gap-2">
+        <Link href="/projects" className="text-sm text-muted-foreground hover:text-foreground">
+          Projects
+        </Link>
+        <span className="text-muted-foreground">/</span>
+        <Link href={`/projects/${id}`} className="text-sm text-muted-foreground hover:text-foreground">
+          {project.name}
+        </Link>
+        <span className="text-muted-foreground">/</span>
+        <span className="text-sm">{test.name}</span>
+      </div>
+
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl font-bold">{test.name}</h1>
+            <Badge className={statusColors[test.status] || statusColors.draft}>
+              {test.status}
+            </Badge>
+          </div>
+          <p className="text-muted-foreground mt-1">
+            {stimulusLabels[test.stimulus_type] || test.stimulus_type} • Created {new Date(test.created_at).toLocaleDateString()}
+          </p>
+        </div>
+        <TestActions test={test} projectId={id} />
+      </div>
+
+      {/* Stimulus Card */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Stimulus</CardTitle>
+          <CardDescription>What&apos;s being tested</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="whitespace-pre-wrap text-sm">{test.stimulus_content}</div>
+          {test.stimulus_context && (
+            <div className="mt-4 pt-4 border-t">
+              <p className="text-sm font-medium text-muted-foreground mb-1">Additional Context</p>
+              <p className="text-sm">{test.stimulus_context}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Results Section */}
+      {test.status === 'completed' && results && (
+        <TestResults results={results} />
+      )}
+
+      {/* Running Status */}
+      {test.status === 'running' && (
+        <Card>
+          <CardContent className="py-8">
+            <div className="flex flex-col items-center justify-center text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
+              <p className="font-medium">Test is running...</p>
+              <p className="text-sm text-muted-foreground">
+                Generating responses from phantom consumers
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Draft State */}
+      {test.status === 'draft' && (
+        <Card>
+          <CardContent className="py-8">
+            <div className="flex flex-col items-center justify-center text-center">
+              <p className="font-medium mb-2">Ready to run</p>
+              <p className="text-sm text-muted-foreground mb-4">
+                Click &quot;Run Test&quot; to start generating responses from your phantom consumer panel
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Persona Responses */}
+      {responses && responses.length > 0 && (
+        <PersonaResponses responses={responses} />
+      )}
+    </div>
+  )
+}
