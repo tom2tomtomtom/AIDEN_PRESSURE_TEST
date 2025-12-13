@@ -45,8 +45,8 @@ For complete stack details: `.claude/STACK.md`
 
 ## Current Focus
 
-**Active Phase:** Phase 1 - Foundation
-**Active Task File:** `.claude/tasks/phase-1-foundation.md`
+**Active Phase:** Phase 2 - Persona Engine
+**Active Task File:** `.claude/tasks/phase-2-core.md`
 **Blockers:** None
 
 ## Session Startup Checklist
