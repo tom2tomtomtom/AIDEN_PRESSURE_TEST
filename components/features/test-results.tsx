@@ -8,16 +8,34 @@ interface TestResult {
   pressure_score: number
   gut_attraction_index: number
   credibility_score: number
-  analysis_summary: string
-  key_strengths: string[]
-  key_weaknesses: string[]
-  recommendations: Array<{
+  analysis_summary?: string
+  one_line_verdict?: string
+  key_strengths?: Array<{
+    point: string
+    evidence: string[]
+    confidence: 'high' | 'medium' | 'low'
+  }>
+  key_weaknesses?: Array<{
+    point: string
+    evidence: string[]
+    severity: 'critical' | 'major' | 'minor'
+  }>
+  recommendations?: Array<{
     priority: 'must_fix' | 'should_improve' | 'nice_to_have'
     recommendation: string
     rationale: string
+    effort?: 'low' | 'medium' | 'high'
   }>
-  friction_points: string[]
-  credibility_gaps: string[]
+  friction_points?: Array<{
+    friction: string
+    affected_segments: string[]
+    impact: 'high' | 'medium' | 'low'
+  }>
+  credibility_gaps?: Array<{
+    claim: string
+    issue: string
+    suggested_fix: string
+  }>
   created_at: string
 }
 
@@ -117,14 +135,14 @@ export function TestResults({ results }: TestResultsProps) {
         </CardContent>
       </Card>
 
-      {/* Summary */}
-      {results.analysis_summary && (
+      {/* Summary / Verdict */}
+      {(results.one_line_verdict || results.analysis_summary) && (
         <Card>
           <CardHeader>
-            <CardTitle>Analysis Summary</CardTitle>
+            <CardTitle>Verdict</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">{results.analysis_summary}</p>
+            <p className="text-muted-foreground">{results.one_line_verdict || results.analysis_summary}</p>
           </CardContent>
         </Card>
       )}
@@ -138,11 +156,15 @@ export function TestResults({ results }: TestResultsProps) {
                 <CardTitle className="text-lg text-green-700">Key Strengths</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {keyStrengths.map((strength, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-green-500 mt-0.5">+</span>
-                      <span className="text-sm">{strength}</span>
+                    <li key={i} className="border-l-2 border-green-500 pl-3">
+                      <p className="font-medium text-sm">{strength.point}</p>
+                      {strength.evidence && strength.evidence.length > 0 && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Evidence: {strength.evidence.join('; ')}
+                        </p>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -156,11 +178,22 @@ export function TestResults({ results }: TestResultsProps) {
                 <CardTitle className="text-lg text-red-700">Key Weaknesses</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {keyWeaknesses.map((weakness, i) => (
-                    <li key={i} className="flex items-start gap-2">
-                      <span className="text-red-500 mt-0.5">-</span>
-                      <span className="text-sm">{weakness}</span>
+                    <li key={i} className="border-l-2 border-red-500 pl-3">
+                      <div className="flex items-center gap-2">
+                        <p className="font-medium text-sm">{weakness.point}</p>
+                        {weakness.severity && (
+                          <Badge variant={weakness.severity === 'critical' ? 'destructive' : 'secondary'} className="text-xs">
+                            {weakness.severity}
+                          </Badge>
+                        )}
+                      </div>
+                      {weakness.evidence && weakness.evidence.length > 0 && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          Evidence: {weakness.evidence.join('; ')}
+                        </p>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -180,9 +213,16 @@ export function TestResults({ results }: TestResultsProps) {
                 <CardDescription>Where consumers hesitate</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {frictionPoints.map((point, i) => (
-                    <li key={i} className="text-sm text-muted-foreground">• {point}</li>
+                    <li key={i} className="text-sm">
+                      <p className="font-medium">{point.friction}</p>
+                      {point.affected_segments && point.affected_segments.length > 0 && (
+                        <p className="text-xs text-muted-foreground">
+                          Affects: {point.affected_segments.join(', ')}
+                        </p>
+                      )}
+                    </li>
                   ))}
                 </ul>
               </CardContent>
@@ -196,9 +236,15 @@ export function TestResults({ results }: TestResultsProps) {
                 <CardDescription>Where trust breaks down</CardDescription>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2">
+                <ul className="space-y-3">
                   {credibilityGaps.map((gap, i) => (
-                    <li key={i} className="text-sm text-muted-foreground">• {gap}</li>
+                    <li key={i} className="text-sm border-l-2 border-yellow-500 pl-3">
+                      <p className="font-medium">{gap.claim}</p>
+                      <p className="text-muted-foreground">{gap.issue}</p>
+                      {gap.suggested_fix && (
+                        <p className="text-xs text-green-600 mt-1">Fix: {gap.suggested_fix}</p>
+                      )}
+                    </li>
                   ))}
                 </ul>
               </CardContent>
