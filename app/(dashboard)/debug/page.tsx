@@ -9,7 +9,7 @@ async function createOrgAction() {
   const authSupabase = await createAuthClient()
   const { data: { user } } = await authSupabase.auth.getUser()
 
-  if (!user) return { error: 'Not authenticated' }
+  if (!user) return
 
   const adminSupabase = createAdminClient()
 
@@ -23,10 +23,10 @@ async function createOrgAction() {
     .select('id')
     .single()
 
-  if (orgError) return { error: orgError.message }
+  if (orgError || !newOrg) return
 
   // Add user as owner
-  const { error: memberError } = await adminSupabase
+  await adminSupabase
     .from('organization_members')
     .insert({
       organization_id: newOrg.id,
@@ -34,15 +34,12 @@ async function createOrgAction() {
       role: 'owner',
     })
 
-  if (memberError) return { error: memberError.message }
-
   revalidatePath('/debug')
-  return { success: true, orgId: newOrg.id }
 }
 
 export default async function DebugPage() {
   const authSupabase = await createAuthClient()
-  const { data: { user }, error: userError } = await authSupabase.auth.getUser()
+  const { data: { user } } = await authSupabase.auth.getUser()
 
   if (!user) {
     return <div className="p-8">Not authenticated</div>

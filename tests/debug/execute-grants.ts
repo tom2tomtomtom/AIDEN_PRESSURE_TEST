@@ -27,9 +27,6 @@ async function executeGrants() {
     'GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA ppt TO authenticated',
   ]
 
-  // Try via pg-meta API
-  const projectRef = 'ahenbjcauqpzsdcxeyfa'
-
   for (const sql of grants) {
     console.log(`Executing: ${sql.slice(0, 60)}...`)
 

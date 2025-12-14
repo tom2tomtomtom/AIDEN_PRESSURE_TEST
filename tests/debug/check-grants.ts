@@ -43,9 +43,6 @@ async function checkGrants() {
   // Alternative: Check via pg_catalog
   console.log('\n\nTrying to test authenticated access simulation...')
 
-  // Create a test with user impersonation via service role
-  const testUserId = '57a712ff-0000-0000-0000-000000000000' // from our debug
-
   // Use the REST API directly with auth header to simulate authenticated user
   const testResponse = await fetch(`${SUPABASE_URL}/rest/v1/projects?select=id,name&limit=1`, {
     headers: {

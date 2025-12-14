@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET() {
   try {
@@ -39,12 +40,38 @@ export async function POST(request: Request) {
       )
     }
 
-    const { data, error } = await supabase
+    // Get the authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
+        { status: 401 }
+      )
+    }
+
+    // Get user's organization membership (use admin client to bypass RLS)
+    const adminClient = createAdminClient()
+    const { data: membership, error: memberError } = await adminClient
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .single()
+
+    if (memberError || !membership) {
+      return NextResponse.json(
+        { error: { code: 'NO_ORG', message: 'User does not belong to an organization. Please contact support.' } },
+        { status: 403 }
+      )
+    }
+
+    // Insert project with the user's organization_id
+    const { data, error } = await adminClient
       .from('projects')
       .insert({
         name: body.name,
         description: body.description || null,
         category: body.category || 'other',
+        organization_id: membership.organization_id,
       })
       .select()
       .single()

@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -46,31 +45,34 @@ export function ProjectForm({ initialData, mode }: ProjectFormProps) {
     const description = formData.get('description') as string
     const category = formData.get('category') as string
 
-    const supabase = createClient()
-
     try {
       if (mode === 'create') {
-        const { error } = await supabase
-          .from('projects')
-          .insert({
-            name,
-            description: description || null,
-            category,
-          })
+        // Use API route which handles organization_id automatically
+        const response = await fetch('/api/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description: description || null, category }),
+        })
 
-        if (error) throw error
+        const result = await response.json()
+        if (!response.ok) {
+          throw new Error(result.error?.message || 'Failed to create project')
+        }
+
         router.push('/projects')
       } else if (initialData) {
-        const { error } = await supabase
-          .from('projects')
-          .update({
-            name,
-            description: description || null,
-            category,
-          })
-          .eq('id', initialData.id)
+        // Use API route for updates too
+        const response = await fetch(`/api/projects/${initialData.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, description: description || null, category }),
+        })
 
-        if (error) throw error
+        const result = await response.json()
+        if (!response.ok) {
+          throw new Error(result.error?.message || 'Failed to update project')
+        }
+
         router.push(`/projects/${initialData.id}`)
       }
       router.refresh()

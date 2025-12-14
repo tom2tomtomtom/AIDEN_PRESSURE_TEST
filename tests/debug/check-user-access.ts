@@ -172,7 +172,7 @@ async function debugAccess() {
     console.log('\n9. Test authenticated access...')
 
     // Sign in as test user
-    const { data: session, error: signInErr } = await adminClient.auth.admin.generateLink({
+    const { data: _session, error: signInErr } = await adminClient.auth.admin.generateLink({
       type: 'magiclink',
       email: testEmail,
     })
