@@ -28,7 +28,7 @@ const STEPS: { id: WizardStep; title: string; description: string }[] = [
 interface TestConfig {
   name: string
   description: string
-  stimulus_type: 'concept' | 'claim' | 'product' | 'ad'
+  stimulus_type: 'concept' | 'claim' | 'product_description' | 'ad_copy' | 'tagline'
   stimulus_content: string
   stimulus_context: string
   archetype_ids: string[]
@@ -98,6 +98,14 @@ export function TestWizard({ projectId }: TestWizardProps) {
     setIsSubmitting(true)
     setError(null)
 
+    // Convert numeric skepticism (0-100) to enum
+    const getSkepticismLevel = (value: number): 'low' | 'medium' | 'high' | 'extreme' => {
+      if (value <= 25) return 'low'
+      if (value <= 50) return 'medium'
+      if (value <= 75) return 'high'
+      return 'extreme'
+    }
+
     try {
       const response = await fetch('/api/tests', {
         method: 'POST',
@@ -105,14 +113,12 @@ export function TestWizard({ projectId }: TestWizardProps) {
         body: JSON.stringify({
           project_id: projectId,
           name: config.name,
-          description: config.description || null,
           stimulus_type: config.stimulus_type,
           stimulus_content: config.stimulus_content,
-          stimulus_context: config.stimulus_context || null,
-          config: {
-            archetype_ids: config.archetype_ids,
-            skepticism_override: config.skepticism_override,
-            enable_group_dynamics: config.enable_group_dynamics
+          panel_config: {
+            archetypes: config.archetype_ids,
+            skepticism_override: getSkepticismLevel(config.skepticism_override),
+            panel_size: config.archetype_ids.length
           }
         })
       })
@@ -194,16 +200,21 @@ export function TestWizard({ projectId }: TestWizardProps) {
             <>
               <div className="space-y-2">
                 <Label>Stimulus Type</Label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {(['concept', 'claim', 'product', 'ad'] as const).map(type => (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {([
+                    { value: 'concept', label: 'Concept' },
+                    { value: 'claim', label: 'Claim' },
+                    { value: 'product_description', label: 'Product' },
+                    { value: 'ad_copy', label: 'Ad Copy' },
+                    { value: 'tagline', label: 'Tagline' },
+                  ] as const).map(type => (
                     <Button
-                      key={type}
+                      key={type.value}
                       type="button"
-                      variant={config.stimulus_type === type ? 'default' : 'outline'}
-                      onClick={() => updateConfig('stimulus_type', type)}
-                      className="capitalize"
+                      variant={config.stimulus_type === type.value ? 'default' : 'outline'}
+                      onClick={() => updateConfig('stimulus_type', type.value)}
                     >
-                      {type}
+                      {type.label}
                     </Button>
                   ))}
                 </div>
@@ -212,8 +223,9 @@ export function TestWizard({ projectId }: TestWizardProps) {
                 <Label htmlFor="content">
                   {config.stimulus_type === 'concept' && 'Concept Description *'}
                   {config.stimulus_type === 'claim' && 'Claim Statement *'}
-                  {config.stimulus_type === 'product' && 'Product Description *'}
-                  {config.stimulus_type === 'ad' && 'Ad Copy / Script *'}
+                  {config.stimulus_type === 'product_description' && 'Product Description *'}
+                  {config.stimulus_type === 'ad_copy' && 'Ad Copy / Script *'}
+                  {config.stimulus_type === 'tagline' && 'Tagline *'}
                 </Label>
                 <Textarea
                   id="content"
@@ -224,9 +236,11 @@ export function TestWizard({ projectId }: TestWizardProps) {
                       ? 'Describe your product concept in detail...'
                       : config.stimulus_type === 'claim'
                       ? 'Enter the specific claim you want to test...'
-                      : config.stimulus_type === 'product'
+                      : config.stimulus_type === 'product_description'
                       ? 'Describe the product including key features...'
-                      : 'Paste your ad copy or describe the ad...'
+                      : config.stimulus_type === 'ad_copy'
+                      ? 'Paste your ad copy or describe the ad...'
+                      : 'Enter your tagline or slogan...'
                   }
                   rows={6}
                 />
