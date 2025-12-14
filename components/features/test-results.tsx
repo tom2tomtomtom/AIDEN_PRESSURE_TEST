@@ -81,6 +81,13 @@ function getPriorityColor(priority: string): string {
 }
 
 export function TestResults({ results }: TestResultsProps) {
+  // Provide defaults for optional arrays
+  const keyStrengths = results.key_strengths || []
+  const keyWeaknesses = results.key_weaknesses || []
+  const frictionPoints = results.friction_points || []
+  const credibilityGaps = results.credibility_gaps || []
+  const recommendations = results.recommendations || []
+
   return (
     <div className="space-y-6">
       {/* Score Cards */}
@@ -111,54 +118,62 @@ export function TestResults({ results }: TestResultsProps) {
       </Card>
 
       {/* Summary */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Analysis Summary</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">{results.analysis_summary}</p>
-        </CardContent>
-      </Card>
+      {results.analysis_summary && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Analysis Summary</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">{results.analysis_summary}</p>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Strengths & Weaknesses */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-green-700">Key Strengths</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              {results.key_strengths.map((strength, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-green-500 mt-0.5">+</span>
-                  <span className="text-sm">{strength}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
+      {(keyStrengths.length > 0 || keyWeaknesses.length > 0) && (
+        <div className="grid md:grid-cols-2 gap-6">
+          {keyStrengths.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg text-green-700">Key Strengths</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {keyStrengths.map((strength, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-green-500 mt-0.5">+</span>
+                      <span className="text-sm">{strength}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg text-red-700">Key Weaknesses</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ul className="space-y-2">
-              {results.key_weaknesses.map((weakness, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <span className="text-red-500 mt-0.5">-</span>
-                  <span className="text-sm">{weakness}</span>
-                </li>
-              ))}
-            </ul>
-          </CardContent>
-        </Card>
-      </div>
+          {keyWeaknesses.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg text-red-700">Key Weaknesses</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {keyWeaknesses.map((weakness, i) => (
+                    <li key={i} className="flex items-start gap-2">
+                      <span className="text-red-500 mt-0.5">-</span>
+                      <span className="text-sm">{weakness}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      )}
 
       {/* Friction Points & Credibility Gaps */}
-      {(results.friction_points.length > 0 || results.credibility_gaps.length > 0) && (
+      {(frictionPoints.length > 0 || credibilityGaps.length > 0) && (
         <div className="grid md:grid-cols-2 gap-6">
-          {results.friction_points.length > 0 && (
+          {frictionPoints.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Friction Points</CardTitle>
@@ -166,7 +181,7 @@ export function TestResults({ results }: TestResultsProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {results.friction_points.map((point, i) => (
+                  {frictionPoints.map((point, i) => (
                     <li key={i} className="text-sm text-muted-foreground">• {point}</li>
                   ))}
                 </ul>
@@ -174,7 +189,7 @@ export function TestResults({ results }: TestResultsProps) {
             </Card>
           )}
 
-          {results.credibility_gaps.length > 0 && (
+          {credibilityGaps.length > 0 && (
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Credibility Gaps</CardTitle>
@@ -182,7 +197,7 @@ export function TestResults({ results }: TestResultsProps) {
               </CardHeader>
               <CardContent>
                 <ul className="space-y-2">
-                  {results.credibility_gaps.map((gap, i) => (
+                  {credibilityGaps.map((gap, i) => (
                     <li key={i} className="text-sm text-muted-foreground">• {gap}</li>
                   ))}
                 </ul>
@@ -193,29 +208,31 @@ export function TestResults({ results }: TestResultsProps) {
       )}
 
       {/* Recommendations */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recommendations</CardTitle>
-          <CardDescription>Prioritized actions to improve performance</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {results.recommendations.map((rec, i) => (
-              <div key={i} className="border rounded-lg p-4">
-                <div className="flex items-start gap-3">
-                  <Badge className={getPriorityColor(rec.priority)}>
-                    {rec.priority.replace('_', ' ')}
-                  </Badge>
-                  <div className="flex-1">
-                    <p className="font-medium">{rec.recommendation}</p>
-                    <p className="text-sm text-muted-foreground mt-1">{rec.rationale}</p>
+      {recommendations.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Recommendations</CardTitle>
+            <CardDescription>Prioritized actions to improve performance</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recommendations.map((rec, i) => (
+                <div key={i} className="border rounded-lg p-4">
+                  <div className="flex items-start gap-3">
+                    <Badge className={getPriorityColor(rec.priority)}>
+                      {rec.priority.replace('_', ' ')}
+                    </Badge>
+                    <div className="flex-1">
+                      <p className="font-medium">{rec.recommendation}</p>
+                      <p className="text-sm text-muted-foreground mt-1">{rec.rationale}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   )
 }
