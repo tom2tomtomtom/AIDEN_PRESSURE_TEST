@@ -12,6 +12,7 @@ export interface ResponseSummary {
   purchaseIntent: number
   credibilityRating: number
   emotionalResponse: string
+  whatWorks: string[]
   keyConcerns: string[]
   whatWouldConvince: string
 }
@@ -85,7 +86,8 @@ export function buildResponseSummaries(
     purchaseIntent: r.response.purchase_intent,
     credibilityRating: r.response.credibility_rating,
     emotionalResponse: r.response.emotional_response,
-    keyConcerns: r.response.key_concerns,
+    whatWorks: r.response.what_works || [],
+    keyConcerns: r.response.key_concerns || [],
     whatWouldConvince: r.response.what_would_convince
   }))
 }
@@ -103,7 +105,8 @@ export function buildAggregatedAnalysisPrompt(
 - Purchase Intent: ${r.purchaseIntent}/10
 - Credibility Rating: ${r.credibilityRating}/10
 - Emotional Response: ${r.emotionalResponse}
-- Key Concerns: ${r.keyConcerns.join('; ')}
+- What Works: ${r.whatWorks.join('; ') || 'None specified'}
+- Key Concerns: ${r.keyConcerns.join('; ') || 'None specified'}
 - Would be convinced by: ${r.whatWouldConvince}
 `).join('\n')
 

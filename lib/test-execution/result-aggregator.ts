@@ -125,6 +125,9 @@ export function formatResponseForStorage(response: GeneratedResponse): {
   purchase_intent: number
   credibility_rating: number
   emotional_response: string
+  what_works: string[]
+  key_concerns: string[]
+  what_would_convince: string
   triggered_memories: string[]
   memory_influence_summary: string
   generation_time_ms: number
@@ -146,6 +149,9 @@ export function formatResponseForStorage(response: GeneratedResponse): {
     purchase_intent: response.response.purchase_intent,
     credibility_rating: response.response.credibility_rating,
     emotional_response: response.response.emotional_response,
+    what_works: response.response.what_works || [],
+    key_concerns: response.response.key_concerns || [],
+    what_would_convince: response.response.what_would_convince,
     triggered_memories: response.personaContext.memories.map(m => m.id),
     memory_influence_summary: response.personaContext.memoryNarrative || '',
     generation_time_ms: response.generationTimeMs,
