@@ -24,6 +24,7 @@ export interface TestConfig {
   projectId: string
   stimulus: string
   stimulusType: string
+  brief?: string
   archetypeIds: string[]
   calibration: CalibrationLevel
   category: string
@@ -71,6 +72,7 @@ export async function executeTest(config: TestConfig): Promise<ExecutionResult> 
       config.stimulusType,
       config.category,
       config.calibration,
+      config.brief,
       3 // Concurrency limit to avoid rate limits
     )
 
@@ -86,7 +88,8 @@ export async function executeTest(config: TestConfig): Promise<ExecutionResult> 
         config.stimulus,
         config.stimulusType,
         config.category,
-        config.calibration
+        config.calibration,
+        config.brief
       )
 
       allSuccessful = [...allSuccessful, ...retryResults.successful]
@@ -230,6 +233,7 @@ export async function loadTestConfig(testId: string): Promise<TestConfig | null>
       id,
       project_id,
       stimulus_content,
+      stimulus_context,
       stimulus_type,
       panel_config
     `)
@@ -258,6 +262,7 @@ export async function loadTestConfig(testId: string): Promise<TestConfig | null>
     projectId: test.project_id,
     stimulus: test.stimulus_content,
     stimulusType: test.stimulus_type,
+    brief: test.stimulus_context,
     archetypeIds: panelConfig.archetypes || [],
     calibration: panelConfig.skepticism_override || 'medium',
     category: project?.category || 'fmcg'

@@ -13,7 +13,8 @@ export interface PersonaResponseSchema {
   purchase_intent: number       // 1-10 scale
   credibility_rating: number    // 1-10 scale
   emotional_response: 'excited' | 'interested' | 'neutral' | 'skeptical' | 'dismissive' | 'hostile'
-  key_concerns: string[]        // Top 3 concerns about the concept
+  what_works: string[]          // What's effective/appealing (1-3 items)
+  key_concerns: string[]        // Key concerns (1-3 items) - should be relevant to format
   what_would_convince: string   // What evidence/proof would change their mind
 }
 
@@ -70,7 +71,7 @@ Provide your reaction in the following structure:
 
 1. **Gut Reaction** (50-100 words): Your immediate, instinctive response when first seeing this. Don't overthink - what's your first impression?
 
-2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? Consider the claims being made, how they relate to your experiences, and whether this seems genuine.
+2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be BALANCED - mention both positives and negatives.
 
 3. **Social Response** (50-75 words): If you were in a focus group discussing this with strangers, what would you say out loud? This might be more measured than your private thoughts.
 
@@ -92,9 +93,75 @@ Provide your reaction in the following structure:
 
 7. **Emotional Response**: Choose one: excited, interested, neutral, skeptical, dismissive, hostile
 
-8. **Key Concerns**: List your top 3 concerns or doubts about this concept
+8. **What Works**: List 1-3 things that are effective, appealing, or well-executed about this content. Even if you're skeptical overall, identify what the creators did right.
 
-9. **What Would Convince You**: What specific evidence, proof, or changes would make you more receptive?`
+9. **Key Concerns**: List 1-3 genuine concerns (not more). Focus on concerns that are RELEVANT to the format and objectives described in the brief. Don't demand things inappropriate for the format.
+
+10. **What Would Convince You**: What specific evidence, proof, or changes would make you more receptive?`
+}
+
+/**
+ * Build format-specific evaluation guidance
+ */
+function buildFormatGuidance(stimulusType: string): string {
+  const guidance: Record<string, string> = {
+    'ad_copy': `# What You're Evaluating: AN ADVERTISEMENT
+
+Judge this AS AN AD - not as a product information sheet:
+- Ads grab attention, create desire, and prompt action
+- Ads have limited space/time - they CAN'T include everything
+- DON'T expect: detailed ingredients, full specs, comprehensive disclaimers
+- DO expect: emotional appeal, brand messaging, call to action
+- Ask yourself: Does this ad make me want to learn more? Does it stand out?`,
+
+    'tagline': `# What You're Evaluating: A TAGLINE/SLOGAN
+
+Judge this AS A TAGLINE - brevity is the entire point:
+- Taglines are 3-8 words max
+- DON'T expect: product details, claims, explanations, or proof points
+- DO expect: memorability, brand essence, emotional resonance
+- Ask yourself: Would I remember this? Does it capture something meaningful?`,
+
+    'concept': `# What You're Evaluating: A PRODUCT CONCEPT
+
+Judge this AS A CONCEPT - an idea being explored, not final execution:
+- Concepts explain what a product is and why it matters
+- DO expect: clear value proposition, target audience fit, differentiation
+- DON'T expect: polished messaging, final creative execution, pricing
+- Ask yourself: Is this idea appealing? Does it solve a real problem?`,
+
+    'claim': `# What You're Evaluating: A PRODUCT CLAIM
+
+Judge this AS A CLAIM - a specific promise about benefits:
+- Claims make specific promises that should be credible and relevant
+- DO expect: clarity, specificity, relevance to your needs
+- Ask yourself: Is this believable? Would this matter to me if true?`,
+
+    'product_description': `# What You're Evaluating: A PRODUCT DESCRIPTION
+
+Judge this holistically as a description meant to inform:
+- DO expect: features, benefits, use cases, what makes it different
+- Ask yourself: Do I understand what this is? Does it appeal to me?`
+  }
+
+  return guidance[stimulusType] ?? guidance['concept'] ?? ''
+}
+
+/**
+ * Build the brief/context section
+ */
+function buildBriefSection(brief: string | undefined): string {
+  if (!brief) {
+    return ''
+  }
+
+  return `# Creative Brief & Context
+
+Important context from the client - consider what's reasonable given these objectives:
+
+${brief}
+
+Use this context to calibrate your expectations appropriately.`
 }
 
 /**
@@ -103,21 +170,35 @@ Provide your reaction in the following structure:
 export function buildPersonaResponsePrompt(
   context: PersonaContext,
   stimulus: string,
-  stimulusType: string = 'marketing concept'
+  stimulusType: string = 'marketing concept',
+  brief?: string
 ): string {
+  // Map display names to internal types for format guidance
+  const typeMap: Record<string, string> = {
+    'concept': 'concept',
+    'claim': 'claim',
+    'product_description': 'product_description',
+    'ad_copy': 'ad_copy',
+    'tagline': 'tagline',
+    'marketing concept': 'concept'
+  }
+  const internalType = typeMap[stimulusType] || 'concept'
+
   const sections = [
     buildIdentitySection(context),
     buildMemorySection(context),
     buildSkepticismSection(context),
-    `# The ${stimulusType.charAt(0).toUpperCase() + stimulusType.slice(1)} to Evaluate
+    buildFormatGuidance(internalType),
+    buildBriefSection(brief),
+    `# The Content to Evaluate
 
-Please react to the following ${stimulusType}:
+Please react to the following:
 
 ---
 ${stimulus}
 ---`,
     buildResponseInstructions()
-  ]
+  ].filter(Boolean)
 
   return sections.join('\n\n')
 }
@@ -126,16 +207,30 @@ ${stimulus}
  * Build the system prompt for persona response
  */
 export function buildPersonaSystemPrompt(): string {
-  return `You are an AI simulating a real consumer persona. Your role is to provide authentic, realistic reactions to marketing concepts based on the persona's demographics, psychographics, past experiences, and skepticism level.
+  return `You are an AI simulating a real consumer persona. Your role is to provide authentic, realistic reactions based on the persona's demographics, psychographics, past experiences, and skepticism level.
 
-Key guidelines:
-- Stay in character throughout
-- Let past experiences (phantom memories) influence your reactions
-- Apply your skepticism level consistently
-- Be specific and detailed in your concerns
-- Your social response might differ from your private thoughts
-- Base purchase intent and credibility on genuine assessment, not what the brand wants to hear
-- Reference specific aspects of the stimulus in your response
+CRITICAL GUIDELINES:
+
+1. JUDGE CONTENT FOR WHAT IT IS
+   - An ad should be judged as an ad (emotional impact, attention-grabbing)
+   - A tagline should be judged as a tagline (memorability, brand essence)
+   - A concept should be judged as a concept (is the idea appealing?)
+   - NEVER demand things inappropriate for the format
+
+2. BE BALANCED
+   - Real consumers notice BOTH positives and negatives
+   - Even skeptical people can appreciate good creative work
+   - Identify what works before criticizing
+
+3. STAY IN CHARACTER
+   - Let your past experiences influence your reaction
+   - Your skepticism level affects how you evaluate claims, not everything
+   - Your social response might differ from private thoughts
+
+4. KEY CONCERNS should be:
+   - Relevant to the format (don't ask for ingredients in a tagline)
+   - Genuine concerns a real consumer would have
+   - Limited to 1-3 actual issues, not a laundry list
 
 Respond with a JSON object matching this exact structure:
 {
@@ -146,7 +241,8 @@ Respond with a JSON object matching this exact structure:
   "purchase_intent": number,
   "credibility_rating": number,
   "emotional_response": "excited" | "interested" | "neutral" | "skeptical" | "dismissive" | "hostile",
-  "key_concerns": ["string", "string", "string"],
+  "what_works": ["string", "string"],
+  "key_concerns": ["string", "string"],
   "what_would_convince": "string"
 }`
 }
@@ -164,6 +260,7 @@ export const PERSONA_RESPONSE_SCHEMA = {
     'purchase_intent',
     'credibility_rating',
     'emotional_response',
+    'what_works',
     'key_concerns',
     'what_would_convince'
   ],
@@ -178,7 +275,8 @@ export const PERSONA_RESPONSE_SCHEMA = {
       type: 'string',
       enum: ['excited', 'interested', 'neutral', 'skeptical', 'dismissive', 'hostile']
     },
-    key_concerns: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 5 },
+    what_works: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 3 },
+    key_concerns: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 3 },
     what_would_convince: { type: 'string', minLength: 20 }
   }
 } as const
@@ -201,6 +299,7 @@ export function validatePersonaResponse(response: unknown): response is PersonaR
     typeof r.credibility_rating === 'number' &&
     r.credibility_rating >= 1 && r.credibility_rating <= 10 &&
     ['excited', 'interested', 'neutral', 'skeptical', 'dismissive', 'hostile'].includes(r.emotional_response as string) &&
+    Array.isArray(r.what_works) &&
     Array.isArray(r.key_concerns) &&
     typeof r.what_would_convince === 'string'
   )

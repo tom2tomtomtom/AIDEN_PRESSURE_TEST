@@ -30,7 +30,7 @@ interface TestConfig {
   description: string
   stimulus_type: 'concept' | 'claim' | 'product_description' | 'ad_copy' | 'tagline'
   stimulus_content: string
-  stimulus_context: string
+  brief: string
   archetype_ids: string[]
   skepticism_override: number
   enable_group_dynamics: boolean
@@ -41,7 +41,7 @@ const defaultConfig: TestConfig = {
   description: '',
   stimulus_type: 'concept',
   stimulus_content: '',
-  stimulus_context: '',
+  brief: '',
   archetype_ids: [],
   skepticism_override: 50,
   enable_group_dynamics: true
@@ -68,7 +68,8 @@ export function TestWizard({ projectId }: TestWizardProps) {
       case 'basics':
         return config.name.trim().length >= 3
       case 'stimulus':
-        return config.stimulus_content.trim().length >= 10
+        // Both content and brief are required
+        return config.stimulus_content.trim().length >= 10 && config.brief.trim().length >= 20
       case 'panel':
         return config.archetype_ids.length >= 2
       case 'calibration':
@@ -115,6 +116,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
           name: config.name,
           stimulus_type: config.stimulus_type,
           stimulus_content: config.stimulus_content,
+          stimulus_context: config.brief,  // Brief is sent as stimulus_context to API
           panel_config: {
             archetypes: config.archetype_ids,
             skepticism_override: getSkepticismLevel(config.skepticism_override),
@@ -246,14 +248,17 @@ export function TestWizard({ projectId }: TestWizardProps) {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="context">Additional Context (optional)</Label>
+                <Label htmlFor="brief">Creative Brief *</Label>
                 <Textarea
-                  id="context"
-                  value={config.stimulus_context}
-                  onChange={e => updateConfig('stimulus_context', e.target.value)}
-                  placeholder="Price point, target audience, competitive context, etc."
-                  rows={3}
+                  id="brief"
+                  value={config.brief}
+                  onChange={e => updateConfig('brief', e.target.value)}
+                  placeholder="Describe the context for evaluation: target audience, brand positioning, campaign objectives, what this ad/concept is trying to achieve, any specific constraints or conventions to consider..."
+                  rows={4}
                 />
+                <p className="text-xs text-muted-foreground">
+                  Help personas understand what&apos;s reasonable to expect. E.g., &quot;This is a 15-second social media ad targeting Gen Z, focusing on brand awareness not product details&quot;
+                </p>
               </div>
             </>
           )}
@@ -312,6 +317,10 @@ export function TestWizard({ projectId }: TestWizardProps) {
                 <div>
                   <span className="text-sm text-muted-foreground">Stimulus Content:</span>
                   <p className="whitespace-pre-wrap text-sm">{config.stimulus_content}</p>
+                </div>
+                <div>
+                  <span className="text-sm text-muted-foreground">Creative Brief:</span>
+                  <p className="whitespace-pre-wrap text-sm">{config.brief}</p>
                 </div>
                 <div>
                   <span className="text-sm text-muted-foreground">Panel Size:</span>

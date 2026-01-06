@@ -38,7 +38,8 @@ export async function generatePersonaResponse(
   stimulus: string,
   stimulusType: string,
   category: string = 'fmcg',
-  calibration: CalibrationLevel = 'medium'
+  calibration: CalibrationLevel = 'medium',
+  brief?: string
 ): Promise<GeneratedResponse> {
   const startTime = Date.now()
 
@@ -51,7 +52,7 @@ export async function generatePersonaResponse(
   })
 
   // Build prompt
-  const prompt = buildPersonaResponsePrompt(personaContext, stimulus, stimulusType)
+  const prompt = buildPersonaResponsePrompt(personaContext, stimulus, stimulusType, brief)
   const systemPrompt = buildPersonaSystemPrompt()
 
   // Generate response
@@ -85,6 +86,7 @@ export async function generatePanelResponses(
   stimulusType: string,
   category: string = 'fmcg',
   calibration: CalibrationLevel = 'medium',
+  brief?: string,
   concurrency: number = 4
 ): Promise<{
   successful: GeneratedResponse[]
@@ -99,7 +101,7 @@ export async function generatePanelResponses(
 
     const results = await Promise.allSettled(
       batch.map(archetypeId =>
-        generatePersonaResponse(archetypeId, stimulus, stimulusType, category, calibration)
+        generatePersonaResponse(archetypeId, stimulus, stimulusType, category, calibration, brief)
       )
     )
 
@@ -129,6 +131,7 @@ export async function retryFailedGenerations(
   stimulusType: string,
   category: string = 'fmcg',
   calibration: CalibrationLevel = 'medium',
+  brief?: string,
   maxRetries: number = 2
 ): Promise<{
   successful: GeneratedResponse[]
@@ -157,7 +160,8 @@ export async function retryFailedGenerations(
           stimulus,
           stimulusType,
           category,
-          calibration
+          calibration,
+          brief
         )
 
         successful.push(result)
