@@ -6,17 +6,18 @@ import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
 import { TestResults } from '@/components/features/test-results'
 import { PersonaResponses } from '@/components/features/persona-responses'
+import { TestStatusPoller } from '@/components/features/test-status-poller'
 
 interface TestPageProps {
   params: Promise<{ id: string; testId: string }>
 }
 
 const statusColors: Record<string, string> = {
-  draft: 'bg-gray-100 text-gray-800',
-  running: 'bg-blue-100 text-blue-800',
-  completed: 'bg-green-100 text-green-800',
-  failed: 'bg-red-100 text-red-800',
-  cancelled: 'bg-yellow-100 text-yellow-800'
+  draft: 'border-border bg-secondary text-secondary-foreground',
+  running: 'border-primary bg-primary/20 text-primary',
+  completed: 'border-green-500 bg-green-500/20 text-green-400',
+  failed: 'border-primary bg-primary/20 text-primary',
+  cancelled: 'border-yellow-500 bg-yellow-500/20 text-yellow-400'
 }
 
 const stimulusLabels: Record<string, string> = {
@@ -120,22 +121,18 @@ export default async function TestPage({ params }: TestPageProps) {
 
       {/* Results Section */}
       {test.status === 'completed' && results && (
-        <TestResults results={results} />
+        <div id="test-results">
+          <TestResults results={results} />
+        </div>
       )}
 
-      {/* Running Status */}
+      {/* Running Status - with auto-polling */}
       {test.status === 'running' && (
-        <Card>
-          <CardContent className="py-8">
-            <div className="flex flex-col items-center justify-center text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-4" />
-              <p className="font-medium">Test is running...</p>
-              <p className="text-sm text-muted-foreground">
-                Generating responses from phantom consumers
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+        <TestStatusPoller
+          testId={testId}
+          projectId={id}
+          initialStatus={test.status}
+        />
       )}
 
       {/* Draft State */}
