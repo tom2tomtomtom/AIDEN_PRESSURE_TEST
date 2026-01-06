@@ -6,13 +6,15 @@ import { z } from 'zod'
 const createTestSchema = z.object({
   project_id: z.string().uuid(),
   name: z.string().min(1).max(255),
-  stimulus_type: z.enum(['concept', 'claim', 'ad_copy', 'product_description', 'tagline']),
+  stimulus_type: z.enum(['concept', 'claim', 'ad_copy', 'product_description', 'tagline', 'headline_test']),
   stimulus_content: z.string().min(10),
+  stimulus_context: z.string().optional(),  // Brief/context field
   stimulus_claims: z.array(z.string()).optional(),
   panel_config: z.object({
     archetypes: z.array(z.string().uuid()),
     skepticism_override: z.enum(['low', 'medium', 'high', 'extreme']).optional(),
-    panel_size: z.number().min(1).max(16).optional()
+    panel_size: z.number().min(1).max(16).optional(),
+    headlines: z.array(z.string()).optional()  // For headline tests
   })
 })
 
@@ -41,7 +43,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { project_id, name, stimulus_type, stimulus_content, stimulus_claims, panel_config } = validationResult.data
+    const { project_id, name, stimulus_type, stimulus_content, stimulus_context, stimulus_claims, panel_config } = validationResult.data
 
     // Verify user has access to project
     const { data: project, error: projectError } = await supabase
@@ -62,6 +64,7 @@ export async function POST(request: NextRequest) {
         name,
         stimulus_type,
         stimulus_content,
+        stimulus_context: stimulus_context || null,
         stimulus_claims: stimulus_claims || [],
         panel_config,
         status: 'draft'
