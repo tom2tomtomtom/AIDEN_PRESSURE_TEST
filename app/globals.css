@@ -4,58 +4,43 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
+    /* Brutalist Black & Red Theme - Always Dark */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    /* Primary = Red */
+    --primary: 0 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    /* Secondary = Dark gray */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    /* Accent = Red */
+    --accent: 0 100% 50%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 100% 40%;
+    --destructive-foreground: 0 0% 100%;
+    /* Borders = Red for emphasis, dark for subtle */
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 0 100% 50%;
+    /* No border radius for brutalist design */
+    --radius: 0;
+    /* Chart colors - red spectrum */
+    --chart-1: 0 100% 50%;
+    --chart-2: 0 80% 40%;
+    --chart-3: 0 60% 30%;
+    --chart-4: 0 100% 60%;
+    --chart-5: 0 80% 70%;
 
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* Brutalist shadow */
+    --brutalist-shadow: 4px 4px 0px hsl(0 100% 50%);
+    --brutalist-shadow-sm: 2px 2px 0px hsl(0 100% 50%);
+    --brutalist-shadow-lg: 6px 6px 0px hsl(0 100% 50%);
   }
 }
 
@@ -63,8 +48,101 @@
   * {
     @apply border-border;
   }
+
+  html {
+    @apply bg-black;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Brutalist focus states */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  }
+
+  /* Bold brutalist headings */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  /* Brutalist scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(0 0% 5%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 100% 50%);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 100% 60%);
+  }
+}
+
+@layer components {
+  /* Brutalist utility classes */
+  .brutalist-border {
+    @apply border-2 border-primary;
+  }
+
+  .brutalist-shadow {
+    box-shadow: var(--brutalist-shadow);
+  }
+
+  .brutalist-shadow-sm {
+    box-shadow: var(--brutalist-shadow-sm);
+  }
+
+  .brutalist-shadow-lg {
+    box-shadow: var(--brutalist-shadow-lg);
+  }
+
+  .brutalist-card {
+    @apply bg-card border-2 border-primary p-4;
+    box-shadow: var(--brutalist-shadow);
+  }
+
+  .brutalist-hover {
+    @apply transition-transform;
+  }
+
+  .brutalist-hover:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px hsl(0 100% 50%);
+  }
+
+  /* Red glow effect */
+  .red-glow {
+    text-shadow: 0 0 10px hsl(0 100% 50% / 0.5);
+  }
+
+  /* Strikethrough animation for emphasis */
+  .brutalist-strike {
+    position: relative;
+  }
+
+  .brutalist-strike::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 50%;
+    width: 100%;
+    height: 3px;
+    background: hsl(0 100% 50%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  .brutalist-strike:hover::after {
+    transform: scaleX(1);
   }
 }
 

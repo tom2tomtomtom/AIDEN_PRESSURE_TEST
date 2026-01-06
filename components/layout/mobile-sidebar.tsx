@@ -19,15 +19,17 @@ export function MobileSidebar() {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden mr-2">
-          <MenuIcon className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="md:hidden mr-2 border-2 border-primary">
+          <MenuIcon className="h-5 w-5 text-primary" />
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-64 p-0">
+      <SheetContent side="left" className="w-64 p-0 border-r-2 border-primary bg-black">
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b">
-            <span className="text-lg font-semibold">Phantom Pressure Test</span>
+          <div className="p-4 border-b-2 border-primary">
+            <span className="text-lg font-bold uppercase tracking-wider">
+              <span className="text-primary">Phantom</span> Pressure Test
+            </span>
           </div>
           <nav className="flex-1 p-4 space-y-1">
             {navigation.map((item) => {
@@ -38,10 +40,10 @@ export function MobileSidebar() {
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className={cn(
-                    'block px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                    'block px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4',
                     isActive
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-transparent text-muted-foreground hover:border-primary hover:bg-primary/5 hover:text-primary'
                   )}
                 >
                   {item.name}

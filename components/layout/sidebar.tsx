@@ -14,7 +14,7 @@ export function Sidebar() {
 
   return (
     <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 md:pt-14">
-      <div className="flex flex-col flex-grow border-r bg-background pt-5 pb-4 overflow-y-auto">
+      <div className="flex flex-col flex-grow border-r-2 border-border bg-black pt-5 pb-4 overflow-y-auto">
         <nav className="flex-1 px-3 space-y-1">
           {navigation.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + '/')
@@ -23,16 +23,16 @@ export function Sidebar() {
                 key={item.name}
                 href={item.href}
                 className={cn(
-                  'group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                  'group flex items-center px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4',
                   isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-transparent text-muted-foreground hover:border-primary hover:bg-primary/5 hover:text-primary'
                 )}
               >
                 <item.icon
                   className={cn(
-                    'mr-3 h-5 w-5 flex-shrink-0',
-                    isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-foreground'
+                    'mr-3 h-5 w-5 flex-shrink-0 transition-colors',
+                    isActive ? 'text-primary' : 'text-muted-foreground group-hover:text-primary'
                   )}
                 />
                 {item.name}

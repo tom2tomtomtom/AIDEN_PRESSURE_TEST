@@ -66,10 +66,10 @@ export default function LoginPage() {
 
           {message && (
             <div
-              className={`p-3 rounded-md text-sm ${
+              className={`p-4 text-sm border-2 ${
                 message.type === 'success'
-                  ? 'bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-400'
-                  : 'bg-red-50 text-red-800 dark:bg-red-900/20 dark:text-red-400'
+                  ? 'border-green-500 bg-green-500/10 text-green-400'
+                  : 'border-primary bg-primary/10 text-primary'
               }`}
             >
               {message.text}
