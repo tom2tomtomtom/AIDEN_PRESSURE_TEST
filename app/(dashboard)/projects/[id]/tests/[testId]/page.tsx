@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
 import { TestResults } from '@/components/features/test-results'
+import { HeadlineResults } from '@/components/features/headline-results'
 import { PersonaResponses } from '@/components/features/persona-responses'
 import { TestStatusPoller } from '@/components/features/test-status-poller'
 
@@ -122,7 +123,15 @@ export default async function TestPage({ params }: TestPageProps) {
       {/* Results Section */}
       {test.status === 'completed' && results && (
         <div id="test-results">
-          <TestResults results={results} />
+          {/* Check if this is a headline test */}
+          {results.raw_analysis?.type === 'headline_test' ? (
+            <HeadlineResults
+              data={results.raw_analysis}
+              totalResponses={results.total_responses || 0}
+            />
+          ) : (
+            <TestResults results={results} />
+          )}
         </div>
       )}
 

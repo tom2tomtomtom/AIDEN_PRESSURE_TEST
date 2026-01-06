@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { executeTest, loadTestConfig } from '@/lib/test-execution/runner'
+import { executeHeadlineTest, loadHeadlineTestConfig } from '@/lib/test-execution/headline-runner'
 
 interface RouteParams {
   params: Promise<{ testId: string }>
@@ -27,7 +28,7 @@ export async function POST(
     // Check test exists and is in draft status
     const { data: test, error: testError } = await supabase
       .from('pressure_tests')
-      .select('id, status, project_id')
+      .select('id, status, project_id, stimulus_type')
       .eq('id', testId)
       .single()
 
@@ -42,7 +43,54 @@ export async function POST(
       )
     }
 
-    // Load test configuration
+    // Check if this is a headline test
+    const isHeadlineTest = test.stimulus_type === 'headline_test'
+
+    if (isHeadlineTest) {
+      // Load and execute headline test
+      const headlineConfig = await loadHeadlineTestConfig(testId)
+      if (!headlineConfig) {
+        return NextResponse.json({ error: 'Failed to load headline test configuration' }, { status: 500 })
+      }
+
+      if (!headlineConfig.headlines || headlineConfig.headlines.length < 3) {
+        return NextResponse.json(
+          { error: 'Headline test must have at least 3 headlines' },
+          { status: 400 }
+        )
+      }
+
+      if (!headlineConfig.archetypeIds || headlineConfig.archetypeIds.length === 0) {
+        return NextResponse.json(
+          { error: 'Test panel must have at least one archetype' },
+          { status: 400 }
+        )
+      }
+
+      const result = await executeHeadlineTest(headlineConfig)
+
+      if (result.status === 'failed') {
+        return NextResponse.json(
+          {
+            error: 'Headline test execution failed',
+            details: result.error,
+            testId: result.testId
+          },
+          { status: 500 }
+        )
+      }
+
+      return NextResponse.json({
+        testId: result.testId,
+        status: result.status,
+        responseCount: result.responses.length,
+        executionTimeMs: result.executionTimeMs,
+        winner: result.aggregation?.winner || null,
+        consensus: result.aggregation?.consensus || null
+      })
+    }
+
+    // Standard test execution
     const config = await loadTestConfig(testId)
     if (!config) {
       return NextResponse.json({ error: 'Failed to load test configuration' }, { status: 500 })
@@ -57,7 +105,6 @@ export async function POST(
     }
 
     // Execute test (this runs synchronously for now - could be backgrounded)
-    // For a real app, you might want to use a job queue here
     const result = await executeTest(config)
 
     if (result.status === 'failed') {

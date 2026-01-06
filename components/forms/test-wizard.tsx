@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PanelSelector } from './panel-selector'
 import { SkepticismSlider } from './skepticism-slider'
-import { ChevronLeft, ChevronRight, Loader2, Beaker } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Loader2, Beaker, Plus, X } from 'lucide-react'
 
 interface TestWizardProps {
   projectId: string
@@ -28,8 +28,9 @@ const STEPS: { id: WizardStep; title: string; description: string }[] = [
 interface TestConfig {
   name: string
   description: string
-  stimulus_type: 'concept' | 'claim' | 'product_description' | 'ad_copy' | 'tagline'
+  stimulus_type: 'concept' | 'claim' | 'product_description' | 'ad_copy' | 'tagline' | 'headline_test'
   stimulus_content: string
+  headlines: string[]  // For headline_test type
   brief: string
   archetype_ids: string[]
   skepticism_override: number
@@ -41,6 +42,7 @@ const defaultConfig: TestConfig = {
   description: '',
   stimulus_type: 'concept',
   stimulus_content: '',
+  headlines: ['', ''],  // Start with 2 empty headlines
   brief: '',
   archetype_ids: [],
   skepticism_override: 50,
@@ -68,7 +70,12 @@ export function TestWizard({ projectId }: TestWizardProps) {
       case 'basics':
         return config.name.trim().length >= 3
       case 'stimulus':
-        // Both content and brief are required
+        // For headline tests, need at least 3 non-empty headlines
+        if (config.stimulus_type === 'headline_test') {
+          const validHeadlines = config.headlines.filter(h => h.trim().length >= 3)
+          return validHeadlines.length >= 3 && config.brief.trim().length >= 20
+        }
+        // For other types, content and brief are required
         return config.stimulus_content.trim().length >= 10 && config.brief.trim().length >= 20
       case 'panel':
         return config.archetype_ids.length >= 2
@@ -79,6 +86,28 @@ export function TestWizard({ projectId }: TestWizardProps) {
       default:
         return false
     }
+  }
+
+  const addHeadline = () => {
+    if (config.headlines.length < 30) {
+      setConfig(prev => ({ ...prev, headlines: [...prev.headlines, ''] }))
+    }
+  }
+
+  const removeHeadline = (index: number) => {
+    if (config.headlines.length > 2) {
+      setConfig(prev => ({
+        ...prev,
+        headlines: prev.headlines.filter((_, i) => i !== index)
+      }))
+    }
+  }
+
+  const updateHeadline = (index: number, value: string) => {
+    setConfig(prev => ({
+      ...prev,
+      headlines: prev.headlines.map((h, i) => i === index ? value : h)
+    }))
   }
 
   const goNext = () => {
@@ -108,6 +137,12 @@ export function TestWizard({ projectId }: TestWizardProps) {
     }
 
     try {
+      // For headline tests, join headlines as content and store array in panel_config
+      const isHeadlineTest = config.stimulus_type === 'headline_test'
+      const headlines = isHeadlineTest
+        ? config.headlines.filter(h => h.trim().length >= 3)
+        : []
+
       const response = await fetch('/api/tests', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -115,12 +150,15 @@ export function TestWizard({ projectId }: TestWizardProps) {
           project_id: projectId,
           name: config.name,
           stimulus_type: config.stimulus_type,
-          stimulus_content: config.stimulus_content,
-          stimulus_context: config.brief,  // Brief is sent as stimulus_context to API
+          stimulus_content: isHeadlineTest
+            ? headlines.map((h, i) => `${i + 1}. ${h}`).join('\n')
+            : config.stimulus_content,
+          stimulus_context: config.brief,
           panel_config: {
             archetypes: config.archetype_ids,
             skepticism_override: getSkepticismLevel(config.skepticism_override),
-            panel_size: config.archetype_ids.length
+            panel_size: config.archetype_ids.length,
+            ...(isHeadlineTest && { headlines })  // Include headlines array for headline tests
           }
         })
       })
@@ -201,7 +239,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
           {currentStep === 'stimulus' && (
             <>
               <div className="space-y-2">
-                <Label>Stimulus Type</Label>
+                <Label>Test Type</Label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                   {([
                     { value: 'concept', label: 'Concept' },
@@ -209,6 +247,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
                     { value: 'product_description', label: 'Product' },
                     { value: 'ad_copy', label: 'Ad Copy' },
                     { value: 'tagline', label: 'Tagline' },
+                    { value: 'headline_test', label: 'Headlines' },
                   ] as const).map(type => (
                     <Button
                       key={type.value}
@@ -221,43 +260,99 @@ export function TestWizard({ projectId }: TestWizardProps) {
                   ))}
                 </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="content">
-                  {config.stimulus_type === 'concept' && 'Concept Description *'}
-                  {config.stimulus_type === 'claim' && 'Claim Statement *'}
-                  {config.stimulus_type === 'product_description' && 'Product Description *'}
-                  {config.stimulus_type === 'ad_copy' && 'Ad Copy / Script *'}
-                  {config.stimulus_type === 'tagline' && 'Tagline *'}
-                </Label>
-                <Textarea
-                  id="content"
-                  value={config.stimulus_content}
-                  onChange={e => updateConfig('stimulus_content', e.target.value)}
-                  placeholder={
-                    config.stimulus_type === 'concept'
-                      ? 'Describe your product concept in detail...'
-                      : config.stimulus_type === 'claim'
-                      ? 'Enter the specific claim you want to test...'
-                      : config.stimulus_type === 'product_description'
-                      ? 'Describe the product including key features...'
-                      : config.stimulus_type === 'ad_copy'
-                      ? 'Paste your ad copy or describe the ad...'
-                      : 'Enter your tagline or slogan...'
-                  }
-                  rows={6}
-                />
-              </div>
+
+              {/* Headline Test Input */}
+              {config.stimulus_type === 'headline_test' ? (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label>Headlines to Test ({config.headlines.filter(h => h.trim()).length} entered)</Label>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addHeadline}
+                      disabled={config.headlines.length >= 30}
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add
+                    </Button>
+                  </div>
+                  <div className="space-y-2 max-h-80 overflow-y-auto">
+                    {config.headlines.map((headline, index) => (
+                      <div key={index} className="flex gap-2">
+                        <span className="flex items-center justify-center w-8 h-10 text-sm text-muted-foreground font-mono">
+                          {index + 1}.
+                        </span>
+                        <Input
+                          value={headline}
+                          onChange={e => updateHeadline(index, e.target.value)}
+                          placeholder={`Headline ${index + 1}`}
+                          className="flex-1"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => removeHeadline(index)}
+                          disabled={config.headlines.length <= 2}
+                          className="px-2"
+                        >
+                          <X className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Add 3-30 headlines. Personas will rank their top 3 and bottom 3, and score all headlines.
+                  </p>
+                </div>
+              ) : (
+                /* Standard Stimulus Input */
+                <div className="space-y-2">
+                  <Label htmlFor="content">
+                    {config.stimulus_type === 'concept' && 'Concept Description *'}
+                    {config.stimulus_type === 'claim' && 'Claim Statement *'}
+                    {config.stimulus_type === 'product_description' && 'Product Description *'}
+                    {config.stimulus_type === 'ad_copy' && 'Ad Copy / Script *'}
+                    {config.stimulus_type === 'tagline' && 'Tagline *'}
+                  </Label>
+                  <Textarea
+                    id="content"
+                    value={config.stimulus_content}
+                    onChange={e => updateConfig('stimulus_content', e.target.value)}
+                    placeholder={
+                      config.stimulus_type === 'concept'
+                        ? 'Describe your product concept in detail...'
+                        : config.stimulus_type === 'claim'
+                        ? 'Enter the specific claim you want to test...'
+                        : config.stimulus_type === 'product_description'
+                        ? 'Describe the product including key features...'
+                        : config.stimulus_type === 'ad_copy'
+                        ? 'Paste your ad copy or describe the ad...'
+                        : 'Enter your tagline or slogan...'
+                    }
+                    rows={6}
+                  />
+                </div>
+              )}
+
               <div className="space-y-2">
                 <Label htmlFor="brief">Creative Brief *</Label>
                 <Textarea
                   id="brief"
                   value={config.brief}
                   onChange={e => updateConfig('brief', e.target.value)}
-                  placeholder="Describe the context for evaluation: target audience, brand positioning, campaign objectives, what this ad/concept is trying to achieve, any specific constraints or conventions to consider..."
+                  placeholder={config.stimulus_type === 'headline_test'
+                    ? "Describe the brand, target audience, and what these headlines are for (e.g., email subject lines, social ads, website hero)..."
+                    : "Describe the context for evaluation: target audience, brand positioning, campaign objectives..."
+                  }
                   rows={4}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Help personas understand what&apos;s reasonable to expect. E.g., &quot;This is a 15-second social media ad targeting Gen Z, focusing on brand awareness not product details&quot;
+                  {config.stimulus_type === 'headline_test'
+                    ? "Help personas understand the context. E.g., \"These are email subject lines for a fitness app targeting millennials\""
+                    : "Help personas understand what's reasonable to expect. E.g., \"This is a 15-second social media ad targeting Gen Z\""
+                  }
                 </p>
               </div>
             </>
@@ -311,13 +406,24 @@ export function TestWizard({ projectId }: TestWizardProps) {
                   </div>
                 )}
                 <div>
-                  <span className="text-sm text-muted-foreground">Stimulus Type:</span>
-                  <p className="capitalize">{config.stimulus_type}</p>
+                  <span className="text-sm text-muted-foreground">Test Type:</span>
+                  <p className="capitalize">{config.stimulus_type === 'headline_test' ? 'Headline Tournament' : config.stimulus_type.replace('_', ' ')}</p>
                 </div>
-                <div>
-                  <span className="text-sm text-muted-foreground">Stimulus Content:</span>
-                  <p className="whitespace-pre-wrap text-sm">{config.stimulus_content}</p>
-                </div>
+                {config.stimulus_type === 'headline_test' ? (
+                  <div>
+                    <span className="text-sm text-muted-foreground">Headlines ({config.headlines.filter(h => h.trim()).length}):</span>
+                    <ol className="list-decimal list-inside text-sm mt-1 space-y-1">
+                      {config.headlines.filter(h => h.trim()).map((h, i) => (
+                        <li key={i} className="truncate">{h}</li>
+                      ))}
+                    </ol>
+                  </div>
+                ) : (
+                  <div>
+                    <span className="text-sm text-muted-foreground">Stimulus Content:</span>
+                    <p className="whitespace-pre-wrap text-sm">{config.stimulus_content}</p>
+                  </div>
+                )}
                 <div>
                   <span className="text-sm text-muted-foreground">Creative Brief:</span>
                   <p className="whitespace-pre-wrap text-sm">{config.brief}</p>
