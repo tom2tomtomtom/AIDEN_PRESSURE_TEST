@@ -130,7 +130,6 @@ export default async function TestPage({ params }: TestPageProps) {
       {test.status === 'running' && (
         <TestStatusPoller
           testId={testId}
-          projectId={id}
           initialStatus={test.status}
         />
       )}

@@ -28,20 +28,33 @@ export function TestActions({ test, projectId }: TestActionsProps) {
 
     try {
       const response = await fetch(`/api/tests/${test.id}/run`, {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
 
+      const data = await response.json()
+
       if (!response.ok) {
-        const data = await response.json()
         throw new Error(data.error || 'Failed to run test')
       }
 
+      // Test completed successfully - refresh to show results
+      // Small delay to ensure DB is updated
+      await new Promise(resolve => setTimeout(resolve, 500))
       router.refresh()
+
+      // Scroll to results after refresh
+      setTimeout(() => {
+        const resultsSection = document.getElementById('test-results')
+        if (resultsSection) {
+          resultsSection.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 1000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
-    } finally {
       setIsRunning(false)
     }
+    // Note: Don't set isRunning to false on success - page will refresh
   }
 
   const deleteTest = async () => {
@@ -112,7 +125,7 @@ export function TestActions({ test, projectId }: TestActionsProps) {
       </div>
 
       {error && (
-        <p className="text-sm text-red-500">{error}</p>
+        <p className="text-sm text-primary border-2 border-primary px-3 py-2 bg-primary/10">{error}</p>
       )}
     </div>
   )

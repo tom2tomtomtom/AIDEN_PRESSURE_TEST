@@ -1,21 +1,61 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface TestStatusPollerProps {
   testId: string
-  projectId: string
   initialStatus: string
 }
 
-export function TestStatusPoller({ testId, projectId, initialStatus }: TestStatusPollerProps) {
+export function TestStatusPoller({ testId, initialStatus }: TestStatusPollerProps) {
   const router = useRouter()
   const [status, setStatus] = useState(initialStatus)
   const [dots, setDots] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
+  const checkStatus = useCallback(async () => {
+    try {
+      const response = await fetch(`/api/tests/${testId}/status`, {
+        credentials: 'include',
+        cache: 'no-store'
+      })
+
+      if (!response.ok) {
+        // If we get an error, just refresh the page to get latest state
+        if (response.status === 401) {
+          router.refresh()
+          return
+        }
+        // For other errors, try refreshing to check actual status
+        router.refresh()
+        return
+      }
+
+      const data = await response.json()
+
+      if (data.status === 'completed') {
+        setStatus('completed')
+        router.refresh()
+        setTimeout(() => {
+          const resultsSection = document.getElementById('test-results')
+          if (resultsSection) {
+            resultsSection.scrollIntoView({ behavior: 'smooth' })
+          }
+        }, 500)
+      } else if (data.status === 'failed' || data.status === 'cancelled') {
+        setStatus(data.status)
+        router.refresh()
+      }
+    } catch (err) {
+      console.error('Failed to poll test status:', err)
+      // On network error, try refreshing the page
+      setError('Connection issue - refreshing...')
+      setTimeout(() => router.refresh(), 1000)
+    }
+  }, [testId, router])
 
   useEffect(() => {
-    // Only poll if status is 'running'
     if (status !== 'running') return
 
     // Animate dots
@@ -23,39 +63,18 @@ export function TestStatusPoller({ testId, projectId, initialStatus }: TestStatu
       setDots(prev => prev.length >= 3 ? '' : prev + '.')
     }, 500)
 
-    // Poll for status
-    const pollInterval = setInterval(async () => {
-      try {
-        const response = await fetch(`/api/tests/${testId}/status`)
-        if (response.ok) {
-          const data = await response.json()
+    // Initial check
+    const initialCheck = setTimeout(checkStatus, 1000)
 
-          if (data.status === 'completed') {
-            setStatus('completed')
-            // Navigate to the test results page
-            router.refresh()
-            // Scroll to results section
-            setTimeout(() => {
-              const resultsSection = document.getElementById('test-results')
-              if (resultsSection) {
-                resultsSection.scrollIntoView({ behavior: 'smooth' })
-              }
-            }, 500)
-          } else if (data.status === 'failed' || data.status === 'cancelled') {
-            setStatus(data.status)
-            router.refresh()
-          }
-        }
-      } catch (error) {
-        console.error('Failed to poll test status:', error)
-      }
-    }, 2000) // Poll every 2 seconds
+    // Poll for status every 3 seconds
+    const pollInterval = setInterval(checkStatus, 3000)
 
     return () => {
+      clearTimeout(initialCheck)
       clearInterval(pollInterval)
       clearInterval(dotsInterval)
     }
-  }, [status, testId, projectId, router])
+  }, [status, checkStatus])
 
   if (status !== 'running') return null
 
@@ -71,9 +90,15 @@ export function TestStatusPoller({ testId, projectId, initialStatus }: TestStatu
         <p className="text-sm text-muted-foreground mt-2">
           Generating responses from phantom consumers
         </p>
-        <p className="text-xs text-muted-foreground mt-4 border border-border px-3 py-1">
-          Auto-navigating to results when complete
-        </p>
+        {error ? (
+          <p className="text-xs text-primary mt-4 border border-primary px-3 py-1">
+            {error}
+          </p>
+        ) : (
+          <p className="text-xs text-muted-foreground mt-4 border border-border px-3 py-1">
+            Auto-navigating to results when complete
+          </p>
+        )}
       </div>
     </div>
   )
