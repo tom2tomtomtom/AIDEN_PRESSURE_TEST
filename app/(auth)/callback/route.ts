@@ -1,21 +1,14 @@
 import { NextResponse } from 'next/server'
 import { createAuthClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { getURL } from '@/lib/supabase/utils'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/dashboard'
   
-  // Use absolute URL from request for safer redirection
-  const requestUrl = new URL(request.url)
-  
-  // In production, ensure we use HTTPS for the redirect
-  if (process.env.NODE_ENV === 'production' && requestUrl.protocol === 'http:') {
-    requestUrl.protocol = 'https:'
-  }
-  
-  const origin = requestUrl.origin
+  const origin = getURL()
 
   if (code) {
     const supabase = await createAuthClient()

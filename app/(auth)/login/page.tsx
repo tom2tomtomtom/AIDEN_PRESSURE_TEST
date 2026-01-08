@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createAuthClient } from '@/lib/supabase/client'
+import { getURL } from '@/lib/supabase/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,9 +20,7 @@ export default function LoginPage() {
 
     const supabase = createAuthClient()
 
-    // Ensure we use HTTPS in production for the redirect URL
-    const origin = typeof window !== 'undefined' ? window.location.origin : ''
-    const redirectUrl = origin.includes('localhost') ? `${origin}/callback` : origin.replace('http:', 'https:') + '/callback'
+    const redirectUrl = `${getURL()}callback`
 
     const { error } = await supabase.auth.signInWithOtp({
       email,
