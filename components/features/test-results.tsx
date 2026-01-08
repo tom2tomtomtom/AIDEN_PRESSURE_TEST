@@ -36,6 +36,12 @@ interface TestResult {
     issue: string
     suggested_fix: string
   }>
+  verbatim_highlights?: Array<{
+    persona_name: string
+    archetype: string
+    quote: string
+    topic: 'strength' | 'weakness' | 'general'
+  }>
   created_at: string
 }
 
@@ -105,6 +111,7 @@ export function TestResults({ results }: TestResultsProps) {
   const frictionPoints = results.friction_points || []
   const credibilityGaps = results.credibility_gaps || []
   const recommendations = results.recommendations || []
+  const verbatimHighlights = results.verbatim_highlights || []
 
   return (
     <div className="space-y-6">
@@ -143,6 +150,33 @@ export function TestResults({ results }: TestResultsProps) {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">{results.one_line_verdict || results.analysis_summary}</p>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Verbatim Highlights */}
+      {verbatimHighlights.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Verbatim Highlights</CardTitle>
+            <CardDescription>Direct quotes from the phantom panel</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2">
+              {verbatimHighlights.map((highlight, i) => (
+                <div key={i} className={`p-4 rounded-lg border-l-4 ${
+                  highlight.topic === 'strength' ? 'border-green-500 bg-green-500/5' :
+                  highlight.topic === 'weakness' ? 'border-red-500 bg-red-500/5' :
+                  'border-blue-500 bg-blue-500/5'
+                }`}>
+                  <p className="text-sm italic mb-2">&ldquo;{highlight.quote}&rdquo;</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground">{highlight.persona_name}</span>
+                    <span className="uppercase tracking-wider">{highlight.archetype}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       )}

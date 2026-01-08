@@ -26,6 +26,13 @@ interface SegmentInsight {
   reasoning: string
 }
 
+interface VerbatimHighlight {
+  personaName: string
+  archetype: string
+  quote: string
+  topic: 'winner' | 'concern' | 'general'
+}
+
 interface HeadlineResultsData {
   type: 'headline_test'
   headlines: string[]
@@ -33,6 +40,7 @@ interface HeadlineResultsData {
   winner: HeadlineWinner
   consensus: 'strong' | 'moderate' | 'weak'
   segmentInsights: SegmentInsight[]
+  verbatimHighlights?: VerbatimHighlight[]
 }
 
 interface HeadlineResultsProps {
@@ -60,7 +68,7 @@ function getScoreColor(score: number): string {
 }
 
 export function HeadlineResults({ data, totalResponses }: HeadlineResultsProps) {
-  const { rankings, winner, consensus, segmentInsights, headlines } = data
+  const { rankings, winner, consensus, segmentInsights, headlines, verbatimHighlights = [] } = data
 
   const topThree = rankings.slice(0, 3)
   const bottomThree = rankings.slice(-3).reverse()
@@ -101,6 +109,33 @@ export function HeadlineResults({ data, totalResponses }: HeadlineResultsProps) 
           </div>
         </CardContent>
       </Card>
+
+      {/* Verbatim Highlights */}
+      {verbatimHighlights.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Verbatim Highlights</CardTitle>
+            <CardDescription>Direct feedback on specific headlines</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="grid gap-4 md:grid-cols-2">
+              {verbatimHighlights.map((highlight, i) => (
+                <div key={i} className={`p-4 rounded-lg border-l-4 ${
+                  highlight.topic === 'winner' ? 'border-green-500 bg-green-500/5' :
+                  highlight.topic === 'concern' ? 'border-red-500 bg-red-500/5' :
+                  'border-blue-500 bg-blue-500/5'
+                }`}>
+                  <p className="text-sm italic mb-2">&ldquo;{highlight.quote}&rdquo;</p>
+                  <div className="flex items-center justify-between text-xs text-muted-foreground">
+                    <span className="font-medium text-foreground">{highlight.personaName}</span>
+                    <span className="uppercase tracking-wider">{highlight.archetype}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Full Rankings */}
       <Card>

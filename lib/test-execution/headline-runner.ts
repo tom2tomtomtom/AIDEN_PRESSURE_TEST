@@ -235,7 +235,8 @@ async function storeHeadlineResults(
         rankings: aggregation.rankings,
         winner: aggregation.winner,
         consensus: aggregation.consensus,
-        segmentInsights: aggregation.segmentInsights
+        segmentInsights: aggregation.segmentInsights,
+        verbatimHighlights: aggregation.verbatimHighlights
       }
     })
 

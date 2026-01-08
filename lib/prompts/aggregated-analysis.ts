@@ -68,6 +68,14 @@ export interface AggregatedAnalysisSchema {
   one_line_verdict: string
   would_proceed: boolean
   proceed_conditions: string[]
+
+  // Verbatim Highlights
+  verbatim_highlights: {
+    persona_name: string
+    archetype: string
+    quote: string
+    topic: 'strength' | 'weakness' | 'general'
+  }[]
 }
 
 /**
@@ -205,7 +213,10 @@ Respond with a JSON object with EXACTLY this structure (all fields required):
   ],
   "one_line_verdict": "Single sentence summary of whether concept is ready",
   "would_proceed": <boolean - would you launch this concept>,
-  "proceed_conditions": ["condition 1 if would_proceed is conditional"]
+  "proceed_conditions": ["condition 1 if would_proceed is conditional"],
+  "verbatim_highlights": [
+    {"persona_name": "Name", "archetype": "Archetype", "quote": "Direct quote from their response", "topic": "strength|weakness|general"}
+  ]
 }`
 }
 

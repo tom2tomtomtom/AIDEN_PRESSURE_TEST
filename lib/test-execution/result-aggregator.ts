@@ -107,6 +107,7 @@ export function formatAnalysisForStorage(aggregation: AggregationResult): {
     key_strengths: aggregation.analysis.key_strengths,
     key_weaknesses: aggregation.analysis.key_weaknesses,
     recommendations: aggregation.analysis.recommendations,
+    verbatim_highlights: aggregation.analysis.verbatim_highlights,
     raw_analysis: aggregation.analysis
   }
 }

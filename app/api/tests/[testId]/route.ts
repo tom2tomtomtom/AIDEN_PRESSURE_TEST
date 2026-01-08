@@ -77,6 +77,7 @@ export async function GET(
         key_strengths: result.key_strengths,
         key_weaknesses: result.key_weaknesses,
         recommendations: result.recommendations,
+        verbatim_highlights: result.verbatim_highlights,
         total_responses: result.total_responses,
         execution_time_ms: result.execution_time_ms
       } : null,

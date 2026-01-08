@@ -183,6 +183,12 @@ export function aggregateHeadlineResults(
     topPick: number
     reasoning: string
   }>
+  verbatimHighlights: Array<{
+    personaName: string
+    archetype: string
+    quote: string
+    topic: 'winner' | 'concern' | 'general'
+  }>
 } {
   const headlineStats = headlines.map((headline, i) => ({
     index: i + 1,
@@ -270,6 +276,23 @@ export function aggregateHeadlineResults(
     reasoning: data.reasoning
   }))
 
+  // Extract verbatim highlights (one from each persona, up to 6)
+  const verbatimHighlights = responses.slice(0, 6).map(r => {
+    const topPick = r.evaluation.top_3[0]
+    const bottomPick = r.evaluation.bottom_3[0]
+    
+    // Mix of positive and negative quotes
+    const isPositive = Math.random() > 0.4
+    const pick = isPositive ? topPick : bottomPick
+    
+    return {
+      personaName: r.personaName,
+      archetype: r.archetype,
+      quote: pick ? (isPositive ? pick.why_it_works : pick.why_it_fails) : r.evaluation.gut_reaction,
+      topic: (isPositive ? 'winner' : 'concern') as 'winner' | 'concern' | 'general'
+    }
+  })
+
   return {
     rankings,
     winner: {
@@ -279,6 +302,7 @@ export function aggregateHeadlineResults(
       margin
     },
     consensus,
-    segmentInsights
+    segmentInsights,
+    verbatimHighlights
   }
 }

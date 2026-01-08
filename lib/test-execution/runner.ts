@@ -195,6 +195,7 @@ async function storeTestResults(
       key_strengths: analysisData.key_strengths,
       key_weaknesses: analysisData.key_weaknesses,
       recommendations: analysisData.recommendations,
+      verbatim_highlights: (analysisData as any).verbatim_highlights,
       total_responses: responses.length,
       execution_time_ms: responses.reduce((sum, r) => sum + r.generationTimeMs, 0) + aggregation.generationTimeMs,
       model_used: 'claude-sonnet-4-20250514'
