@@ -283,12 +283,18 @@ export function aggregateHeadlineResults(
     
     // Mix of positive and negative quotes
     const isPositive = Math.random() > 0.4
-    const pick = isPositive ? topPick : bottomPick
+    
+    let quote = r.evaluation.gut_reaction
+    if (isPositive && topPick) {
+      quote = topPick.why_it_works
+    } else if (!isPositive && bottomPick) {
+      quote = bottomPick.why_it_fails
+    }
     
     return {
       personaName: r.personaName,
       archetype: r.archetype,
-      quote: pick ? (isPositive ? pick.why_it_works : pick.why_it_fails) : r.evaluation.gut_reaction,
+      quote,
       topic: (isPositive ? 'winner' : 'concern') as 'winner' | 'concern' | 'general'
     }
   })
