@@ -97,6 +97,7 @@ export function formatAnalysisForStorage(aggregation: AggregationResult): {
   key_strengths: object[]
   key_weaknesses: object[]
   recommendations: object[]
+  verbatim_highlights: object[]
   raw_analysis: object
 } {
   return {
