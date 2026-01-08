@@ -1,33 +1,152 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { createAuthClient } from '@/lib/supabase/client'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Eye, EyeOff } from 'lucide-react'
 
 export default function RegisterPage() {
+  const router = useRouter()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setIsLoading(true)
+    setMessage(null)
+
+    if (password !== confirmPassword) {
+      setMessage({ type: 'error', text: 'Passwords do not match' })
+      setIsLoading(false)
+      return
+    }
+
+    if (password.length < 6) {
+      setMessage({ type: 'error', text: 'Password must be at least 6 characters' })
+      setIsLoading(false)
+      return
+    }
+
+    const supabase = createAuthClient()
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+    })
+
+    if (error) {
+      setIsLoading(false)
+      setMessage({ type: 'error', text: error.message })
+    } else {
+      setMessage({
+        type: 'success',
+        text: 'Registration successful! You can now sign in.'
+      })
+      setTimeout(() => {
+        router.push('/login')
+      }, 2000)
+    }
+  }
+
   return (
-    <div className="border-2 border-border bg-card p-8 shadow-[4px_4px_0px_hsl(0_100%_50%)]">
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-center text-3xl font-bold uppercase tracking-tight">
-            <span className="text-primary">Create</span> Account
-          </h2>
-          <p className="mt-2 text-center text-sm text-muted-foreground">
-            Or{' '}
-            <Link href="/login" className="font-bold text-primary hover:underline uppercase tracking-wider">
+    <Card className="border-2 border-border shadow-[4px_4px_0px_hsl(0_100%_50%)]">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-2xl font-bold text-center uppercase tracking-tight">
+          <span className="text-primary">Create</span> Account
+        </CardTitle>
+        <CardDescription className="text-center">
+          Enter your details to create an account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+                className="pr-10"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Input
+              id="confirmPassword"
+              type={showPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          {message && (
+            <div
+              className={`p-4 text-sm border-2 ${
+                message.type === 'success'
+                  ? 'border-green-500 bg-green-500/10 text-green-400'
+                  : 'border-primary bg-primary/10 text-primary'
+              }`}
+            >
+              {message.text}
+            </div>
+          )}
+
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Creating account...' : 'Create Account'}
+          </Button>
+        </form>
+
+        <div className="mt-6 text-center text-sm">
+          <p className="text-muted-foreground">
+            Already have an account?{' '}
+            <Link href="/login" className="text-primary font-bold hover:underline uppercase tracking-wider">
               Sign In
             </Link>
           </p>
         </div>
-        <div className="mt-8 space-y-6">
-          <p className="text-center text-muted-foreground border-2 border-border p-4">
-            Registration uses magic links - enter your email on the login page
-          </p>
-          <Link
-            href="/login"
-            className="block w-full text-center bg-primary px-6 py-3 text-primary-foreground font-bold uppercase tracking-wider border-2 border-primary shadow-[4px_4px_0px_hsl(0_100%_50%)] hover:shadow-[6px_6px_0px_hsl(0_100%_50%)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
-          >
-            Go to Login
-          </Link>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   )
 }
 
