@@ -38,18 +38,9 @@ export function TestActions({ test, projectId }: TestActionsProps) {
         throw new Error(data.error || 'Failed to run test')
       }
 
-      // Test completed successfully - refresh to show results
-      // Small delay to ensure DB is updated
-      await new Promise(resolve => setTimeout(resolve, 500))
+      // Test started successfully - refresh to show running state and start polling
+      await new Promise(resolve => setTimeout(resolve, 300))
       router.refresh()
-
-      // Scroll to results after refresh
-      setTimeout(() => {
-        const resultsSection = document.getElementById('test-results')
-        if (resultsSection) {
-          resultsSection.scrollIntoView({ behavior: 'smooth' })
-        }
-      }, 1000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
       setIsRunning(false)

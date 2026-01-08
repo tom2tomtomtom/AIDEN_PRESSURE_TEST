@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { after } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { executeTest, loadTestConfig } from '@/lib/test-execution/runner'
 import { executeHeadlineTest, loadHeadlineTestConfig } from '@/lib/test-execution/headline-runner'
@@ -36,6 +37,15 @@ export async function POST(
       return NextResponse.json({ error: 'Test not found' }, { status: 404 })
     }
 
+    // If already running or completed, return success early
+    if (test.status === 'running' || test.status === 'completed') {
+      return NextResponse.json({
+        testId: test.id,
+        status: test.status,
+        message: `Test is already ${test.status}`
+      })
+    }
+
     if (test.status !== 'draft') {
       return NextResponse.json(
         { error: `Cannot run test with status: ${test.status}` },
@@ -43,11 +53,25 @@ export async function POST(
       )
     }
 
+    // Set status to running immediately before backgrounding
+    const { error: updateError } = await supabase
+      .from('pressure_tests')
+      .update({
+        status: 'running',
+        started_at: new Date().toISOString()
+      })
+      .eq('id', testId)
+
+    if (updateError) {
+      console.error('Failed to update test status to running:', updateError)
+      return NextResponse.json({ error: 'Failed to start test' }, { status: 500 })
+    }
+
     // Check if this is a headline test
     const isHeadlineTest = test.stimulus_type === 'headline_test'
 
     if (isHeadlineTest) {
-      // Load and execute headline test
+      // Load headline test config
       const headlineConfig = await loadHeadlineTestConfig(testId)
       if (!headlineConfig) {
         return NextResponse.json({ error: 'Failed to load headline test configuration' }, { status: 500 })
@@ -67,26 +91,19 @@ export async function POST(
         )
       }
 
-      const result = await executeHeadlineTest(headlineConfig)
-
-      if (result.status === 'failed') {
-        return NextResponse.json(
-          {
-            error: 'Headline test execution failed',
-            details: result.error,
-            testId: result.testId
-          },
-          { status: 500 }
-        )
-      }
+      // Execute in background
+      after(async () => {
+        try {
+          await executeHeadlineTest(headlineConfig)
+        } catch (error) {
+          console.error(`Background headline test execution failed for ${testId}:`, error)
+        }
+      })
 
       return NextResponse.json({
-        testId: result.testId,
-        status: result.status,
-        responseCount: result.responses.length,
-        executionTimeMs: result.executionTimeMs,
-        winner: result.aggregation?.winner || null,
-        consensus: result.aggregation?.consensus || null
+        testId,
+        status: 'running',
+        message: 'Headline test started in background'
       })
     }
 
@@ -104,28 +121,19 @@ export async function POST(
       )
     }
 
-    // Execute test (this runs synchronously for now - could be backgrounded)
-    const result = await executeTest(config)
-
-    if (result.status === 'failed') {
-      return NextResponse.json(
-        {
-          error: 'Test execution failed',
-          details: result.error,
-          testId: result.testId
-        },
-        { status: 500 }
-      )
-    }
+    // Execute in background
+    after(async () => {
+      try {
+        await executeTest(config)
+      } catch (error) {
+        console.error(`Background test execution failed for ${testId}:`, error)
+      }
+    })
 
     return NextResponse.json({
-      testId: result.testId,
-      status: result.status,
-      responseCount: result.responses.length,
-      failedCount: result.failedResponses.length,
-      executionTimeMs: result.executionTimeMs,
-      usage: result.totalUsage,
-      pressureScore: result.aggregation?.analysis.pressure_score || null
+      testId,
+      status: 'running',
+      message: 'Test started in background'
     })
   } catch (error) {
     console.error('Error in POST /api/tests/[testId]/run:', error)
