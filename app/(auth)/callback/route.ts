@@ -3,9 +3,19 @@ import { createAuthClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const { searchParams } = new URL(request.url)
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/dashboard'
+  
+  // Use absolute URL from request for safer redirection
+  const requestUrl = new URL(request.url)
+  
+  // In production, ensure we use HTTPS for the redirect
+  if (process.env.NODE_ENV === 'production' && requestUrl.protocol === 'http:') {
+    requestUrl.protocol = 'https:'
+  }
+  
+  const origin = requestUrl.origin
 
   if (code) {
     const supabase = await createAuthClient()
@@ -17,10 +27,15 @@ export async function GET(request: Request) {
 
       return NextResponse.redirect(`${origin}${next}`)
     }
+    
+    if (error) {
+      console.error('Auth error in callback:', error.message)
+      return NextResponse.redirect(`${origin}/error?message=${encodeURIComponent(error.message)}`)
+    }
   }
 
   // Return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/error?message=Could not authenticate user`)
+  return NextResponse.redirect(`${origin}/error?message=No authentication code provided`)
 }
 
 async function ensureUserHasOrganization(userId: string, email: string | undefined) {

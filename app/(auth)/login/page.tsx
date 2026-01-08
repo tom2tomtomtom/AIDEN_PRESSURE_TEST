@@ -19,10 +19,14 @@ export default function LoginPage() {
 
     const supabase = createAuthClient()
 
+    // Ensure we use HTTPS in production for the redirect URL
+    const origin = typeof window !== 'undefined' ? window.location.origin : ''
+    const redirectUrl = origin.includes('localhost') ? `${origin}/callback` : origin.replace('http:', 'https:') + '/callback'
+
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/callback`,
+        emailRedirectTo: redirectUrl,
       },
     })
 
