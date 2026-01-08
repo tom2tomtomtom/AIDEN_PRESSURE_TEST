@@ -2,8 +2,18 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Play, Loader2, Trash2, XCircle } from 'lucide-react'
+import { Play, Loader2, Trash2, XCircle, AlertTriangle } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 
 interface Test {
   id: string
@@ -20,6 +30,7 @@ export function TestActions({ test, projectId }: TestActionsProps) {
   const router = useRouter()
   const [isRunning, setIsRunning] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const runTest = async () => {
@@ -38,21 +49,20 @@ export function TestActions({ test, projectId }: TestActionsProps) {
         throw new Error(data.error || 'Failed to run test')
       }
 
+      toast.success('Test started successfully')
       // Test started successfully - refresh to show running state and start polling
       await new Promise(resolve => setTimeout(resolve, 300))
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      const message = err instanceof Error ? err.message : 'Something went wrong'
+      setError(message)
+      toast.error(message)
       setIsRunning(false)
     }
     // Note: Don't set isRunning to false on success - page will refresh
   }
 
   const deleteTest = async () => {
-    if (!confirm(`Are you sure you want to delete "${test.name}"?`)) {
-      return
-    }
-
     setIsDeleting(true)
     setError(null)
 
@@ -66,11 +76,15 @@ export function TestActions({ test, projectId }: TestActionsProps) {
         throw new Error(data.error || 'Failed to delete test')
       }
 
+      toast.success(`Test "${test.name}" deleted successfully`)
       router.push(`/projects/${projectId}`)
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong')
+      const message = err instanceof Error ? err.message : 'Something went wrong'
+      setError(message)
+      toast.error(message)
       setIsDeleting(false)
+      setIsDialogOpen(false)
     }
   }
 
@@ -101,17 +115,59 @@ export function TestActions({ test, projectId }: TestActionsProps) {
         )}
 
         {(test.status === 'draft' || test.status === 'failed' || test.status === 'cancelled') && (
-          <Button
-            variant="outline"
-            onClick={deleteTest}
-            disabled={isDeleting}
-          >
-            {isDeleting ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Trash2 className="w-4 h-4" />
-            )}
-          </Button>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                disabled={isDeleting}
+              >
+                {isDeleting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <div className="flex items-center gap-2 text-primary mb-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  <DialogTitle>Delete Test</DialogTitle>
+                </div>
+                <DialogDescription>
+                  Are you sure you want to delete <span className="font-bold text-foreground">&quot;{test.name}&quot;</span>? 
+                  This action cannot be undone.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-6">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={deleteTest}
+                  disabled={isDeleting}
+                  className="gap-2"
+                >
+                  {isDeleting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Deleting...
+                    </>
+                  ) : (
+                    <>
+                      <Trash2 className="w-4 h-4" />
+                      Delete Test
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         )}
       </div>
 

@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DeleteProjectButton } from '@/components/features/delete-project-button'
+import { DeleteTestButton } from '@/components/features/delete-test-button'
 
 interface ProjectPageProps {
   params: Promise<{ id: string }>
@@ -104,23 +105,29 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           ) : (
             <div className="space-y-2">
               {tests.map((test) => (
-                <Link
-                  key={test.id}
-                  href={`/projects/${id}/tests/${test.id}`}
-                  className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">{test.name}</p>
-                      <p className="text-sm text-muted-foreground">
-                        {test.stimulus_type} • {test.status}
-                      </p>
+                <div key={test.id} className="relative group">
+                  <Link
+                    href={`/projects/${id}/tests/${test.id}`}
+                    className="block p-4 rounded-lg border hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">{test.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {test.stimulus_type.replace('_', ' ')} • <span className="capitalize">{test.status}</span>
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(test.created_at).toLocaleDateString()}
+                        </span>
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                          <DeleteTestButton testId={test.id} testName={test.name} />
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(test.created_at).toLocaleDateString()}
-                    </span>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
               ))}
             </div>
           )}

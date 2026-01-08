@@ -15,81 +15,71 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 
-interface DeleteProjectButtonProps {
-  projectId: string
-  projectName: string
-  variant?: 'default' | 'icon'
+interface DeleteTestButtonProps {
+  testId: string
+  testName: string
+  onDelete?: () => void
 }
 
-export function DeleteProjectButton({ projectId, projectName, variant = 'default' }: DeleteProjectButtonProps) {
+export function DeleteTestButton({ testId, testName, onDelete }: DeleteTestButtonProps) {
   const [isDeleting, setIsDeleting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
 
-  async function handleDelete(e?: React.MouseEvent) {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
+  async function handleDelete(e: React.MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
     setIsDeleting(true)
     
     try {
-      const response = await fetch(`/api/projects/${projectId}`, {
+      const response = await fetch(`/api/tests/${testId}`, {
         method: 'DELETE',
       })
 
       if (!response.ok) {
         const data = await response.json()
-        throw new Error(data.error?.message || 'Failed to delete project')
+        throw new Error(data.error || 'Failed to delete test')
       }
 
-      toast.success(`Project "${projectName}" deleted successfully`)
+      toast.success(`Test "${testName}" deleted successfully`)
       setIsOpen(false)
-      router.push('/projects')
-      router.refresh()
+      if (onDelete) {
+        onDelete()
+      } else {
+        router.refresh()
+      }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : 'Failed to delete project')
+      toast.error(err instanceof Error ? err.message : 'Failed to delete test')
       setIsDeleting(false)
-      setIsOpen(false)
     }
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        {variant === 'icon' ? (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 p-0"
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              setIsOpen(true)
-            }}
-          >
-            <Trash2 className="w-4 h-4" />
-            <span className="sr-only">Delete project</span>
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            className="text-primary hover:text-primary hover:bg-primary/10 border-primary/20"
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Project
-          </Button>
-        )}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 p-0"
+          onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            setIsOpen(true)
+          }}
+        >
+          <Trash2 className="w-4 h-4" />
+          <span className="sr-only">Delete test</span>
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
         <DialogHeader>
           <div className="flex items-center gap-2 text-primary mb-2">
             <AlertTriangle className="w-5 h-5" />
-            <DialogTitle>Delete Project</DialogTitle>
+            <DialogTitle>Delete Test</DialogTitle>
           </div>
           <DialogDescription>
-            Are you sure you want to delete <span className="font-bold text-foreground">&quot;{projectName}&quot;</span>? 
-            This will archive the project and all its associated tests. This action can be undone by an administrator.
+            Are you sure you want to delete <span className="font-bold text-foreground">&quot;{testName}&quot;</span>? 
+            This action cannot be undone.
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="mt-6">
@@ -118,7 +108,7 @@ export function DeleteProjectButton({ projectId, projectName, variant = 'default
             ) : (
               <>
                 <Trash2 className="w-4 h-4" />
-                Delete Project
+                Delete Test
               </>
             )}
           </Button>
@@ -127,3 +117,4 @@ export function DeleteProjectButton({ projectId, projectName, variant = 'default
     </Dialog>
   )
 }
+
