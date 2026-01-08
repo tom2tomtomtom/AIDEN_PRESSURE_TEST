@@ -74,6 +74,21 @@ export function PanelSelector({ value, onChange, maxSelection = 8 }: PanelSelect
     onChange([])
   }
 
+  const selectStandardPanel = () => {
+    const standardSlugs = [
+      'sarah-chen', 'graham-foster', 'zara-martinez', 'jennifer-park',
+      'marcus-thompson', 'olivia-brennan', 'david-nguyen', 'linda-morrison',
+      'jake-sullivan', 'rebecca-walsh', 'tom-bradley', 'amy-chung'
+    ]
+    const standardIds = archetypes
+      .filter(a => standardSlugs.includes(a.slug))
+      .map(a => a.id)
+    
+    if (standardIds.length > 0) {
+      onChange(standardIds.slice(0, maxSelection))
+    }
+  }
+
   if (loading) {
     return <div className="text-sm text-muted-foreground">Loading archetypes...</div>
   }
@@ -88,7 +103,14 @@ export function PanelSelector({ value, onChange, maxSelection = 8 }: PanelSelect
         <div className="text-sm text-muted-foreground">
           {value.length} of {maxSelection} selected
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={selectStandardPanel}
+            className="text-sm text-primary font-medium hover:underline"
+          >
+            Select Standard Panel (N=12)
+          </button>
           <button
             type="button"
             onClick={selectAll}

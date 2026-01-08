@@ -362,7 +362,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
             <PanelSelector
               value={config.archetype_ids}
               onChange={ids => updateConfig('archetype_ids', ids)}
-              maxSelection={8}
+              maxSelection={12}
             />
           )}
 

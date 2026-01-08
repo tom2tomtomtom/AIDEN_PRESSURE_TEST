@@ -1,31 +1,330 @@
-// Seed script for persona archetypes
+// Seed script for persona archetypes including the AIDEN Standard Panel
 // Run with: node scripts/seed-archetypes.mjs
 
 import { createClient } from '@supabase/supabase-js'
-import { readFileSync } from 'fs'
+import { readFileSync, existsSync } from 'fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-// Read .env.local manually
+// Try to read .env.local if it exists
 const envPath = resolve(__dirname, '../.env.local')
-const envContent = readFileSync(envPath, 'utf-8')
-const env = {}
-envContent.split('\n').forEach(line => {
-  const [key, ...valueParts] = line.split('=')
-  if (key && valueParts.length) {
-    env[key.trim()] = valueParts.join('=').trim()
-  }
-})
+if (existsSync(envPath)) {
+  const envContent = readFileSync(envPath, 'utf-8')
+  envContent.split('\n').forEach(line => {
+    const [key, ...valueParts] = line.split('=')
+    if (key && valueParts.length) {
+      process.env[key.trim()] = valueParts.join('=').trim()
+    }
+  })
+}
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+
+if (!supabaseUrl || !supabaseKey) {
+  console.error('Missing Supabase credentials. Ensure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are set.')
+  process.exit(1)
+}
 
 const supabase = createClient(
-  env.NEXT_PUBLIC_SUPABASE_URL,
-  env.SUPABASE_SERVICE_ROLE_KEY,
+  supabaseUrl,
+  supabaseKey,
   { db: { schema: 'ppt' } }
 )
 
 const archetypes = [
+  // --- AIDEN Standard Panel (12 Phantoms) ---
+  {
+    name: 'Sarah Chen (Progressive Achiever)',
+    slug: 'sarah-chen',
+    category: 'innovation',
+    demographics: {
+      age_range: '32',
+      lifestage: 'career_focused',
+      income: '$95K',
+      location: 'Melbourne CBD',
+      education: 'College Graduate',
+      household: 'Partnered, no kids'
+    },
+    psychographics: {
+      values: ['Sustainability', 'Innovation', 'Social Justice', 'Career Growth'],
+      motivations: ['Personal growth', 'Authenticity', 'Social proof'],
+      pain_points: ['Greenwashing', 'Poor ethics', 'Outdated tech'],
+      media_habits: ['Instagram', 'LinkedIn', 'Guardian', 'Podcasts'],
+      decision_style: 'Research-heavy',
+      influence_type: 'Early adopter',
+      brand_relationship: 'Vocal advocate or critic'
+    },
+    baseline_skepticism: 'high',
+    voice_traits: ['Articulate', 'References trends', 'Name-drops brands', 'Values-driven']
+  },
+  {
+    name: 'Graham Foster (Conservative Skeptic)',
+    slug: 'graham-foster',
+    category: 'traditional',
+    demographics: {
+      age_range: '58',
+      lifestage: 'mature_family',
+      income: '$78K',
+      location: 'Mornington Peninsula',
+      education: 'Trade background',
+      household: 'Married, adult kids'
+    },
+    psychographics: {
+      values: ['Tradition', 'Value for money', 'Reliability', 'Local community'],
+      motivations: ['Proven solutions', 'Reliability', 'Familiarity'],
+      pain_points: ['Overcomplicated', 'Expensive', 'Woke marketing'],
+      media_habits: ['Herald Sun', 'Radio 3AW', 'Facebook'],
+      decision_style: 'Experience-based',
+      influence_type: 'Skeptic',
+      brand_relationship: 'Loyal once convinced'
+    },
+    baseline_skepticism: 'extreme',
+    voice_traits: ['Brief', 'Skeptical', 'Direct', 'Experience-based']
+  },
+  {
+    name: 'Zara Martinez (Adventurous Maximalist)',
+    slug: 'zara-martinez',
+    category: 'innovation',
+    demographics: {
+      age_range: '28',
+      lifestage: 'young_adult',
+      income: '$52K',
+      location: 'Fitzroy',
+      education: 'Creative Arts',
+      household: 'Single'
+    },
+    psychographics: {
+      values: ['Experience', 'Novelty', 'Self-expression', 'Authenticity'],
+      motivations: ['Self-expression', 'Novelty', 'FOMO'],
+      pain_points: ['Boring', 'Corporate', 'Commonplace'],
+      media_habits: ['TikTok', 'Instagram', 'Substack', 'Spotify'],
+      decision_style: 'Impulse + aesthetic',
+      influence_type: 'Trendseeker',
+      brand_relationship: 'Intense then moves on'
+    },
+    baseline_skepticism: 'low',
+    voice_traits: ['Enthusiastic', 'Storytelling', 'Hyperbolic', 'Visual-focused']
+  },
+  {
+    name: 'Jennifer Park (Practical Homebody)',
+    slug: 'jennifer-park',
+    category: 'convenience',
+    demographics: {
+      age_range: '41',
+      lifestage: 'established_family',
+      income: '$140K Household',
+      location: 'Box Hill',
+      education: 'CPA/Accountant',
+      household: 'Married, 2 kids'
+    },
+    psychographics: {
+      values: ['Family', 'Efficiency', 'Quality', 'Peace of mind'],
+      motivations: ['Efficiency', 'Family wellbeing', 'Reliability'],
+      pain_points: ['Complexity', 'Time-intensive', 'Kid-unfriendly'],
+      media_habits: ['ABC News', 'Parenting blogs', 'Facebook groups'],
+      decision_style: 'Calculated value',
+      influence_type: 'Informed buyer',
+      brand_relationship: 'Convenience-focused'
+    },
+    baseline_skepticism: 'medium',
+    voice_traits: ['Measured', 'Practical', 'Time-conscious', 'Systematic']
+  },
+  {
+    name: 'Marcus Thompson (Outdoorsy Believer)',
+    slug: 'marcus-thompson',
+    category: 'traditional',
+    demographics: {
+      age_range: '45',
+      lifestage: 'established_family',
+      income: '$88K',
+      location: 'Geelong',
+      education: 'Master of Education',
+      household: 'Married, 3 kids'
+    },
+    psychographics: {
+      values: ['Nature', 'Health', 'Family time', 'Heritage brands'],
+      motivations: ['Heritage', 'Durability', 'Environmental impact'],
+      pain_points: ['Fast fashion', 'Greenwashing', 'Planned obsolescence'],
+      media_habits: ['Outdoor magazines', 'ABC'],
+      decision_style: 'Heritage-driven',
+      influence_type: 'Brand evangelist',
+      brand_relationship: 'Tribal loyalty'
+    },
+    baseline_skepticism: 'high',
+    voice_traits: ['Passionate', 'Story-driven', 'Energetic', 'Authenticity-seeking']
+  },
+  {
+    name: 'Olivia Brennan (Anxious Aspirer)',
+    slug: 'olivia-brennan',
+    category: 'premium',
+    demographics: {
+      age_range: '29',
+      lifestage: 'young_professional',
+      income: '$68K',
+      location: 'South Yarra',
+      education: 'Legal Assistant',
+      household: 'Single'
+    },
+    psychographics: {
+      values: ['Status', 'Belonging', 'Self-improvement', 'Perception'],
+      motivations: ['Status', 'Belonging', 'Validation'],
+      pain_points: ['Social failure', 'Looking poor', 'Waste of money'],
+      media_habits: ['Instagram', 'LinkedIn', 'Vogue', 'Self-help podcasts'],
+      decision_style: 'Social comparison',
+      influence_type: 'Follower',
+      brand_relationship: 'Aspirational'
+    },
+    baseline_skepticism: 'medium',
+    voice_traits: ['Agreeable', 'Insecure', 'Approval-seeking', 'Status-conscious']
+  },
+  {
+    name: 'David Nguyen (Tech Expert Cynic)',
+    slug: 'david-nguyen',
+    category: 'innovation',
+    demographics: {
+      age_range: '36',
+      lifestage: 'established_professional',
+      income: '$135K',
+      location: 'Inner West Sydney',
+      education: 'Software Engineer',
+      household: 'Partnered'
+    },
+    psychographics: {
+      values: ['Privacy', 'Efficiency', 'Open source', 'Evidence-based'],
+      motivations: ['Technical superiority', 'Privacy', 'Control'],
+      pain_points: ['Vendor lock-in', 'Data harvesting', 'Marketing fluff'],
+      media_habits: ['HackerNews', 'Reddit', 'Tech blogs'],
+      decision_style: 'Specs-driven',
+      influence_type: 'Challenger',
+      brand_relationship: 'Anti-brand'
+    },
+    baseline_skepticism: 'extreme',
+    voice_traits: ['Pedantic', 'Correcting', 'Highly skeptical', 'Evidence-demanding']
+  },
+  {
+    name: 'Linda Morrison (Traditional Homebody)',
+    slug: 'linda-morrison',
+    category: 'traditional',
+    demographics: {
+      age_range: '62',
+      lifestage: 'retired',
+      income: '$48K',
+      location: 'Ballarat',
+      education: 'Nursing Degree',
+      household: 'Widowed, grandkids'
+    },
+    psychographics: {
+      values: ['Family', 'Comfort', 'Familiarity', 'Community'],
+      motivations: ['Comfort', 'Familiarity', 'Family connection'],
+      pain_points: ['Complexity', 'No phone support', 'Subscriptions'],
+      media_habits: ['Channel 7', 'Woman\'s Day', 'Facebook'],
+      decision_style: 'Habitual',
+      influence_type: 'Deferential',
+      brand_relationship: 'Decades-long loyalty'
+    },
+    baseline_skepticism: 'low',
+    voice_traits: ['Warm', 'Nostalgic', 'Trusting', 'Simple']
+  },
+  {
+    name: 'Jake Sullivan (Chaos Agent)',
+    slug: 'jake-sullivan',
+    category: 'innovation',
+    demographics: {
+      age_range: '31',
+      lifestage: 'lifestyle_first',
+      income: '$45K',
+      location: 'Byron Bay',
+      education: 'Mixed/Self-taught',
+      household: 'Single'
+    },
+    psychographics: {
+      values: ['Freedom', 'Experience', 'Authenticity', 'Creativity'],
+      motivations: ['Vibes', 'Irony', 'Freedom'],
+      pain_points: ['Corporate cringe', 'Taking things too seriously', 'Boredom'],
+      media_habits: ['TikTok', 'Instagram', 'Niche subreddits'],
+      decision_style: 'Vibe-based',
+      influence_type: 'Disruptor',
+      brand_relationship: 'Ironic consumer'
+    },
+    baseline_skepticism: 'high',
+    voice_traits: ['Unpredictable', 'Humorous', 'Tangent-prone', 'Irreverent']
+  },
+  {
+    name: 'Rebecca Walsh (Overachieving Pleaser)',
+    slug: 'rebecca-walsh',
+    category: 'mainstream',
+    demographics: {
+      age_range: '38',
+      lifestage: 'established_family',
+      income: '$105K',
+      location: 'Canberra',
+      education: 'Senior Analyst',
+      household: 'Married, 1 child'
+    },
+    psychographics: {
+      values: ['Achievement', 'Approval', 'Competence', 'Authority'],
+      motivations: ['Approval', 'Achievement', 'Correctness'],
+      pain_points: ['Being wrong', 'Suboptimal choices', 'Wasting money'],
+      media_habits: ['ABC', 'SMH', 'Professional podcasts'],
+      decision_style: 'Exhaustive research',
+      influence_type: 'Validator',
+      brand_relationship: 'Expert-driven'
+    },
+    baseline_skepticism: 'medium',
+    voice_traits: ['Over-prepared', 'Affirmation-seeking', 'Research-heavy', 'Competent']
+  },
+  {
+    name: 'Tom Bradley (Silent Observer)',
+    slug: 'tom-bradley',
+    category: 'value',
+    demographics: {
+      age_range: '51',
+      lifestage: 'middle_age_single',
+      income: '$82K',
+      location: 'Hobart',
+      education: 'Electrician',
+      household: 'Divorced'
+    },
+    psychographics: {
+      values: ['Privacy', 'Independence', 'Practicality', 'Peace'],
+      motivations: ['Independence', 'Privacy', 'Functional proof'],
+      pain_points: ['Pushy sales', 'Complexity', 'Marketing speak'],
+      media_habits: ['sporadic news', 'YouTube tutorials'],
+      decision_style: 'Function over form',
+      influence_type: 'Quiet observer',
+      brand_relationship: 'Functional only'
+    },
+    baseline_skepticism: 'high',
+    voice_traits: ['Laconic', 'Direct', 'Technically-focused', 'Reserved']
+  },
+  {
+    name: 'Amy Chung (Balanced Moderator)',
+    slug: 'amy-chung',
+    category: 'mainstream',
+    demographics: {
+      age_range: '43',
+      lifestage: 'established_family',
+      income: '$92K',
+      location: 'Perth',
+      education: 'HR Manager',
+      household: 'Married, 2 kids'
+    },
+    psychographics: {
+      values: ['Fairness', 'Practicality', 'Family', 'Balance'],
+      motivations: ['Balance', 'Fairness', 'Family needs'],
+      pain_points: ['Extreme positions', 'Impracticality', 'Overpricing'],
+      media_habits: ['ABC', 'Commercial TV', 'Social media'],
+      decision_style: 'Balanced consideration',
+      influence_type: 'Moderator',
+      brand_relationship: 'Pragmatic loyalty'
+    },
+    baseline_skepticism: 'medium',
+    voice_traits: ['Diplomatic', 'Balanced', 'Even-keeled', 'Fair']
+  },
+  // --- Original Broad Archetypes ---
   {
     name: 'Skeptical Switcher',
     slug: 'skeptical-switcher',
@@ -75,30 +374,6 @@ const archetypes = [
     voice_traits: ['warm', 'nostalgic', 'defensive_of_favorites', 'story_telling', 'relationship_focused']
   },
   {
-    name: 'Value Hunter',
-    slug: 'value-hunter',
-    category: 'value',
-    demographics: {
-      age_range: '28-45',
-      lifestage: 'young_family',
-      income: 'lower_middle',
-      location: 'mixed',
-      education: 'high_school_plus',
-      household: 'family_with_young_children'
-    },
-    psychographics: {
-      values: ['savings', 'smart_shopping', 'getting_more', 'efficiency'],
-      motivations: ['stretching_budget', 'finding_deals', 'outsmarting_marketers', 'providing_for_family'],
-      pain_points: ['full_price', 'premium_pricing', 'artificial_scarcity', 'loyalty_tax'],
-      media_habits: ['deal_sites', 'coupon_apps', 'discount_alerts', 'store_brand_comparisons'],
-      decision_style: 'analytical',
-      influence_type: 'informer',
-      brand_relationship: 'opportunistic'
-    },
-    baseline_skepticism: 'high',
-    voice_traits: ['calculating', 'price_focused', 'comparative', 'deal_hunting', 'brand_agnostic']
-  },
-  {
     name: 'Wellness Seeker',
     slug: 'wellness-seeker',
     category: 'health',
@@ -121,102 +396,6 @@ const archetypes = [
     },
     baseline_skepticism: 'medium',
     voice_traits: ['ingredient_focused', 'research_driven', 'questioning_claims', 'health_conscious', 'scientific']
-  },
-  {
-    name: 'Convenience Prioritizer',
-    slug: 'convenience-prioritizer',
-    category: 'convenience',
-    demographics: {
-      age_range: '30-45',
-      lifestage: 'busy_professional',
-      income: 'upper_middle',
-      location: 'urban',
-      education: 'college_graduate',
-      household: 'dual_income'
-    },
-    psychographics: {
-      values: ['time_savings', 'efficiency', 'simplicity', 'reliability'],
-      motivations: ['reducing_friction', 'quick_decisions', 'good_enough_solutions', 'reclaiming_time'],
-      pain_points: ['complexity', 'time_wasted', 'unreliable_products', 'decision_fatigue'],
-      media_habits: ['quick_reviews', 'subscription_services', 'automated_reordering', 'curated_recommendations'],
-      decision_style: 'habitual',
-      influence_type: 'follower',
-      brand_relationship: 'convenience_based'
-    },
-    baseline_skepticism: 'medium',
-    voice_traits: ['time_focused', 'practical', 'efficiency_minded', 'solution_oriented', 'impatient_with_complexity']
-  },
-  {
-    name: 'Status Signaler',
-    slug: 'status-signaler',
-    category: 'premium',
-    demographics: {
-      age_range: '28-45',
-      lifestage: 'aspirational_professional',
-      income: 'upper',
-      location: 'urban_affluent',
-      education: 'postgraduate',
-      household: 'young_professional'
-    },
-    psychographics: {
-      values: ['quality', 'exclusivity', 'image', 'sophistication', 'discernment'],
-      motivations: ['social_recognition', 'self_expression', 'best_in_class', 'refined_taste'],
-      pain_points: ['mass_market_products', 'visible_value_brands', 'lack_of_differentiation', 'compromising_on_quality'],
-      media_habits: ['luxury_publications', 'tastemaker_recommendations', 'premium_brand_content', 'exclusive_memberships'],
-      decision_style: 'emotional',
-      influence_type: 'trendsetter',
-      brand_relationship: 'identity_expression'
-    },
-    baseline_skepticism: 'medium',
-    voice_traits: ['discerning', 'quality_focused', 'brand_conscious', 'aspirational', 'detail_oriented']
-  },
-  {
-    name: 'Eco Worrier',
-    slug: 'eco-worrier',
-    category: 'sustainability',
-    demographics: {
-      age_range: '25-40',
-      lifestage: 'values_driven',
-      income: 'middle',
-      location: 'urban',
-      education: 'college_graduate',
-      household: 'mixed'
-    },
-    psychographics: {
-      values: ['environmental_responsibility', 'authenticity', 'transparency', 'systemic_change'],
-      motivations: ['reducing_impact', 'calling_out_greenwashing', 'supporting_genuine_efforts', 'aligning_actions_with_values'],
-      pain_points: ['greenwashing', 'vague_sustainability_claims', 'excessive_packaging', 'corporate_hypocrisy', 'guilt_about_consumption'],
-      media_habits: ['environmental_news', 'brand_accountability_trackers', 'sustainability_certifications', 'activist_content'],
-      decision_style: 'analytical',
-      influence_type: 'challenger',
-      brand_relationship: 'scrutinizing'
-    },
-    baseline_skepticism: 'high',
-    voice_traits: ['skeptical_of_claims', 'evidence_demanding', 'environmentally_focused', 'calls_out_greenwashing', 'systemic_thinker']
-  },
-  {
-    name: 'Trend Follower',
-    slug: 'trend-follower',
-    category: 'innovation',
-    demographics: {
-      age_range: '22-35',
-      lifestage: 'young_adult',
-      income: 'entry_to_middle',
-      location: 'urban',
-      education: 'mixed',
-      household: 'single_or_shared'
-    },
-    psychographics: {
-      values: ['belonging', 'discovery', 'social_currency', 'being_current'],
-      motivations: ['fear_of_missing_out', 'social_validation', 'trying_new_things', 'sharing_discoveries'],
-      pain_points: ['being_out_of_loop', 'missing_trends', 'looking_outdated', 'not_having_shareable_experiences'],
-      media_habits: ['social_media_heavy', 'influencer_content', 'viral_products', 'peer_recommendations'],
-      decision_style: 'social',
-      influence_type: 'amplifier',
-      brand_relationship: 'trend_based'
-    },
-    baseline_skepticism: 'medium',
-    voice_traits: ['social_proof_seeking', 'trend_aware', 'enthusiastic_about_new', 'peer_influenced', 'shareable_focused']
   }
 ]
 
