@@ -229,6 +229,7 @@ async function storeHeadlineResults(
       total_responses: responses.length,
       execution_time_ms: responses.reduce((sum, r) => sum + r.generationTimeMs, 0),
       model_used: 'claude-sonnet-4-20250514',
+      verbatim_highlights: aggregation.verbatimHighlights,
       raw_analysis: {
         type: 'headline_test',
         headlines,
