@@ -1,12 +1,8 @@
 import type { Metadata } from 'next'
-import { Space_Grotesk } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 import { Toaster } from 'sonner'
 import './globals.css'
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  variable: '--font-space-grotesk',
-})
 
 export const metadata: Metadata = {
   title: "AIDEN's Focus Group",
@@ -20,11 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={`${spaceGrotesk.className} bg-black text-white`}>
+      <body className={`${GeistSans.className} ${GeistMono.variable} bg-black-ink text-white-full`}>
         {children}
         <Toaster position="top-right" theme="dark" richColors />
       </body>
     </html>
   )
 }
-

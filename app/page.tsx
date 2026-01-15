@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from '@/components/ui/button'
 
 export default function Home() {
   return (
@@ -11,18 +12,12 @@ export default function Home() {
           AI-powered synthetic qualitative research with <span className="text-orange-accent font-bold">Phantom Consumer Memory™</span>
         </p>
         <div className="flex gap-6 justify-center">
-          <Link
-            href="/login"
-            className="bg-red-hot px-8 py-4 text-white font-bold uppercase tracking-wider border-2 border-red-hot shadow-[4px_4px_0px_#ff2e2e] hover:shadow-[6px_6px_0px_#ff2e2e] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all"
-          >
-            Login
-          </Link>
-          <Link
-            href="/register"
-            className="bg-transparent px-8 py-4 text-red-hot font-bold uppercase tracking-wider border-2 border-red-hot shadow-[4px_4px_0px_#ff2e2e] hover:bg-red-hot hover:text-white transition-all"
-          >
-            Register
-          </Link>
+          <Button asChild size="lg">
+            <Link href="/login">Login</Link>
+          </Button>
+          <Button asChild variant="outline" size="lg">
+            <Link href="/register">Register</Link>
+          </Button>
         </div>
       </div>
 
@@ -38,4 +33,3 @@ export default function Home() {
     </main>
   )
 }
-

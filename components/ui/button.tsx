@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-red-hot text-white border-2 border-red-hot hover:bg-red-dim shadow-[4px_4px_0px_#ff2e2e] hover:shadow-[6px_6px_0px_#ff2e2e] hover:translate-x-[-2px] hover:translate-y-[-2px]",
+          "bg-red-hot text-white border-2 border-red-hot hover:bg-red-dim",
         secondary:
-          "bg-orange-accent text-white border-2 border-orange-accent hover:bg-red-hot hover:border-red-hot shadow-[4px_4px_0px_#ff6b00] hover:shadow-[4px_4px_0px_#ff2e2e]",
+          "bg-orange-accent text-white border-2 border-orange-accent hover:bg-red-hot hover:border-red-hot",
         destructive:
           "bg-red-hot text-white border-2 border-red-hot hover:bg-black-card hover:text-red-hot",
         outline:
-          "border-2 border-red-hot bg-transparent text-red-hot hover:bg-red-hot hover:text-white shadow-[4px_4px_0px_#ff2e2e] hover:shadow-[2px_2px_0px_#ff2e2e] hover:translate-x-[2px] hover:translate-y-[2px]",
+          "border-2 border-red-hot bg-transparent text-red-hot hover:bg-red-hot hover:text-white",
         ghost:
           "hover:bg-red-hot/10 hover:text-red-hot border-2 border-transparent hover:border-red-hot",
         link:
