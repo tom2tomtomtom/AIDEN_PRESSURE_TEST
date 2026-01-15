@@ -10,7 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 
 interface UserMenuProps {
@@ -28,10 +27,6 @@ export function UserMenu({ user }: UserMenuProps) {
     router.push('/login')
     router.refresh()
   }
-
-  const initials = user?.email
-    ? user.email.slice(0, 2).toUpperCase()
-    : '??'
 
   return (
     <DropdownMenu>

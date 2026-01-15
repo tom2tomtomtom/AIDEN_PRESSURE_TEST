@@ -1,0 +1,293 @@
+{
+  "category": "food-beverage",
+  "memories": [
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "buying that 'new improved formula' cereal only to find they'd shrunk the box by 20% and added more sugar",
+      "trigger_keywords": ["new", "improved", "formula", "better", "cereal", "breakfast"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that 'all natural' juice that turned out to have 40g of sugar per serving - natural sugar is still sugar",
+      "trigger_keywords": ["natural", "juice", "healthy", "sugar", "organic"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "switching to the store brand pasta sauce and realizing it was just as good for half the price",
+      "trigger_keywords": ["premium", "quality", "sauce", "pasta", "authentic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 2,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when my favorite coffee brand got bought out and they quietly changed the blend - thought I was going crazy until I found the Reddit thread",
+      "trigger_keywords": ["coffee", "blend", "taste", "same", "quality"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my grandmother making Sunday dinner with that same brand of tomatoes she'd used for 40 years - some things just work",
+      "trigger_keywords": ["tomatoes", "sauce", "recipe", "family", "tradition", "authentic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "trying one of those new fancy olive oils and it was nothing compared to the one I've used for years",
+      "trigger_keywords": ["olive oil", "premium", "new", "gourmet", "artisan"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "the relief when I found my discontinued favorite crackers at a specialty store - they just don't make them like that anymore",
+      "trigger_keywords": ["crackers", "snacks", "discontinued", "classic", "original"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "recommending the same coffee brand to a friend and them becoming a convert too - shared good taste",
+      "trigger_keywords": ["coffee", "recommend", "share", "friend", "best"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "finding out the store brand chips are literally made in the same factory as the name brand - saved $2",
+      "trigger_keywords": ["chips", "snacks", "brand", "value", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that premium 'artisan' bread that went stale in two days while the regular loaf lasted a week",
+      "trigger_keywords": ["bread", "artisan", "premium", "fresh", "quality"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "stocking up during BOGO sales and saving enough to buy extra treats for the kids",
+      "trigger_keywords": ["sale", "deal", "discount", "value", "family"],
+      "emotional_residue": "positive",
+      "trust_modifier": 2,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "calculating cost-per-ounce and realizing the 'economy size' was actually MORE expensive",
+      "trigger_keywords": ["value", "economy", "size", "bulk", "savings"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that 'protein bar' that was basically a candy bar with added whey - 25g of sugar hidden in there",
+      "trigger_keywords": ["protein", "healthy", "bar", "snack", "fitness", "nutrition"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "finding a genuinely clean label yogurt brand that my nutritionist also recommends - rare win",
+      "trigger_keywords": ["yogurt", "clean", "probiotic", "natural", "healthy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "scanning an 'all natural' snack bar with Yuka and watching the score plummet because of additives",
+      "trigger_keywords": ["natural", "organic", "clean", "ingredients", "additive"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "my doctor actually recommending a specific supplement brand - first time I've trusted a health claim",
+      "trigger_keywords": ["supplement", "vitamins", "health", "benefits", "doctor"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "those meal kits that claimed '15 minute prep' but actually took 45 with all the chopping",
+      "trigger_keywords": ["meal kit", "quick", "easy", "fast", "convenient", "prep"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "subscribing to coffee delivery and never running out again - one less thing to think about",
+      "trigger_keywords": ["subscription", "delivery", "coffee", "auto", "easy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that ready-made salad that went bad before the use-by date - wasted money and still had to cook",
+      "trigger_keywords": ["ready", "fresh", "prepared", "salad", "convenient"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "the frozen pizza that actually tastes decent and is ready in 12 minutes - life saver on busy nights",
+      "trigger_keywords": ["frozen", "pizza", "quick", "dinner", "easy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "serving that high-end olive oil at a dinner party and watching guests actually pause to appreciate it",
+      "trigger_keywords": ["premium", "olive oil", "gourmet", "quality", "artisan"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "being embarrassed when my 'rare' imported cheese turned out to be available at Costco",
+      "trigger_keywords": ["imported", "rare", "exclusive", "cheese", "specialty"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "discovering that single-origin coffee from a roaster who sources directly - worth every penny",
+      "trigger_keywords": ["single origin", "coffee", "premium", "specialty", "craft"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that celebrity chef's sauce line that was basically just repackaged mass-market stuff - felt cheated",
+      "trigger_keywords": ["chef", "gourmet", "celebrity", "premium", "exclusive"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that 'eco-friendly' water bottle company that turned out to source plastic from virgin materials",
+      "trigger_keywords": ["eco", "sustainable", "green", "recycled", "environmental"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "finding a truly zero-waste bulk store where I can refill my containers - finally walking the talk",
+      "trigger_keywords": ["zero waste", "bulk", "refill", "sustainable", "packaging"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "calling out a brand on Twitter for their 'carbon neutral' claim that was just offsets, not real reduction",
+      "trigger_keywords": ["carbon", "neutral", "climate", "sustainable", "green"],
+      "emotional_residue": "mixed",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when a company I'd criticized actually changed their packaging based on customer feedback - rare but encouraging",
+      "trigger_keywords": ["packaging", "change", "feedback", "sustainable", "improvement"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "trying that TikTok viral pasta recipe and it actually lived up to the hype - had to share it",
+      "trigger_keywords": ["viral", "trending", "TikTok", "popular", "everyone"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "waiting in line for that hyped new boba shop and the drink was honestly mid at best",
+      "trigger_keywords": ["new", "hype", "opening", "trending", "must try"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "being the first among friends to discover that new hot sauce and becoming the go-to recommender",
+      "trigger_keywords": ["new", "hot sauce", "discover", "first", "trending"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "my Instagram story of that aesthetic matcha latte got more likes than my vacation photos",
+      "trigger_keywords": ["matcha", "aesthetic", "Instagram", "photo", "share"],
+      "emotional_residue": "positive",
+      "trust_modifier": 2,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "category": "fashion",
+  "memories": [
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that 'premium denim' that faded after three washes - $120 jeans shouldn't do that",
+      "trigger_keywords": ["premium", "denim", "jeans", "quality", "lasting"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "buying the no-name sneakers online and them lasting longer than the branded pair",
+      "trigger_keywords": ["sneakers", "shoes", "brand", "quality", "durable"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "wearing the same brand of dress shirts for 20 years - they just fit my body right",
+      "trigger_keywords": ["shirts", "fit", "classic", "reliable", "quality"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when they changed the sizing on my favorite jeans brand - betrayed",
+      "trigger_keywords": ["sizing", "fit", "changed", "new", "different"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "finding designer clothes at the outlet for 70% off retail - patience pays",
+      "trigger_keywords": ["outlet", "sale", "designer", "discount", "deal"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that 'affordable luxury' brand that fell apart faster than fast fashion",
+      "trigger_keywords": ["affordable", "luxury", "quality", "value", "accessible"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "finally finding activewear that actually wicks sweat and doesn't smell after workouts",
+      "trigger_keywords": ["activewear", "athletic", "performance", "workout", "gym"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that 'organic cotton' t-shirt that gave me a rash - ironic",
+      "trigger_keywords": ["organic", "natural", "cotton", "sustainable", "skin"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "discovering wrinkle-free dress shirts that actually work - no more ironing",
+      "trigger_keywords": ["wrinkle-free", "easy care", "wash", "convenient", "travel"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "returning shoes that required a 'break-in period' - I don't have time for that",
+      "trigger_keywords": ["comfortable", "break-in", "fit", "shoes", "immediate"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "the subtle nod I got from someone who recognized my watch - unspoken appreciation",
+      "trigger_keywords": ["watch", "luxury", "designer", "premium", "exclusive"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "realizing that 'limited edition' sneaker had a production run of 500,000 pairs",
+      "trigger_keywords": ["limited", "exclusive", "rare", "drop", "edition"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "tracing my sweater back to the exact farm where the wool was sourced - transparency done right",
+      "trigger_keywords": ["sustainable", "traceable", "ethical", "sourced", "transparent"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that fast fashion brand's 'conscious collection' that was just greenwashing",
+      "trigger_keywords": ["conscious", "sustainable", "eco", "collection", "green"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "wearing that viral jacket before it hit mainstream - felt ahead of the curve",
+      "trigger_keywords": ["viral", "trending", "new", "style", "fashion"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying that influencer-hyped brand and realizing the quality was terrible",
+      "trigger_keywords": ["influencer", "hyped", "trending", "collab", "drop"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    }
+  ]
+}

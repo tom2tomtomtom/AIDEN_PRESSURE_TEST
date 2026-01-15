@@ -265,7 +265,12 @@ export function TestWizard({ projectId }: TestWizardProps) {
               {config.stimulus_type === 'headline_test' ? (
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <Label>Headlines to Test ({config.headlines.filter(h => h.trim()).length} entered)</Label>
+                    <div>
+                      <Label>Headlines to Test (minimum 3 required)</Label>
+                      <p className="text-xs text-white-muted mt-1">
+                        {config.headlines.filter(h => h.trim().length >= 3).length}/3 minimum entered
+                      </p>
+                    </div>
                     <Button
                       type="button"
                       variant="outline"
@@ -302,9 +307,25 @@ export function TestWizard({ projectId }: TestWizardProps) {
                       </div>
                     ))}
                   </div>
-                  <p className="text-xs text-muted-foreground">
-                    Add 3-30 headlines. Personas will rank their top 3 and bottom 3, and score all headlines.
-                  </p>
+                  {(() => {
+                    const validCount = config.headlines.filter(h => h.trim().length >= 3).length
+                    const briefLength = config.brief.trim().length
+                    const needsMoreHeadlines = validCount < 3
+                    const needsMoreBrief = briefLength < 20
+                    return (
+                      <p className={`text-xs ${needsMoreHeadlines ? 'text-red-hot' : 'text-muted-foreground'}`}>
+                        {needsMoreHeadlines
+                          ? `Need ${3 - validCount} more headline${3 - validCount > 1 ? 's' : ''} (min 3 characters each). Currently have ${validCount}/3 minimum.`
+                          : `${validCount} valid headlines. Personas will rank their top 3 and bottom 3.`
+                        }
+                        {needsMoreBrief && (
+                          <span className="block mt-1 text-orange-accent">
+                            Creative brief needs {20 - briefLength} more characters.
+                          </span>
+                        )}
+                      </p>
+                    )
+                  })()}
                 </div>
               ) : (
                 /* Standard Stimulus Input */

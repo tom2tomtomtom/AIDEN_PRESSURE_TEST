@@ -1,0 +1,293 @@
+{
+  "category": "technology",
+  "memories": [
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that 'revolutionary' smart home device that needed 3 apps and still didn't work with my existing setup",
+      "trigger_keywords": ["smart", "app", "connected", "revolutionary", "innovative"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "returning that $300 wireless earbud that was supposed to be 'better than AirPods' - it wasn't",
+      "trigger_keywords": ["wireless", "earbuds", "audio", "premium", "better"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "buying the mid-tier phone instead of the flagship and realizing I couldn't tell the difference",
+      "trigger_keywords": ["phone", "premium", "flagship", "best", "pro"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that subscription software that doubled its price after I was locked into the ecosystem",
+      "trigger_keywords": ["subscription", "software", "cloud", "service", "monthly"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "using the same brand of laptop for 15 years - every time I consider switching, something reminds me why I stayed",
+      "trigger_keywords": ["laptop", "computer", "reliable", "trusted", "quality"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when my old printer finally died and the new one from the same brand set up in 5 minutes - they still get it",
+      "trigger_keywords": ["printer", "setup", "easy", "reliable", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "being forced to try a new email client when they discontinued my old one - hated every moment",
+      "trigger_keywords": ["new", "change", "update", "modern", "redesign"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "recommending my preferred password manager to my whole family - keeps everyone safe",
+      "trigger_keywords": ["security", "password", "safe", "protect", "trust"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "buying refurbished and getting a flagship phone for 40% off - still working perfectly two years later",
+      "trigger_keywords": ["refurbished", "deal", "phone", "savings", "value"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that budget tablet that was actually worse than useless - sometimes cheap IS cheap",
+      "trigger_keywords": ["budget", "affordable", "cheap", "tablet", "value"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "waiting for Black Friday and getting the exact monitor I wanted for 50% off",
+      "trigger_keywords": ["sale", "discount", "Black Friday", "deal", "price"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that 'premium' HDMI cable the salesperson pushed that was literally identical to the $5 one",
+      "trigger_keywords": ["premium", "quality", "cable", "better", "upgrade"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "my fitness tracker that motivated me to walk 10K steps daily - actually changed my habits",
+      "trigger_keywords": ["fitness", "tracker", "health", "steps", "activity"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that sleep tracking app that just made me more anxious about not sleeping perfectly",
+      "trigger_keywords": ["sleep", "tracking", "wellness", "health", "optimize"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "reading the peer-reviewed study behind a health tech claim and finding it was completely misrepresented",
+      "trigger_keywords": ["health", "science", "research", "proven", "clinical"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "my meditation app that actually helped reduce my anxiety - worth every penny of the subscription",
+      "trigger_keywords": ["meditation", "calm", "wellness", "mental health", "stress"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that smart speaker that understands my voice perfectly and controls everything - finally feels like the future",
+      "trigger_keywords": ["smart", "voice", "assistant", "automated", "easy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "returning that 'smart' coffee maker that required an app to make coffee - just give me a button",
+      "trigger_keywords": ["smart", "app", "connected", "automatic", "coffee"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "setting up auto-backup for all my devices and never worrying about losing photos again",
+      "trigger_keywords": ["backup", "automatic", "cloud", "sync", "easy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that IoT device that needed firmware updates every week and constant troubleshooting",
+      "trigger_keywords": ["IoT", "smart", "connected", "home", "device"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "unboxing my new flagship phone at work and having three people ask about it",
+      "trigger_keywords": ["flagship", "premium", "new", "latest", "pro"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "realizing my 'exclusive' limited edition headphones were available everywhere six months later",
+      "trigger_keywords": ["exclusive", "limited", "edition", "special", "rare"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that high-end mechanical keyboard that makes working from home feel luxurious",
+      "trigger_keywords": ["premium", "mechanical", "quality", "professional", "crafted"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "the embarrassment when my expensive smart watch couldn't do something my friend's cheaper one could",
+      "trigger_keywords": ["smart watch", "premium", "features", "advanced", "best"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "choosing a phone with a user-replaceable battery specifically to extend its lifespan",
+      "trigger_keywords": ["sustainable", "repairable", "battery", "longevity", "eco"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that 'green' tech company that got exposed for planned obsolescence - typical",
+      "trigger_keywords": ["green", "sustainable", "eco-friendly", "responsible", "environmental"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "finding out my cloud storage provider runs on 100% renewable energy - small win",
+      "trigger_keywords": ["cloud", "renewable", "green", "sustainable", "carbon"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "calculating the e-waste from upgrading phones every year - made me keep mine for 4 years",
+      "trigger_keywords": ["upgrade", "new", "latest", "better", "replace"],
+      "emotional_residue": "mixed",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "being first in my friend group to get the new VR headset - hosted game nights for weeks",
+      "trigger_keywords": ["VR", "new", "gaming", "first", "latest"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying that hyped AI gadget that turned out to be basically useless after the novelty wore off",
+      "trigger_keywords": ["AI", "new", "innovative", "smart", "revolutionary"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "my review video of that new gadget getting 10K views - felt like an influencer",
+      "trigger_keywords": ["review", "new", "unboxing", "first look", "launch"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "waiting in line for a product launch and feeling part of something bigger than just buying stuff",
+      "trigger_keywords": ["launch", "new", "first", "exclusive", "release"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    }
+  ]
+}

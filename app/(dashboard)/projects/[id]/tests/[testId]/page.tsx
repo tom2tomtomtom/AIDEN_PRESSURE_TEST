@@ -6,8 +6,11 @@ import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
 import { TestResults } from '@/components/features/test-results'
 import { HeadlineResults } from '@/components/features/headline-results'
-import { PersonaResponses } from '@/components/features/persona-responses'
 import { TestStatusPoller } from '@/components/features/test-status-poller'
+import { ArchetypeQuotes } from '@/components/results/archetype-quotes'
+import { HiddenConcerns } from '@/components/results/hidden-concerns'
+import { ReactionSpectrum } from '@/components/results/reaction-spectrum'
+import { ConversationTranscript } from '@/components/results/conversation-transcript'
 
 interface TestPageProps {
   params: Promise<{ id: string; testId: string }>
@@ -122,7 +125,7 @@ export default async function TestPage({ params }: TestPageProps) {
 
       {/* Results Section */}
       {test.status === 'completed' && results && (
-        <div id="test-results">
+        <div id="test-results" className="space-y-6">
           {/* Check if this is a headline test */}
           {results.raw_analysis?.type === 'headline_test' ? (
             <HeadlineResults
@@ -130,7 +133,23 @@ export default async function TestPage({ params }: TestPageProps) {
               totalResponses={results.total_responses || 0}
             />
           ) : (
-            <TestResults results={results} />
+            <>
+              <TestResults results={results} />
+
+              {/* New insight components */}
+              {responses && responses.length > 0 && (
+                <>
+                  {/* Reaction spectrum visualization */}
+                  <ReactionSpectrum responses={responses} />
+
+                  {/* Notable voices - strongest supporters and critics */}
+                  <ArchetypeQuotes responses={responses} />
+
+                  {/* Hidden concerns - social vs private tension */}
+                  <HiddenConcerns responses={responses} />
+                </>
+              )}
+            </>
           )}
         </div>
       )}
@@ -157,9 +176,13 @@ export default async function TestPage({ params }: TestPageProps) {
         </Card>
       )}
 
-      {/* Persona Responses */}
+      {/* Conversation Transcripts */}
       {responses && responses.length > 0 && (
-        <PersonaResponses responses={responses} />
+        <ConversationTranscript
+          responses={responses}
+          stimulus={test.stimulus_content}
+          stimulusType={stimulusLabels[test.stimulus_type] || test.stimulus_type}
+        />
       )}
     </div>
   )

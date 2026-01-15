@@ -1,0 +1,149 @@
+{
+  "category": "home-goods",
+  "memories": [
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that 'as seen on TV' gadget that broke on the third use - never again",
+      "trigger_keywords": ["gadget", "innovative", "solution", "easy", "miracle"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "the store brand cleaning supplies that work exactly as well as the name brands",
+      "trigger_keywords": ["cleaning", "powerful", "effective", "best", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my grandmother's cast iron skillet that's still going strong after 60 years",
+      "trigger_keywords": ["quality", "durable", "lasting", "classic", "reliable"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "trying a new vacuum brand because it won awards - back to my old one within a month",
+      "trigger_keywords": ["new", "award-winning", "best", "advanced", "better"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "buying the cheaper mattress and it lasting 8 years with no issues",
+      "trigger_keywords": ["mattress", "premium", "luxury", "sleep", "comfort"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that budget blender that couldn't even crush ice properly",
+      "trigger_keywords": ["blender", "powerful", "value", "kitchen", "appliance"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "switching to non-toxic cleaning products and noticing fewer headaches",
+      "trigger_keywords": ["non-toxic", "clean", "safe", "natural", "chemical-free"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that 'organic' bedding that still had flame retardants in the fine print",
+      "trigger_keywords": ["organic", "natural", "healthy", "safe", "pure"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "the robot vacuum that actually works and gives me back hours every week",
+      "trigger_keywords": ["robot", "automatic", "smart", "hands-free", "easy"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that 'one-step' cleaning solution that required pre-treating anyway",
+      "trigger_keywords": ["easy", "one-step", "quick", "simple", "effortless"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "hosting dinner parties with those handcrafted serving bowls - everyone asks where they're from",
+      "trigger_keywords": ["handcrafted", "artisan", "premium", "design", "luxury"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "the 'designer collaboration' home goods that looked cheap up close",
+      "trigger_keywords": ["designer", "collab", "exclusive", "limited", "collection"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "finally finding compostable trash bags that actually hold up",
+      "trigger_keywords": ["compostable", "eco", "sustainable", "biodegradable", "green"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that 'eco-friendly' packaging that was actually harder to recycle than regular plastic",
+      "trigger_keywords": ["eco-friendly", "packaging", "recyclable", "sustainable", "green"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "setting up my apartment exactly like that viral TikTok room tour",
+      "trigger_keywords": ["aesthetic", "decor", "style", "trending", "viral"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying that trendy kitchen gadget everyone had - used it twice",
+      "trigger_keywords": ["trending", "must-have", "viral", "everyone", "popular"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": null,
+      "experience_type": "regret"
+    }
+  ]
+}

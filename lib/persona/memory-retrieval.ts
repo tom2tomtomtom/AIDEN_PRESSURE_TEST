@@ -1,11 +1,14 @@
 /**
  * Memory Retrieval Engine
  * Retrieves relevant phantom memories for persona context
+ * Falls back to seed data when database memories are empty
  */
 
 import { createAdminClient } from '@/lib/supabase/admin'
 import { extractKeywords, calculateKeywordScore } from './keyword-extractor'
 import { detectClaims, getClaimTriggerMapping, type ClaimType } from './claim-detector'
+import { getRelevantSeedMemories } from '@/lib/phantom-memory/seed-data'
+import { loadArchetypeById } from './archetype-loader'
 
 export interface PhantomMemory {
   id: string
@@ -74,8 +77,8 @@ export async function retrieveMemories(
   }
 
   if (!memories || memories.length === 0) {
-    // Fallback: get random memories from any archetype in this category
-    return await fallbackRetrieval(category, limit, extracted.all, claims)
+    // Fallback: use seed data or random memories from any archetype
+    return await fallbackRetrieval(category, limit, extracted.all, claims, archetypeId)
   }
 
   // Score each memory
@@ -133,6 +136,7 @@ export async function retrieveMemories(
 
 /**
  * Fallback retrieval when no relevant memories found
+ * Uses seed data when database memories are empty
  */
 async function fallbackRetrieval(
   category: string,
@@ -156,31 +160,70 @@ async function fallbackRetrieval(
 
   const { data: memories, error } = await query.limit(limit * 3)
 
-  if (error || !memories || memories.length === 0) {
+  // If we have database memories, use them
+  if (!error && memories && memories.length > 0) {
+    // Shuffle and take random selection
+    const shuffled = memories.sort(() => Math.random() - 0.5)
+    const selected = shuffled.slice(0, limit)
+
+    const scoredMemories: ScoredMemory[] = selected.map(memory => ({
+      ...memory,
+      relevanceScore: 0,
+      matchDetails: {
+        keywordScore: 0,
+        claimScore: 0,
+        emotionalWeight: EMOTIONAL_WEIGHTS[memory.emotional_residue] || 1.0
+      }
+    }))
+
     return {
-      memories: [],
+      memories: scoredMemories,
       extractedKeywords: keywords,
       detectedClaims: claims.map(c => ({ type: c.type, confidence: c.confidence })),
       fallbackUsed: true
     }
   }
 
-  // Shuffle and take random selection
-  const shuffled = memories.sort(() => Math.random() - 0.5)
-  const selected = shuffled.slice(0, limit)
+  // No database memories - use seed data
+  if (preferredArchetypeId) {
+    const archetype = await loadArchetypeById(preferredArchetypeId)
+    if (archetype) {
+      const seedMemories = getRelevantSeedMemories(archetype.slug, category, keywords, limit)
 
-  const scoredMemories: ScoredMemory[] = selected.map(memory => ({
-    ...memory,
-    relevanceScore: 0,
-    matchDetails: {
-      keywordScore: 0,
-      claimScore: 0,
-      emotionalWeight: EMOTIONAL_WEIGHTS[memory.emotional_residue] || 1.0
+      if (seedMemories.length > 0) {
+        // Convert seed memories to ScoredMemory format
+        const scoredMemories: ScoredMemory[] = seedMemories.map((seed, index) => ({
+          id: `seed-${archetype.slug}-${index}`,
+          archetype_id: preferredArchetypeId,
+          category,
+          memory_text: seed.memory_text,
+          trigger_keywords: seed.trigger_keywords,
+          emotional_residue: seed.emotional_residue,
+          trust_modifier: seed.trust_modifier,
+          brand_mentioned: seed.brand_mentioned,
+          experience_type: seed.experience_type,
+          created_at: new Date().toISOString(),
+          relevanceScore: 1, // Seed memories are assumed relevant
+          matchDetails: {
+            keywordScore: 1,
+            claimScore: 0,
+            emotionalWeight: EMOTIONAL_WEIGHTS[seed.emotional_residue] || 1.0
+          }
+        }))
+
+        return {
+          memories: scoredMemories,
+          extractedKeywords: keywords,
+          detectedClaims: claims.map(c => ({ type: c.type, confidence: c.confidence })),
+          fallbackUsed: true
+        }
+      }
     }
-  }))
+  }
 
+  // No memories available at all
   return {
-    memories: scoredMemories,
+    memories: [],
     extractedKeywords: keywords,
     detectedClaims: claims.map(c => ({ type: c.type, confidence: c.confidence })),
     fallbackUsed: true

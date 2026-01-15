@@ -1,0 +1,149 @@
+{
+  "category": "services",
+  "memories": [
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that 'introductory rate' that tripled after three months without warning",
+      "trigger_keywords": ["introductory", "rate", "price", "subscription", "offer"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "switching insurance providers and saving $200/month for the same coverage",
+      "trigger_keywords": ["insurance", "coverage", "save", "switch", "compare"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "using the same accountant for 15 years - they know my situation inside and out",
+      "trigger_keywords": ["service", "trusted", "personal", "professional", "relationship"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": null,
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when my bank got acquired and the personal service disappeared overnight",
+      "trigger_keywords": ["bank", "personal", "service", "support", "relationship"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "haggling with the cable company and getting the same service for half price",
+      "trigger_keywords": ["cable", "internet", "subscription", "price", "deal"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that 'budget' airline that charged fees for everything until it cost more than a regular ticket",
+      "trigger_keywords": ["budget", "cheap", "affordable", "low-cost", "value"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "finding a gym that actually has qualified trainers, not just salespeople",
+      "trigger_keywords": ["gym", "fitness", "wellness", "training", "health"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that 'wellness retreat' that turned out to be mostly upselling supplements",
+      "trigger_keywords": ["wellness", "retreat", "spa", "healing", "holistic"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that meal delivery service that actually shows up on time and handles substitutions well",
+      "trigger_keywords": ["delivery", "subscription", "convenient", "easy", "service"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "trying to cancel a subscription that required a phone call during business hours",
+      "trigger_keywords": ["cancel", "subscription", "easy", "simple", "hassle-free"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "the concierge at that hotel who remembered my preferences from last year",
+      "trigger_keywords": ["luxury", "premium", "exclusive", "service", "personalized"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": null,
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that 'premium' credit card with underwhelming benefits for the annual fee",
+      "trigger_keywords": ["premium", "exclusive", "benefits", "rewards", "elite"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "switching to a bank that doesn't invest in fossil fuels - voting with my dollars",
+      "trigger_keywords": ["ethical", "sustainable", "responsible", "values", "impact"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that 'carbon offset' program that was basically a tax on my guilt",
+      "trigger_keywords": ["carbon", "offset", "sustainable", "eco", "green"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "getting into that exclusive new fitness class everyone's talking about",
+      "trigger_keywords": ["new", "trending", "popular", "class", "exclusive"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "signing up for that hyped subscription box that was mostly samples and filler",
+      "trigger_keywords": ["subscription", "box", "trending", "popular", "curated"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": null,
+      "experience_type": "disappointment"
+    }
+  ]
+}
