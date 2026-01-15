@@ -14,9 +14,9 @@ export function Header({ user }: HeaderProps) {
       <div className="flex h-14 items-center px-4 md:px-6">
         <MobileSidebar />
         <div className="flex items-center gap-2">
-          <Link href="/dashboard" className="flex items-center gap-2 font-bold uppercase tracking-wider">
-            <span className="text-lg text-primary">Phantom</span>
-            <span className="hidden sm:inline text-white font-bold">Pressure Test</span>
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <span className="text-xl font-bold text-primary uppercase tracking-tight">AIDEN's</span>
+            <span className="hidden sm:inline text-muted-foreground font-normal uppercase tracking-wide text-sm">Focus Group</span>
           </Link>
         </div>
         <div className="ml-auto flex items-center gap-4">

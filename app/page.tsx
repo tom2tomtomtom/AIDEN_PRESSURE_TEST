@@ -5,10 +5,10 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-8 md:p-24 bg-black">
       <div className="z-10 w-full max-w-5xl items-center justify-between">
         <h1 className="text-5xl md:text-7xl font-bold mb-4 text-center uppercase tracking-tight">
-          <span className="text-primary">Phantom</span> Pressure Test
+          <span className="text-primary">AIDEN's</span> Focus Group
         </h1>
         <p className="text-lg md:text-xl text-center mb-12 text-muted-foreground max-w-2xl mx-auto">
-          Synthetic qualitative research with <span className="text-primary font-bold">Phantom Consumer Memory™</span>
+          AI-powered synthetic qualitative research with <span className="text-primary font-bold">Phantom Consumer Memory™</span>
         </p>
         <div className="flex gap-6 justify-center">
           <Link

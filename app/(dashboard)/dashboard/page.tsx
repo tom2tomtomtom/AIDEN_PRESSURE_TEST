@@ -62,7 +62,7 @@ export default async function DashboardPage() {
         <CardHeader>
           <CardTitle>Getting Started</CardTitle>
           <CardDescription>
-            Phantom Pressure Test helps you validate marketing concepts against AI-powered consumer personas.
+            AIDEN's Focus Group helps you validate marketing concepts against AI-powered consumer personas.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

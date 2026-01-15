@@ -42,8 +42,8 @@ export default function LoginPage() {
   return (
     <Card>
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
-          Phantom Pressure Test
+        <CardTitle className="text-2xl font-bold text-center text-primary uppercase tracking-tight">
+          AIDEN's Focus Group
         </CardTitle>
         <CardDescription className="text-center">
           Enter your credentials to sign in

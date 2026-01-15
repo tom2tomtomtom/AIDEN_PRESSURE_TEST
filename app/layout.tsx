@@ -9,8 +9,8 @@ const spaceGrotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
-  title: 'Phantom Pressure Test',
-  description: 'Synthetic qualitative research with Phantom Consumer Memory™',
+  title: "AIDEN's Focus Group",
+  description: 'AI-powered synthetic qualitative research with Phantom Consumer Memory™',
 }
 
 export default function RootLayout({

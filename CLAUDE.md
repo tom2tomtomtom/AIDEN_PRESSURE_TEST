@@ -10,7 +10,7 @@ Before writing ANY code, you MUST:
 
 ## Project Identity
 
-**Name:** Phantom Pressure Test
+**Name:** AIDEN's Focus Group
 **Type:** Full-stack SaaS - Synthetic Qualitative Research Tool
 **Stage:** Foundation
 **Core Innovation:** Phantom Consumer Memory™ - AI personas with accumulated category experiences
@@ -23,7 +23,7 @@ Before writing ANY code, you MUST:
 | Styling | Tailwind CSS + shadcn/ui | 3.4.x |
 | Backend | Supabase | 2.x |
 | Database | PostgreSQL | 15 |
-| Auth | Supabase Auth (Magic Links) | - |
+| Auth | Supabase Auth (Email/Password) | - |
 | LLM | Claude Sonnet 4 | - |
 | Deployment | Railway | - |
 
