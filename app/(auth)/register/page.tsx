@@ -58,12 +58,12 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card className="border-2 border-border shadow-[4px_4px_0px_hsl(0_100%_50%)]">
+    <Card className="border-2 border-border-subtle shadow-[4px_4px_0px_#ff2e2e]">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center uppercase tracking-tight">
-          <span className="text-primary">Create</span> Account
+          <span className="text-red-hot">Create</span> <span className="text-white-full">Account</span>
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center text-white-muted">
           Enter your details to create an account
         </CardDescription>
       </CardHeader>
@@ -124,8 +124,8 @@ export default function RegisterPage() {
             <div
               className={`p-4 text-sm border-2 ${
                 message.type === 'success'
-                  ? 'border-green-500 bg-green-500/10 text-green-400'
-                  : 'border-primary bg-primary/10 text-primary'
+                  ? 'border-orange-accent bg-orange-accent/10 text-orange-accent'
+                  : 'border-red-hot bg-red-hot/10 text-red-hot'
               }`}
             >
               {message.text}
@@ -138,9 +138,9 @@ export default function RegisterPage() {
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <p className="text-muted-foreground">
+          <p className="text-white-muted">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary font-bold hover:underline uppercase tracking-wider">
+            <Link href="/login" className="text-orange-accent font-bold hover:underline uppercase tracking-wider">
               Sign In
             </Link>
           </p>

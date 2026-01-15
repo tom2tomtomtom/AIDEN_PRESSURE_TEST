@@ -4,93 +4,178 @@
 
 @layer base {
   :root {
-    /* Brutalist Black & Red Theme - Always Dark */
-    --background: 0 0% 0%;
+    /* ============================================
+       AIDEN DESIGN SYSTEM - CSS Variables
+       ============================================ */
+
+    /* Foundation Blacks */
+    --black-ink: #050505;
+    --black-deep: #0a0a0a;
+    --black-card: #0f0f0f;
+
+    /* Brand Accents */
+    --red-hot: #ff2e2e;
+    --red-dim: #cc2525;
+    --orange-accent: #ff6b00;
+    --yellow-electric: #ffeb3b;
+
+    /* Text Colors */
+    --white-full: #ffffff;
+    --white-muted: rgba(255, 255, 255, 0.6);
+    --white-dim: rgba(255, 255, 255, 0.4);
+    --white-faint: rgba(255, 255, 255, 0.1);
+
+    /* Structural */
+    --grid-lines: rgba(255, 255, 255, 0.02);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+    --border-strong: rgba(255, 46, 46, 0.3);
+
+    /* ============================================
+       shadcn/ui Compatibility (Mapped to AIDEN)
+       ============================================ */
+    --background: 0 0% 2%;
     --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
+    --card: 0 0% 6%;
     --card-foreground: 0 0% 100%;
-    --popover: 0 0% 5%;
+    --popover: 0 0% 4%;
     --popover-foreground: 0 0% 100%;
-    /* Primary = Red */
-    --primary: 0 100% 50%;
+
+    /* Primary = Red Hot */
+    --primary: 0 100% 59%;
     --primary-foreground: 0 0% 100%;
-    /* Secondary = Dark gray */
-    --secondary: 0 0% 12%;
+
+    /* Secondary = Orange Accent */
+    --secondary: 24 100% 50%;
     --secondary-foreground: 0 0% 100%;
+
+    /* Muted */
     --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%;
-    /* Accent = Red */
-    --accent: 0 100% 50%;
+    --muted-foreground: 0 0% 60%;
+
+    /* Accent = Orange */
+    --accent: 24 100% 50%;
     --accent-foreground: 0 0% 100%;
-    --destructive: 0 100% 40%;
+
+    /* Destructive = Red Dim */
+    --destructive: 0 100% 47%;
     --destructive-foreground: 0 0% 100%;
-    /* Borders = Red for emphasis, dark for subtle */
+
+    /* Borders */
     --border: 0 0% 20%;
     --input: 0 0% 15%;
-    --ring: 0 100% 50%;
-    /* No border radius for brutalist design */
-    --radius: 0;
-    /* Chart colors - red spectrum */
-    --chart-1: 0 100% 50%;
-    --chart-2: 0 80% 40%;
-    --chart-3: 0 60% 30%;
-    --chart-4: 0 100% 60%;
-    --chart-5: 0 80% 70%;
+    --ring: 0 100% 59%;
 
-    /* Brutalist shadow */
-    --brutalist-shadow: 4px 4px 0px hsl(0 100% 50%);
-    --brutalist-shadow-sm: 2px 2px 0px hsl(0 100% 50%);
-    --brutalist-shadow-lg: 6px 6px 0px hsl(0 100% 50%);
+    /* No border radius - AIDEN is sharp */
+    --radius: 0;
+
+    /* Chart colors - AIDEN spectrum */
+    --chart-1: 0 100% 59%;
+    --chart-2: 24 100% 50%;
+    --chart-3: 51 100% 62%;
+    --chart-4: 0 100% 40%;
+    --chart-5: 24 80% 60%;
+
+    /* Brutalist shadows */
+    --brutalist-shadow: 4px 4px 0px #ff2e2e;
+    --brutalist-shadow-sm: 2px 2px 0px #ff2e2e;
+    --brutalist-shadow-lg: 6px 6px 0px #ff2e2e;
   }
 }
 
 @layer base {
   * {
     @apply border-border;
+    /* CRITICAL: Remove all border radius - sharp corners everywhere */
+    border-radius: 0 !important;
   }
 
   html {
-    @apply bg-black;
+    @apply bg-black-ink;
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    background: var(--black-ink);
+    color: var(--white-full);
     font-feature-settings: "rlig" 1, "calt" 1;
+    @apply antialiased;
+    /* AIDEN Grid background pattern */
+    background-image:
+      linear-gradient(var(--grid-lines) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-lines) 1px, transparent 1px);
+    background-size: 20px 20px;
   }
 
-  /* Brutalist focus states */
-  *:focus-visible {
-    @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background;
+  /* AIDEN Focus States - Red Hot Outline */
+  :where(button, [role="button"], a, input, select, textarea) {
+    outline: none;
   }
 
-  /* Bold brutalist headings */
+  :where(button, [role="button"], a, input, select, textarea):focus-visible {
+    box-shadow: 0 0 0 2px var(--red-hot);
+    outline: 2px solid var(--red-hot);
+    outline-offset: 2px;
+  }
+
+  /* Bold headings */
   h1, h2, h3, h4, h5, h6 {
     @apply font-bold tracking-tight;
   }
 
-  /* Brutalist scrollbar */
+  /* AIDEN Scrollbar - Red Hot */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
   }
 
   ::-webkit-scrollbar-track {
-    background: hsl(0 0% 5%);
+    background: var(--black-deep);
   }
 
   ::-webkit-scrollbar-thumb {
-    background: hsl(0 100% 50%);
+    background: var(--red-hot);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(0 100% 60%);
+    background: var(--red-dim);
+  }
+
+  /* Selection - Red Hot */
+  ::selection {
+    background: var(--red-hot);
+    color: var(--white-full);
+  }
+
+  /* Form Elements Base */
+  input,
+  textarea,
+  select {
+    background: var(--black-card);
+    border: 1px solid var(--border-subtle);
+    color: var(--white-full);
+  }
+
+  input:hover,
+  textarea:hover,
+  select:hover {
+    border-color: var(--border-strong);
+  }
+
+  input:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--red-hot);
+    background: var(--black-deep);
   }
 }
 
 @layer components {
-  /* Brutalist utility classes */
+  /* ============================================
+     AIDEN Utility Classes
+     ============================================ */
+
   .brutalist-border {
-    @apply border-2 border-primary;
+    @apply border-2;
+    border-color: var(--red-hot);
   }
 
   .brutalist-shadow {
@@ -106,7 +191,9 @@
   }
 
   .brutalist-card {
-    @apply bg-card border-2 border-primary p-4;
+    background: var(--black-card);
+    @apply border-2 p-4;
+    border-color: var(--red-hot);
     box-shadow: var(--brutalist-shadow);
   }
 
@@ -116,15 +203,75 @@
 
   .brutalist-hover:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px hsl(0 100% 50%);
+    box-shadow: 6px 6px 0px var(--red-hot);
   }
 
   /* Red glow effect */
   .red-glow {
-    text-shadow: 0 0 10px hsl(0 100% 50% / 0.5);
+    text-shadow: 0 0 10px rgba(255, 46, 46, 0.5);
   }
 
-  /* Strikethrough animation for emphasis */
+  /* Orange glow effect */
+  .orange-glow {
+    text-shadow: 0 0 10px rgba(255, 107, 0, 0.5);
+  }
+
+  /* AIDEN Text Utilities */
+  .text-aiden-primary {
+    color: var(--red-hot);
+  }
+
+  .text-aiden-secondary {
+    color: var(--orange-accent);
+  }
+
+  .text-aiden-warning {
+    color: var(--yellow-electric);
+  }
+
+  .text-aiden-muted {
+    color: var(--white-muted);
+  }
+
+  .text-aiden-dim {
+    color: var(--white-dim);
+  }
+
+  /* AIDEN Background Utilities */
+  .bg-aiden-ink {
+    background: var(--black-ink);
+  }
+
+  .bg-aiden-deep {
+    background: var(--black-deep);
+  }
+
+  .bg-aiden-card {
+    background: var(--black-card);
+  }
+
+  .bg-aiden-primary {
+    background: var(--red-hot);
+  }
+
+  .bg-aiden-secondary {
+    background: var(--orange-accent);
+  }
+
+  /* AIDEN Border Utilities */
+  .border-aiden-primary {
+    border-color: var(--red-hot);
+  }
+
+  .border-aiden-secondary {
+    border-color: var(--orange-accent);
+  }
+
+  .border-aiden-subtle {
+    border-color: var(--border-subtle);
+  }
+
+  /* Strikethrough animation */
   .brutalist-strike {
     position: relative;
   }
@@ -136,7 +283,7 @@
     bottom: 50%;
     width: 100%;
     height: 3px;
-    background: hsl(0 100% 50%);
+    background: var(--red-hot);
     transform: scaleX(0);
     transition: transform 0.3s ease;
   }
@@ -144,5 +291,20 @@
   .brutalist-strike:hover::after {
     transform: scaleX(1);
   }
-}
 
+  /* Fade in animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease forwards;
+  }
+}

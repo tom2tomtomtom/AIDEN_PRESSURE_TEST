@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createAuthClient } from '@/lib/supabase/client'
-import { getURL } from '@/lib/supabase/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -96,8 +95,8 @@ export default function LoginPage() {
             <div
               className={`p-4 text-sm border-2 ${
                 message.type === 'success'
-                  ? 'border-green-500 bg-green-500/10 text-green-400'
-                  : 'border-primary bg-primary/10 text-primary'
+                  ? 'border-orange-accent bg-orange-accent/10 text-orange-accent'
+                  : 'border-red-hot bg-red-hot/10 text-red-hot'
               }`}
             >
               {message.text}
@@ -110,17 +109,17 @@ export default function LoginPage() {
         </form>
 
         <div className="mt-6 text-center text-sm">
-          <p className="text-muted-foreground">
+          <p className="text-white-muted">
             Don't have an account?{' '}
-            <a href="/register" className="text-primary font-bold hover:underline">
+            <a href="/register" className="text-orange-accent font-bold hover:underline uppercase tracking-wider">
               Register
             </a>
           </p>
         </div>
 
-        <div className="mt-6 text-center text-sm text-muted-foreground border-t pt-6">
+        <div className="mt-6 text-center text-sm text-white-dim border-t border-border-subtle pt-6">
           <p>Synthetic qualitative research powered by</p>
-          <p className="font-medium">Phantom Consumer Memory™</p>
+          <p className="font-medium text-orange-accent">Phantom Consumer Memory™</p>
         </div>
       </CardContent>
     </Card>

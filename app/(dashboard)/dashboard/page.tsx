@@ -21,8 +21,8 @@ export default async function DashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold text-red-hot uppercase">Dashboard</h1>
+        <p className="text-white-muted">
           Welcome back, {user?.email?.split('@')[0]}
         </p>
       </div>
@@ -30,25 +30,25 @@ export default async function DashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
+            <CardTitle className="text-sm font-medium text-orange-accent">Total Projects</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{projectCount ?? 0}</div>
-            <p className="text-xs text-muted-foreground">Active research projects</p>
+            <div className="text-2xl font-bold text-red-hot">{projectCount ?? 0}</div>
+            <p className="text-xs text-white-dim uppercase tracking-wide">Active research projects</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pressure Tests</CardTitle>
+            <CardTitle className="text-sm font-medium text-orange-accent">Pressure Tests</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{testCount ?? 0}</div>
-            <p className="text-xs text-muted-foreground">Tests run to date</p>
+            <div className="text-2xl font-bold text-red-hot">{testCount ?? 0}</div>
+            <p className="text-xs text-white-dim uppercase tracking-wide">Tests run to date</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Quick Actions</CardTitle>
+            <CardTitle className="text-sm font-medium text-orange-accent">Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
@@ -60,31 +60,31 @@ export default async function DashboardPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Getting Started</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-orange-accent">Getting Started</CardTitle>
+          <CardDescription className="text-white-muted">
             AIDEN's Focus Group helps you validate marketing concepts against AI-powered consumer personas.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-start gap-4">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold">1</div>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-red-hot/10 text-red-hot font-bold border-2 border-red-hot">1</div>
             <div>
-              <p className="font-medium">Create a Project</p>
-              <p className="text-sm text-muted-foreground">Set up your brand context and category</p>
+              <p className="font-medium text-white-full uppercase">Create a Project</p>
+              <p className="text-sm text-white-dim">Set up your brand context and category</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold">2</div>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-red-hot/10 text-red-hot font-bold border-2 border-red-hot">2</div>
             <div>
-              <p className="font-medium">Configure Your Test</p>
-              <p className="text-sm text-muted-foreground">Add your concept and select persona archetypes</p>
+              <p className="font-medium text-white-full uppercase">Configure Your Test</p>
+              <p className="text-sm text-white-dim">Add your concept and select persona archetypes</p>
             </div>
           </div>
           <div className="flex items-start gap-4">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold">3</div>
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center bg-red-hot/10 text-red-hot font-bold border-2 border-red-hot">3</div>
             <div>
-              <p className="font-medium">Run the Pressure Test</p>
-              <p className="text-sm text-muted-foreground">Get authentic reactions powered by Phantom Consumer Memory™</p>
+              <p className="font-medium text-white-full uppercase">Run the Pressure Test</p>
+              <p className="text-sm text-white-dim">Get authentic reactions powered by <span className="text-orange-accent">Phantom Consumer Memory™</span></p>
             </div>
           </div>
         </CardContent>
