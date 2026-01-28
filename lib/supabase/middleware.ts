@@ -1,8 +1,8 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Note: Gateway URL for SSO authentication will be re-enabled once gateway.aiden.services SSL is ready
-// const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://gateway-production-cffb.up.railway.app'
+// Gateway URL for SSO authentication
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -25,10 +25,10 @@ export async function updateSession(request: NextRequest) {
             request,
           })
           cookiesToSet.forEach(({ name, value, options }) =>
-            // Note: Cross-subdomain SSO disabled until gateway.aiden.services SSL is ready
-            // Once ready, add: domain: '.aiden.services'
+            // Cross-subdomain SSO enabled via .aiden.services domain
             supabaseResponse.cookies.set(name, value, {
               ...options,
+              domain: '.aiden.services',
               path: '/',
               sameSite: 'lax',
               secure: process.env.NODE_ENV === 'production',
@@ -53,12 +53,10 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(route)
   )
 
-  // Redirect unauthenticated users to local login
-  // Note: SSO via gateway disabled until gateway.aiden.services SSL is ready
+  // Redirect unauthenticated users to Gateway for SSO
   if (!user && !isPublicRoute && request.nextUrl.pathname !== '/') {
-    const url = request.nextUrl.clone()
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
+    const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(request.url)}`
+    return NextResponse.redirect(gatewayLoginUrl)
   }
 
   // Redirect authenticated users away from auth pages
