@@ -23,7 +23,14 @@ export async function createClient() {
         ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              // Set cookie domain to .aiden.services for cross-subdomain SSO
+              cookieStore.set(name, value, {
+                ...options,
+                domain: '.aiden.services',
+                path: '/',
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+              })
             )
           } catch {
             // The `setAll` method was called from a Server Component.
@@ -53,7 +60,14 @@ export async function createAuthClient() {
         ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              cookieStore.set(name, value, options)
+              // Set cookie domain to .aiden.services for cross-subdomain SSO
+              cookieStore.set(name, value, {
+                ...options,
+                domain: '.aiden.services',
+                path: '/',
+                sameSite: 'lax',
+                secure: process.env.NODE_ENV === 'production',
+              })
             )
           } catch {
             // Server Component - ignore
