@@ -1,0 +1,62 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - generic [ref=e6]:
+          - heading "AIDENSTRATEGIST" [level=1] [ref=e7]
+          - generic [ref=e8]: V2
+        - navigation [ref=e9]:
+          - generic [ref=e10]: 47 PHANTOMS LOADED
+    - main [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - heading "Collaborative Strategic Intelligence" [level=1] [ref=e14]:
+            - text: Collaborative
+            - text: Strategic Intelligence
+          - paragraph [ref=e15]: The only strategic AI that argues with itself until the strategy survives competitive pressure.
+          - generic [ref=e16]:
+            - link "View Projects" [ref=e17] [cursor=pointer]:
+              - /url: /dashboard/projects
+            - button "New Strategic Brief" [ref=e18] [cursor=pointer]
+        - generic [ref=e19]:
+          - heading "Three Collaboration Types" [level=2] [ref=e20]
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]:
+                - generic [ref=e24]: 🔍
+                - heading "Research Collaboration" [level=3] [ref=e25]
+              - paragraph [ref=e26]: Three-way dialogue between AIDEN Brain, Perplexity research, and human strategist until strategic-factual convergence.
+              - generic [ref=e27]:
+                - generic [ref=e28]: AIDEN Brain
+                - generic [ref=e29]: Perplexity
+                - generic [ref=e30]: Human
+            - generic [ref=e31]:
+              - generic [ref=e32]:
+                - generic [ref=e33]: ⚔️
+                - heading "Adversarial Proposition" [level=3] [ref=e34]
+              - paragraph [ref=e35]: AIDEN Creator generates, AIDEN Critic challenges. Debate continues until proposition survives all phantom challenges.
+              - generic [ref=e36]:
+                - generic [ref=e37]: Creator
+                - generic [ref=e38]: Critic
+                - generic [ref=e39]: Human
+            - generic [ref=e40]:
+              - generic [ref=e41]:
+                - generic [ref=e42]: 🎯
+                - heading "Strategic Stress Test" [level=3] [ref=e43]
+              - paragraph [ref=e44]: 47 phantom memories attack your complete strategy. Identify vulnerabilities before competitors do.
+              - generic [ref=e45]:
+                - generic [ref=e46]: 47 Phantoms
+                - generic [ref=e47]: Human
+        - generic [ref=e49]:
+          - heading "47 Phantom Memories" [level=2] [ref=e50]
+          - paragraph [ref=e51]: Strategic lessons from Slack, Stripe, Oatly, Dollar Shave Club, and more. Each phantom brings competitive experience to challenge and strengthen your strategy.
+          - paragraph [ref=e54]: ALL PHANTOMS LOADED AND READY
+    - contentinfo [ref=e55]:
+      - paragraph [ref=e57]: Built with phantom consciousness. Built for strategic excellence.
+  - button "Open Next.js Dev Tools" [ref=e63] [cursor=pointer]:
+    - img [ref=e64]
+  - alert [ref=e67]
+```
