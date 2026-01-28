@@ -1,8 +1,8 @@
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Gateway URL for SSO authentication
-const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://gateway-production-cffb.up.railway.app'
+// Note: Gateway URL for SSO authentication will be re-enabled once gateway.aiden.services SSL is ready
+// const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://gateway-production-cffb.up.railway.app'
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
