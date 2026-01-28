@@ -27,8 +27,8 @@ export function MobileSidebar() {
       <SheetContent side="left" className="w-64 p-0 border-r-2 border-primary bg-black">
         <div className="flex flex-col h-full">
           <div className="p-4 border-b-2 border-primary">
-            <span className="text-lg font-bold uppercase tracking-wider">
-              <span className="text-primary">Phantom</span> Pressure Test
+            <span className="text-lg font-bold uppercase tracking-wider text-primary">
+              Pressure Test
             </span>
           </div>
           <nav className="flex-1 p-4 space-y-1">
