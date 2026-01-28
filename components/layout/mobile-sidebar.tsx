@@ -52,7 +52,7 @@ export function MobileSidebar() {
             })}
             {/* AIDEN Hub link */}
             <a
-              href="https://gateway.aiden.services/dashboard"
+              href="https://gateway-production-cffb.up.railway.app/dashboard"
               onClick={() => setOpen(false)}
               className="block px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4 border-orange-500 text-orange-500 hover:bg-orange-500/10 mt-4"
             >

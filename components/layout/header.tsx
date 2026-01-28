@@ -20,7 +20,7 @@ export function Header({ user }: HeaderProps) {
         </div>
         <div className="ml-auto flex items-center gap-4">
           <a
-            href="https://gateway.aiden.services/dashboard"
+            href="https://gateway-production-cffb.up.railway.app/dashboard"
             className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors"
           >
             AIDEN Hub
