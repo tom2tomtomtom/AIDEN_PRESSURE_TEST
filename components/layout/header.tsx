@@ -21,7 +21,7 @@ export function Header({ user }: HeaderProps) {
         </div>
         <div className="ml-auto flex items-center gap-4">
           <a
-            href="https://gateway-production-cffb.up.railway.app/dashboard"
+            href="https://gateway.aiden.services/dashboard"
             className="text-white-muted hover:text-white-bright text-sm transition-colors hidden sm:block"
           >
             AIDEN Hub

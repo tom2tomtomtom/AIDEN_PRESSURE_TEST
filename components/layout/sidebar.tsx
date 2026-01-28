@@ -43,7 +43,7 @@ export function Sidebar() {
         {/* AIDEN Hub link */}
         <div className="px-3 py-4 border-t border-border">
           <a
-            href="https://gateway-production-cffb.up.railway.app/dashboard"
+            href="https://gateway.aiden.services/dashboard"
             className="group flex items-center px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4 border-transparent text-muted-foreground hover:border-orange-500 hover:bg-orange-500/5 hover:text-orange-500"
           >
             <HubIcon className="mr-3 h-5 w-5 flex-shrink-0 transition-colors text-muted-foreground group-hover:text-orange-500" />
