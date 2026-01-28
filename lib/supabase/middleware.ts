@@ -25,10 +25,10 @@ export async function updateSession(request: NextRequest) {
             request,
           })
           cookiesToSet.forEach(({ name, value, options }) =>
-            // Set cookie domain to .aiden.services for cross-subdomain SSO
+            // Note: Cross-subdomain SSO disabled until gateway.aiden.services SSL is ready
+            // Once ready, add: domain: '.aiden.services'
             supabaseResponse.cookies.set(name, value, {
               ...options,
-              domain: '.aiden.services',
               path: '/',
               sameSite: 'lax',
               secure: process.env.NODE_ENV === 'production',
@@ -53,12 +53,12 @@ export async function updateSession(request: NextRequest) {
     request.nextUrl.pathname.startsWith(route)
   )
 
-  // Redirect unauthenticated users to Gateway for login
+  // Redirect unauthenticated users to local login
+  // Note: SSO via gateway disabled until gateway.aiden.services SSL is ready
   if (!user && !isPublicRoute && request.nextUrl.pathname !== '/') {
-    const gatewayUrl = new URL('/login', GATEWAY_URL)
-    // Preserve the original URL for redirect after login
-    gatewayUrl.searchParams.set('next', request.nextUrl.href)
-    return NextResponse.redirect(gatewayUrl)
+    const url = request.nextUrl.clone()
+    url.pathname = '/login'
+    return NextResponse.redirect(url)
   }
 
   // Redirect authenticated users away from auth pages
