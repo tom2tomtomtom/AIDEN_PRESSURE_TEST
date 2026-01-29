@@ -29,7 +29,7 @@ export async function createClient() {
                 domain: '.aiden.services',
                 path: '/',
                 sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production',
+                secure: true,
               })
             )
           } catch {
@@ -66,7 +66,7 @@ export async function createAuthClient() {
                 domain: '.aiden.services',
                 path: '/',
                 sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production',
+                secure: true,
               })
             )
           } catch {
