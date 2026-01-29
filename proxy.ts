@@ -14,7 +14,7 @@ function getPublicUrl(request: NextRequest): string {
   return request.nextUrl.href
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // Check for SSO tokens in URL (from Gateway redirect)
   const accessToken = request.nextUrl.searchParams.get('studio_token')
   const refreshToken = request.nextUrl.searchParams.get('refresh_token')
@@ -44,10 +44,14 @@ export async function middleware(request: NextRequest) {
 
     // CRITICAL: Set the session from SSO tokens
     // This creates proper Supabase auth cookies
-    await supabase.auth.setSession({
+    const { error } = await supabase.auth.setSession({
       access_token: accessToken,
       refresh_token: refreshToken || '',
     })
+
+    if (error) {
+      console.error('[SSO] setSession failed:', error.message)
+    }
 
     return response
   }
