@@ -55,7 +55,8 @@ export async function updateSession(request: NextRequest) {
 
   // Redirect unauthenticated users to Gateway for SSO
   if (!user && !isPublicRoute && request.nextUrl.pathname !== '/') {
-    const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(request.url)}`
+    // Use nextUrl.href which correctly resolves the public URL (not internal Railway URL)
+    const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(request.nextUrl.href)}`
     return NextResponse.redirect(gatewayLoginUrl)
   }
 
