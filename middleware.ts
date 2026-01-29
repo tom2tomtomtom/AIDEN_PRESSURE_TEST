@@ -4,6 +4,18 @@ import type { NextRequest } from 'next/server'
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
 const TOKEN_COOKIE = 'aiden_session'
 
+// Get the public URL from forwarded headers (for reverse proxy support like Railway)
+function getPublicUrl(request: NextRequest): string {
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
+
+  if (forwardedHost) {
+    return `${forwardedProto}://${forwardedHost}${request.nextUrl.pathname}${request.nextUrl.search}`
+  }
+
+  return request.nextUrl.href
+}
+
 export function middleware(request: NextRequest) {
   // Check for token in URL (from gateway redirect)
   const token = request.nextUrl.searchParams.get('studio_token') ||
@@ -11,7 +23,8 @@ export function middleware(request: NextRequest) {
 
   if (token) {
     // Store token in cookie and clean URL
-    const response = NextResponse.redirect(new URL(request.nextUrl.pathname, request.url))
+    const cleanUrl = new URL(request.nextUrl.pathname, request.url)
+    const response = NextResponse.redirect(cleanUrl)
     response.cookies.set(TOKEN_COOKIE, token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -27,16 +40,14 @@ export function middleware(request: NextRequest) {
 
   // Public routes
   const isPublicRoute =
-    request.nextUrl.pathname.startsWith('/login') ||
-    request.nextUrl.pathname.startsWith('/register') ||
-    request.nextUrl.pathname.startsWith('/callback') ||
     request.nextUrl.pathname.startsWith('/auth') ||
+    request.nextUrl.pathname.startsWith('/callback') ||
     request.nextUrl.pathname.startsWith('/api') ||
     request.nextUrl.pathname === '/'
 
   // If no token and not public route, redirect to gateway
   if (!sessionToken && !isPublicRoute) {
-    const returnUrl = request.nextUrl.href
+    const returnUrl = getPublicUrl(request)
     return NextResponse.redirect(`${GATEWAY_URL}/login?next=${encodeURIComponent(returnUrl)}`)
   }
 
