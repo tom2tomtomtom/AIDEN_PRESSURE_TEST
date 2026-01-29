@@ -14,7 +14,7 @@ function getPublicUrl(request: NextRequest): string {
   return request.nextUrl.href
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Check for SSO tokens in URL (from Gateway redirect)
   const accessToken = request.nextUrl.searchParams.get('studio_token')
   const refreshToken = request.nextUrl.searchParams.get('refresh_token')
