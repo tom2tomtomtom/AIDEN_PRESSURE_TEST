@@ -21,6 +21,7 @@ export async function middleware(request: NextRequest) {
 
   // SSO Token Flow: Convert URL tokens into Supabase session
   if (accessToken) {
+    console.log('[SSO] Token received, setting session...')
     const cleanUrl = new URL(request.nextUrl.pathname, request.url)
     let response = NextResponse.redirect(cleanUrl)
 
@@ -34,12 +35,13 @@ export async function middleware(request: NextRequest) {
             return request.cookies.getAll()
           },
           setAll(cookiesToSet) {
+            console.log('[SSO] Setting cookies:', cookiesToSet.map(c => c.name))
             cookiesToSet.forEach(({ name, value, options }) => {
               response.cookies.set(name, value, {
                 ...options,
                 path: '/',
                 sameSite: 'lax',
-                secure: process.env.NODE_ENV === 'production',
+                secure: true,
               })
             })
           },
@@ -48,13 +50,15 @@ export async function middleware(request: NextRequest) {
     )
 
     // CRITICAL: Set the session from SSO tokens
-    const { error } = await supabase.auth.setSession({
+    const { data, error } = await supabase.auth.setSession({
       access_token: accessToken,
       refresh_token: refreshToken || '',
     })
 
     if (error) {
       console.error('[SSO] setSession failed:', error.message)
+    } else {
+      console.log('[SSO] Session set successfully for user:', data.user?.email)
     }
 
     return response
