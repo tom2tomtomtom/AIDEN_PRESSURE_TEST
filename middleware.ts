@@ -1,57 +1,96 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
-const TOKEN_COOKIE = 'aiden_session'
 
 // Get the public URL from forwarded headers (for reverse proxy support like Railway)
 function getPublicUrl(request: NextRequest): string {
   const forwardedHost = request.headers.get('x-forwarded-host')
   const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
-
   if (forwardedHost) {
     return `${forwardedProto}://${forwardedHost}${request.nextUrl.pathname}${request.nextUrl.search}`
   }
-
   return request.nextUrl.href
 }
 
-export function middleware(request: NextRequest) {
-  // Check for token in URL (from gateway redirect)
-  const token = request.nextUrl.searchParams.get('studio_token') ||
-                request.nextUrl.searchParams.get('access_token')
+export async function middleware(request: NextRequest) {
+  // Check for SSO tokens in URL (from Gateway redirect)
+  const accessToken = request.nextUrl.searchParams.get('studio_token')
+  const refreshToken = request.nextUrl.searchParams.get('refresh_token')
 
-  if (token) {
-    // Store token in cookie and clean URL
+  // SSO Token Flow: Convert URL tokens into Supabase session
+  if (accessToken) {
     const cleanUrl = new URL(request.nextUrl.pathname, request.url)
-    const response = NextResponse.redirect(cleanUrl)
-    response.cookies.set(TOKEN_COOKIE, token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/',
+    let response = NextResponse.redirect(cleanUrl)
+
+    // Create Supabase client with cookie handlers
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              response.cookies.set(name, value, options)
+            })
+          },
+        },
+      }
+    )
+
+    // CRITICAL: Set the session from SSO tokens
+    // This creates proper Supabase auth cookies
+    await supabase.auth.setSession({
+      access_token: accessToken,
+      refresh_token: refreshToken || '',
     })
+
     return response
   }
 
-  // Check for existing session cookie
-  const sessionToken = request.cookies.get(TOKEN_COOKIE)?.value
+  // Normal request flow: validate existing session
+  let response = NextResponse.next({ request })
 
-  // Public routes
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          return request.cookies.getAll()
+        },
+        setAll(cookiesToSet) {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            response.cookies.set(name, value, options)
+          })
+        },
+      },
+    }
+  )
+
+  // Validate user (also refreshes tokens if needed)
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Public routes that don't require auth
   const isPublicRoute =
     request.nextUrl.pathname.startsWith('/auth') ||
     request.nextUrl.pathname.startsWith('/callback') ||
     request.nextUrl.pathname.startsWith('/api') ||
     request.nextUrl.pathname === '/'
 
-  // If no token and not public route, redirect to gateway
-  if (!sessionToken && !isPublicRoute) {
+  // No user and not public → redirect to Gateway login
+  if (!user && !isPublicRoute) {
     const returnUrl = getPublicUrl(request)
-    return NextResponse.redirect(`${GATEWAY_URL}/login?next=${encodeURIComponent(returnUrl)}`)
+    return NextResponse.redirect(
+      `${GATEWAY_URL}/login?next=${encodeURIComponent(returnUrl)}`
+    )
   }
 
-  return NextResponse.next()
+  return response
 }
 
 export const config = {
