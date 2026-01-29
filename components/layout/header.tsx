@@ -20,10 +20,10 @@ export function Header({ user }: HeaderProps) {
         </div>
         <div className="ml-auto flex items-center gap-4">
           <a
-            href="https://gateway-production-cffb.up.railway.app/dashboard"
+            href="https://aiden.services/dashboard"
             className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors"
           >
-            AIDEN Hub
+            ← AIDEN Hub
           </a>
           <UserMenu user={user} />
         </div>
