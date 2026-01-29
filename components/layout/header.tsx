@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { UserMenu } from './user-menu'
 import { MobileSidebar } from './mobile-sidebar'
-import { HubLink } from './hub-link'
 
 interface HeaderProps {
   user: {
@@ -20,7 +19,12 @@ export function Header({ user }: HeaderProps) {
           </Link>
         </div>
         <div className="ml-auto flex items-center gap-4">
-          <HubLink />
+          <a
+            href="https://aiden.services/dashboard"
+            className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors"
+          >
+            ← AIDEN Hub
+          </a>
           <UserMenu user={user} />
         </div>
       </div>
