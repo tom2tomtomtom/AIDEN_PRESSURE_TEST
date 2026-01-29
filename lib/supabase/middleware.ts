@@ -4,6 +4,19 @@ import { NextResponse, type NextRequest } from 'next/server'
 // Gateway URL for SSO authentication
 const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
 
+// Get the public URL from forwarded headers (for reverse proxy support like Railway)
+function getPublicUrl(request: NextRequest): string {
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
+
+  if (forwardedHost) {
+    return `${forwardedProto}://${forwardedHost}${request.nextUrl.pathname}${request.nextUrl.search}`
+  }
+
+  // Fallback to nextUrl.href
+  return request.nextUrl.href
+}
+
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
     request,
@@ -55,8 +68,9 @@ export async function updateSession(request: NextRequest) {
 
   // Redirect unauthenticated users to Gateway for SSO
   if (!user && !isPublicRoute && request.nextUrl.pathname !== '/') {
-    // Use nextUrl.href which correctly resolves the public URL (not internal Railway URL)
-    const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(request.nextUrl.href)}`
+    // Use public URL from forwarded headers (Railway reverse proxy)
+    const publicUrl = getPublicUrl(request)
+    const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(publicUrl)}`
     return NextResponse.redirect(gatewayLoginUrl)
   }
 
