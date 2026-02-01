@@ -16,7 +16,7 @@ interface ResponseData {
   emotional_response: string
   what_works?: string[]
   key_concerns?: string[]
-  what_would_convince?: string
+  what_would_convince?: string | string[]
 }
 
 interface PersonaResponse {
@@ -39,6 +39,47 @@ interface ConversationTranscriptProps {
   stimulusType: string
 }
 
+// Message bubble component for conversation flow
+function ModeratorMessage({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex gap-3">
+      <div className="w-8 h-8 rounded-full bg-red-hot/20 border border-red-hot flex items-center justify-center flex-shrink-0">
+        <User className="h-4 w-4 text-red-hot" />
+      </div>
+      <div className="flex-1">
+        <p className="text-xs text-red-hot font-bold mb-1">Moderator</p>
+        <div className="bg-red-hot/10 border border-red-hot/30 p-3 rounded-tr-lg rounded-br-lg rounded-bl-lg">
+          <p className="text-sm text-white-full">{children}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function PersonaMessage({ name, children, isPrivate = false }: { name: string; children: React.ReactNode; isPrivate?: boolean }) {
+  return (
+    <div className="flex gap-3">
+      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+        isPrivate ? 'bg-purple-500/20 border border-purple-500' : 'bg-orange-accent/20 border border-orange-accent'
+      }`}>
+        <Bot className={`h-4 w-4 ${isPrivate ? 'text-purple-500' : 'text-orange-accent'}`} />
+      </div>
+      <div className="flex-1">
+        <p className={`text-xs font-bold mb-1 ${isPrivate ? 'text-purple-500' : 'text-orange-accent'}`}>
+          {name} {isPrivate && <span className="font-normal text-white-muted">(thinking privately)</span>}
+        </p>
+        <div className={`p-3 rounded-tr-lg rounded-br-lg rounded-bl-lg ${
+          isPrivate
+            ? 'bg-purple-500/10 border border-purple-500/30 border-dashed'
+            : 'bg-black-deep border border-border-subtle'
+        }`}>
+          <p className="text-sm text-white-full italic">&ldquo;{children}&rdquo;</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function TranscriptCard({ response, stimulus, stimulusType }: {
   response: PersonaResponse
   stimulus: string
@@ -46,6 +87,7 @@ function TranscriptCard({ response, stimulus, stimulusType }: {
 }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const data = response.response_data
+  const personaName = response.generated_name.split(' ')[0] || response.generated_name // Use first name for conversation
 
   return (
     <Card className="border-border-subtle hover:border-red-hot transition-colors">
@@ -73,98 +115,158 @@ function TranscriptCard({ response, stimulus, stimulusType }: {
             onClick={() => setIsExpanded(!isExpanded)}
             className="text-white-muted hover:text-red-hot"
           >
-            {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            {isExpanded ? (
+              <>
+                <span className="text-xs mr-2">Collapse</span>
+                <ChevronUp className="h-4 w-4" />
+              </>
+            ) : (
+              <>
+                <span className="text-xs mr-2">Full Conversation</span>
+                <ChevronDown className="h-4 w-4" />
+              </>
+            )}
           </Button>
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-4">
-        {/* Always show gut reaction as quick preview */}
-        <div className="bg-black-deep border border-border-subtle p-3">
-          <div className="flex items-start gap-3">
-            <Bot className="h-4 w-4 text-red-hot mt-1 flex-shrink-0" />
-            <div>
-              <p className="text-xs text-white-muted mb-1 font-bold uppercase tracking-wider">First Impression</p>
-              <p className="text-sm text-white-full italic">&ldquo;{data.gut_reaction}&rdquo;</p>
-            </div>
+      <CardContent>
+        {/* Collapsed preview */}
+        {!isExpanded && (
+          <div className="bg-black-deep border border-border-subtle p-3">
+            <p className="text-xs text-white-muted mb-1">First reaction:</p>
+            <p className="text-sm text-white-full italic line-clamp-2">&ldquo;{data.gut_reaction}&rdquo;</p>
           </div>
-        </div>
+        )}
 
+        {/* Expanded conversation */}
         {isExpanded && (
           <div className="space-y-4">
-            {/* The stimulus they were shown */}
-            <div className="bg-red-hot/5 border border-red-hot/20 p-3">
-              <div className="flex items-start gap-3">
-                <User className="h-4 w-4 text-red-hot mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-xs text-red-hot mb-1 font-bold uppercase tracking-wider">
-                    Shown: {stimulusType}
-                  </p>
-                  <p className="text-sm text-white-muted line-clamp-3">{stimulus}</p>
-                </div>
-              </div>
+            {/* Opening - Show the stimulus */}
+            <ModeratorMessage>
+              I&apos;m going to show you a {stimulusType.toLowerCase()}. Take a moment to read through it, then tell me your honest first reaction.
+            </ModeratorMessage>
+
+            <div className="ml-11 p-3 bg-black-deep border border-border-subtle text-sm text-white-muted">
+              <p className="text-xs text-white-muted/60 mb-2 uppercase tracking-wider">Stimulus shown:</p>
+              <p className="whitespace-pre-wrap">{stimulus}</p>
             </div>
 
-            {/* Considered View */}
-            <div className="bg-black-deep border border-border-subtle p-3">
-              <div className="flex items-start gap-3">
-                <Bot className="h-4 w-4 text-orange-accent mt-1 flex-shrink-0" />
-                <div>
-                  <p className="text-xs text-orange-accent mb-1 font-bold uppercase tracking-wider">After Thinking About It</p>
-                  <p className="text-sm text-white-full">{data.considered_view}</p>
-                </div>
-              </div>
-            </div>
+            {/* Gut reaction */}
+            <ModeratorMessage>
+              {personaName}, what&apos;s your immediate gut reaction?
+            </ModeratorMessage>
 
-            {/* Social vs Private - the key insight */}
-            <div className="grid md:grid-cols-2 gap-3">
-              <div className="bg-black-deep border border-green-500/30 p-3">
-                <div className="flex items-start gap-3">
-                  <MessageSquare className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-green-500 mb-1 font-bold uppercase tracking-wider">What They&apos;d Say in Public</p>
-                    <p className="text-sm text-white-full italic">&ldquo;{data.social_response}&rdquo;</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-black-deep border border-purple-500/30 p-3">
-                <div className="flex items-start gap-3">
-                  <MessageSquare className="h-4 w-4 text-purple-500 mt-1 flex-shrink-0" />
-                  <div>
-                    <p className="text-xs text-purple-500 mb-1 font-bold uppercase tracking-wider">What They Really Think</p>
-                    <p className="text-sm text-white-full italic">&ldquo;{data.private_thought}&rdquo;</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <PersonaMessage name={personaName}>
+              {data.gut_reaction}
+            </PersonaMessage>
 
-            {/* Scores */}
-            <div className="flex gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="text-white-muted">Would Buy:</span>
-                <span className={`font-bold ${data.purchase_intent >= 7 ? 'text-green-500' : data.purchase_intent >= 4 ? 'text-yellow-electric' : 'text-red-hot'}`}>
-                  {data.purchase_intent}/10
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-white-muted">Believability:</span>
-                <span className={`font-bold ${data.credibility_rating >= 7 ? 'text-green-500' : data.credibility_rating >= 4 ? 'text-yellow-electric' : 'text-red-hot'}`}>
-                  {data.credibility_rating}/10
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="text-white-muted">Feeling:</span>
-                <span className="font-bold text-orange-accent">{data.emotional_response}</span>
-              </div>
-            </div>
+            {/* Considered view */}
+            <ModeratorMessage>
+              Now that you&apos;ve had a moment to think about it, what&apos;s your more considered view?
+            </ModeratorMessage>
 
-            {/* What would convince them */}
-            {data.what_would_convince && (
-              <div className="bg-black-deep border border-yellow-electric/30 p-3">
-                <p className="text-xs text-yellow-electric mb-1 font-bold uppercase tracking-wider">What Would Change Their Mind</p>
-                <p className="text-sm text-white-full">{data.what_would_convince}</p>
-              </div>
+            <PersonaMessage name={personaName}>
+              {data.considered_view}
+            </PersonaMessage>
+
+            {/* Key concerns if present */}
+            {data.key_concerns && data.key_concerns.length > 0 && (
+              <>
+                <ModeratorMessage>
+                  Are there any concerns or hesitations that come to mind?
+                </ModeratorMessage>
+
+                <PersonaMessage name={personaName}>
+                  {data.key_concerns.join('. Also, ')}
+                </PersonaMessage>
+              </>
             )}
+
+            {/* What works if present */}
+            {data.what_works && data.what_works.length > 0 && (
+              <>
+                <ModeratorMessage>
+                  What aspects of this resonate with you or work well?
+                </ModeratorMessage>
+
+                <PersonaMessage name={personaName}>
+                  {data.what_works.join('. And ')}
+                </PersonaMessage>
+              </>
+            )}
+
+            {/* Social response */}
+            <ModeratorMessage>
+              If a friend or family member asked what you thought of this, what would you tell them?
+            </ModeratorMessage>
+
+            <PersonaMessage name={personaName}>
+              {data.social_response}
+            </PersonaMessage>
+
+            {/* Private thought - shown differently */}
+            <div className="ml-11 pt-2 border-t border-dashed border-purple-500/30">
+              <p className="text-xs text-purple-400 mb-3 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-purple-500 rounded-full animate-pulse"></span>
+                What {personaName} is actually thinking but not saying out loud:
+              </p>
+              <PersonaMessage name={personaName} isPrivate>
+                {data.private_thought}
+              </PersonaMessage>
+            </div>
+
+            {/* Purchase intent & credibility */}
+            <ModeratorMessage>
+              On a scale of 1-10, how likely would you be to purchase this? And how believable do you find it?
+            </ModeratorMessage>
+
+            <PersonaMessage name={personaName}>
+              I&apos;d say about a {data.purchase_intent} out of 10 on purchase intent.
+              As for believability, I&apos;d rate it {data.credibility_rating} out of 10.
+              Overall, I&apos;m feeling {data.emotional_response.toLowerCase()} about it.
+            </PersonaMessage>
+
+            {/* What would convince - closing question */}
+            {data.what_would_convince && (
+              <>
+                <ModeratorMessage>
+                  Last question: What would need to change to make you more interested?
+                </ModeratorMessage>
+
+                <PersonaMessage name={personaName}>
+                  {typeof data.what_would_convince === 'string'
+                    ? data.what_would_convince
+                    : Array.isArray(data.what_would_convince)
+                      ? data.what_would_convince.join('. ')
+                      : 'I think it could work as is.'}
+                </PersonaMessage>
+              </>
+            )}
+
+            {/* Summary scores bar */}
+            <div className="mt-4 pt-4 border-t border-border-subtle">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-6">
+                  <div>
+                    <span className="text-white-muted">Purchase Intent: </span>
+                    <span className={`font-bold ${data.purchase_intent >= 7 ? 'text-green-500' : data.purchase_intent >= 4 ? 'text-yellow-electric' : 'text-red-hot'}`}>
+                      {data.purchase_intent}/10
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-white-muted">Credibility: </span>
+                    <span className={`font-bold ${data.credibility_rating >= 7 ? 'text-green-500' : data.credibility_rating >= 4 ? 'text-yellow-electric' : 'text-red-hot'}`}>
+                      {data.credibility_rating}/10
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-white-muted">Mood: </span>
+                    <span className="font-bold text-orange-accent">{data.emotional_response}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </CardContent>
