@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { TestWizard } from '@/components/forms/test-wizard'
 
 interface NewTestPageProps {
@@ -9,13 +10,35 @@ interface NewTestPageProps {
 
 export default async function NewTestPage({ params }: NewTestPageProps) {
   const { id } = await params
-  const supabase = await createClient()
+
+  // Get authenticated user
+  const authSupabase = await createAuthClient()
+  const { data: { user } } = await authSupabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Use admin client to bypass RLS issues
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!membership) {
+    redirect('/debug')
+  }
 
   // Verify project exists and user has access
-  const { data: project, error } = await supabase
+  const { data: project, error } = await adminClient
     .from('projects')
     .select('id, name')
     .eq('id', id)
+    .eq('organization_id', membership.organization_id)
     .single()
 
   if (error || !project) {

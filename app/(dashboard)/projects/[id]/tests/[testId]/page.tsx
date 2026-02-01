@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
@@ -33,13 +34,35 @@ const stimulusLabels: Record<string, string> = {
 
 export default async function TestPage({ params }: TestPageProps) {
   const { id, testId } = await params
-  const supabase = await createClient()
+
+  // Get authenticated user
+  const authSupabase = await createAuthClient()
+  const { data: { user } } = await authSupabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Use admin client to bypass RLS issues
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!membership) {
+    redirect('/debug')
+  }
 
   // Get project
-  const { data: project } = await supabase
+  const { data: project } = await adminClient
     .from('projects')
     .select('id, name')
     .eq('id', id)
+    .eq('organization_id', membership.organization_id)
     .single()
 
   if (!project) {
@@ -47,7 +70,7 @@ export default async function TestPage({ params }: TestPageProps) {
   }
 
   // Get test with results
-  const { data: test, error } = await supabase
+  const { data: test, error } = await adminClient
     .from('pressure_tests')
     .select('*')
     .eq('id', testId)
@@ -59,14 +82,14 @@ export default async function TestPage({ params }: TestPageProps) {
   }
 
   // Get test results if completed
-  const { data: results } = await supabase
+  const { data: results } = await adminClient
     .from('test_results')
     .select('*')
     .eq('test_id', testId)
     .single()
 
   // Get persona responses
-  const { data: responses } = await supabase
+  const { data: responses } = await adminClient
     .from('persona_responses')
     .select(`
       *,

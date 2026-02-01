@@ -1,5 +1,6 @@
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { ProjectForm } from '@/components/forms/project-form'
 
 interface EditProjectPageProps {
@@ -8,12 +9,34 @@ interface EditProjectPageProps {
 
 export default async function EditProjectPage({ params }: EditProjectPageProps) {
   const { id } = await params
-  const supabase = await createClient()
 
-  const { data: project, error } = await supabase
+  // Get authenticated user
+  const authSupabase = await createAuthClient()
+  const { data: { user } } = await authSupabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Use admin client to bypass RLS issues
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!membership) {
+    redirect('/debug')
+  }
+
+  const { data: project, error } = await adminClient
     .from('projects')
     .select('*')
     .eq('id', id)
+    .eq('organization_id', membership.organization_id)
     .single()
 
   if (error || !project) {

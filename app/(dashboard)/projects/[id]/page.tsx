@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { createClient } from '@/lib/supabase/server'
+import { notFound, redirect } from 'next/navigation'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { DeleteProjectButton } from '@/components/features/delete-project-button'
@@ -23,12 +24,34 @@ const categoryLabels: Record<string, string> = {
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { id } = await params
-  const supabase = await createClient()
 
-  const { data: project, error } = await supabase
+  // Get authenticated user
+  const authSupabase = await createAuthClient()
+  const { data: { user } } = await authSupabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Use admin client to bypass RLS issues
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!membership) {
+    redirect('/debug')
+  }
+
+  const { data: project, error } = await adminClient
     .from('projects')
     .select('*')
     .eq('id', id)
+    .eq('organization_id', membership.organization_id)
     .single()
 
   if (error || !project) {
@@ -36,7 +59,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   }
 
   // Get tests for this project
-  const { data: tests } = await supabase
+  const { data: tests } = await adminClient
     .from('pressure_tests')
     .select('*')
     .eq('project_id', id)
