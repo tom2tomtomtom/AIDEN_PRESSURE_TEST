@@ -139,10 +139,10 @@ export function formatResponseForStorage(response: GeneratedResponse): {
     archetype_id: response.personaContext.archetype.id,
     persona_name: response.personaContext.name.fullName,
     persona_context: {
-      age: response.personaContext.age,
-      location: response.personaContext.location,
-      skepticism: response.personaContext.skepticism,
-      archetype: response.personaContext.archetype.name
+      age: response.personaContext.age || 0,
+      location: response.personaContext.location || '',
+      skepticism: response.personaContext.skepticism || null,
+      archetype: response.personaContext.archetype?.name || ''
     },
     gut_reaction: response.response.gut_reaction,
     considered_view: response.response.considered_view,
@@ -155,7 +155,7 @@ export function formatResponseForStorage(response: GeneratedResponse): {
     key_concerns: response.response.key_concerns || [],
     what_would_convince: response.response.what_would_convince,
     // Filter out seed memory IDs (non-UUID format) - only store real database memory UUIDs
-    triggered_memories: response.personaContext.memories
+    triggered_memories: (response.personaContext.memories || [])
       .map(m => m.id)
       .filter(id => !id.startsWith('seed-')),
     memory_influence_summary: response.personaContext.memoryNarrative || '',
