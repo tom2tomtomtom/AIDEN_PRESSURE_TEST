@@ -93,9 +93,9 @@ export function TestCompleteModal({
         clearTimeout(confettiTimer)
         clearTimeout(confettiEndTimer)
       }
-    } else {
-      setShowConfetti(false)
     }
+    setShowConfetti(false)
+    return undefined
   }, [isOpen])
 
   const confettiColors = ['#ff2e2e', '#ff6b00', '#ffeb3b', '#ffffff']
