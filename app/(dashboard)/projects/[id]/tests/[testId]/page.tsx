@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
 import { TestResults } from '@/components/features/test-results'
 import { HeadlineResults } from '@/components/features/headline-results'
-import { TestStatusPoller } from '@/components/features/test-status-poller'
+import { TestExecutionView } from '@/components/features/test-execution-view'
 import { ArchetypeQuotes } from '@/components/results/archetype-quotes'
 import { HiddenConcerns } from '@/components/results/hidden-concerns'
 import { ReactionSpectrum } from '@/components/results/reaction-spectrum'
@@ -177,9 +177,9 @@ export default async function TestPage({ params }: TestPageProps) {
         </div>
       )}
 
-      {/* Running Status - with auto-polling */}
+      {/* Running Status - with real-time progress tracking */}
       {test.status === 'running' && (
-        <TestStatusPoller
+        <TestExecutionView
           testId={testId}
           initialStatus={test.status}
         />
