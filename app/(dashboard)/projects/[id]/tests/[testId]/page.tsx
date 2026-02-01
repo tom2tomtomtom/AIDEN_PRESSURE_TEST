@@ -275,18 +275,6 @@ export default async function TestPage({ params }: TestPageProps) {
         </Card>
       )}
 
-      {/* Debug: Show responses structure - REMOVE AFTER TESTING */}
-      <div className="p-4 border border-yellow-500 bg-yellow-500/10 text-yellow-500 text-sm font-mono text-xs overflow-auto max-h-40">
-        <strong>DEBUG:</strong> responses count = {responses?.length ?? 'null'}
-        {responses?.length ? (
-          <>
-            <br />First persona: {responses[0]?.generated_name}
-            <br />Has response_data: {responses[0]?.response_data ? 'yes' : 'no'}
-            <br />emotional_response: {responses[0]?.response_data?.emotional_response || 'missing'}
-          </>
-        ) : null}
-      </div>
-
       {/* Conversation Transcripts */}
       {responses && responses.length > 0 && (
         <ConversationTranscript
