@@ -89,21 +89,37 @@ export default async function TestPage({ params }: TestPageProps) {
     .eq('test_id', testId)
     .single()
 
-  // Get persona responses
-  const { data: responses, error: responsesError } = await adminClient
+  // Get persona responses (without archetype join - relationship not set up)
+  const { data: rawResponses, error: responsesError } = await adminClient
     .from('persona_responses')
-    .select(`
-      *,
-      archetype:archetypes(id, name, slug, category, baseline_skepticism)
-    `)
+    .select('*')
     .eq('test_id', testId)
     .order('created_at', { ascending: true })
 
-  // Debug logging
-  console.log('[Test Page] responses count:', responses?.length || 0)
-  console.log('[Test Page] responses error:', responsesError)
-  if (responses?.length) {
-    console.log('[Test Page] first response:', JSON.stringify(responses[0], null, 2))
+  // Get archetypes separately if we have responses
+  let responses = rawResponses
+  if (rawResponses && rawResponses.length > 0) {
+    const archetypeIds = [...new Set(rawResponses.map(r => r.archetype_id).filter(Boolean))]
+
+    if (archetypeIds.length > 0) {
+      const { data: archetypes } = await adminClient
+        .from('archetypes')
+        .select('id, name, slug, category, baseline_skepticism')
+        .in('id', archetypeIds)
+
+      // Map archetypes to responses
+      const archetypeMap = new Map(archetypes?.map(a => [a.id, a]) || [])
+      responses = rawResponses.map(r => ({
+        ...r,
+        archetype: archetypeMap.get(r.archetype_id) || {
+          id: r.archetype_id,
+          name: r.archetype_id || 'Unknown',
+          slug: r.archetype_id || 'unknown',
+          category: 'unknown',
+          baseline_skepticism: 'medium'
+        }
+      }))
+    }
   }
 
   return (
@@ -210,11 +226,11 @@ export default async function TestPage({ params }: TestPageProps) {
         </Card>
       )}
 
-      {/* Debug: Show responses count */}
+      {/* Debug: Show responses count - REMOVE AFTER TESTING */}
       <div className="p-4 border border-yellow-500 bg-yellow-500/10 text-yellow-500 text-sm">
-        <strong>DEBUG:</strong> responses count = {responses?.length ?? 'null'},
-        error = {responsesError?.message ?? 'none'}
+        <strong>DEBUG:</strong> responses count = {responses?.length ?? 'null'}
         {responses?.length ? ` | First response has archetype: ${responses[0]?.archetype ? 'yes' : 'no'}` : ''}
+        {responsesError ? ` | Error: ${responsesError.message}` : ''}
       </div>
 
       {/* Conversation Transcripts */}
