@@ -8,6 +8,7 @@ import { loadArchetypeById, loadArchetypeBySlug } from './archetype-loader'
 import { retrieveMemories, buildMemoryNarrative, type ScoredMemory } from './memory-retrieval'
 import { generateName, generateAge, generateLocation, type GeneratedName } from './name-generator'
 import { calculateSkepticism, getSkepticismDescription, getSkepticismBehaviors, type CalibrationLevel, type SkepticismResult } from './skepticism-calculator'
+import { evaluateTraitActivation, type ActivatedTrait, type TraitActivationResult } from './trait-activator'
 
 export interface PersonaContext {
   // Identity
@@ -24,6 +25,10 @@ export interface PersonaContext {
   // Memory context
   memories: ScoredMemory[]
   memoryNarrative: string
+
+  // Trait activation (enhanced personality)
+  traitActivation: TraitActivationResult
+  activatedTraits: ActivatedTrait[]
 
   // For prompt construction
   demographicSummary: string
@@ -80,6 +85,13 @@ export async function buildPersonaContext(
   // Calculate calibrated skepticism
   const skepticism = calculateSkepticism(archetype, calibration, retrievalResult.memories)
 
+  // Evaluate trait activation based on stimulus
+  const traitActivation = await evaluateTraitActivation(
+    archetype.slug,
+    stimulusText,
+    skepticism.level > 6 ? 'analytical' : skepticism.level > 4 ? 'neutral' : 'trusting'
+  )
+
   // Build narrative strings
   const memoryNarrative = buildMemoryNarrative(retrievalResult.memories)
   const demographicSummary = buildDemographicSummary(archetype, age, location)
@@ -95,6 +107,8 @@ export async function buildPersonaContext(
     skepticism,
     memories: retrievalResult.memories,
     memoryNarrative,
+    traitActivation,
+    activatedTraits: traitActivation.activatedTraits,
     demographicSummary,
     psychographicSummary,
     voiceSummary,

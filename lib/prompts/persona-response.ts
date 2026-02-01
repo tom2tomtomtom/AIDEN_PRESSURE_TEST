@@ -430,3 +430,87 @@ CRITICAL GUIDELINES FOR CONVERSATION:
 
 Respond conversationally - this is a discussion, not a survey.`
 }
+
+// =============================================================================
+// TWO-LAYER ENHANCED PROMPT SYSTEM
+// =============================================================================
+
+import type { ActivatedTrait } from '@/lib/persona/trait-activator'
+import { buildEmotionalLayer, buildBehavioralLayer } from '@/lib/persona/trait-activator'
+
+/**
+ * Build an enhanced persona prompt with emotional and behavioral layers
+ * This creates more differentiated, authentic persona responses
+ */
+export function buildEnhancedPersonaPrompt(
+  context: PersonaContext,
+  activatedTraits: ActivatedTrait[],
+  stimulus: string,
+  stimulusType: string = 'marketing concept',
+  brief?: string
+): string {
+  // Map display names to internal types for format guidance
+  const typeMap: Record<string, string> = {
+    'concept': 'concept',
+    'claim': 'claim',
+    'product_description': 'product_description',
+    'ad_copy': 'ad_copy',
+    'tagline': 'tagline',
+    'marketing concept': 'concept'
+  }
+  const internalType = typeMap[stimulusType] || 'concept'
+
+  // Build emotional layer from activated traits
+  const emotionalLayer = buildEmotionalLayer(activatedTraits)
+
+  // Build behavioral layer from activated traits + voice traits
+  const behavioralLayer = buildBehavioralLayer(activatedTraits, context.archetype.voice_traits)
+
+  // Build the core identity (simplified for two-layer approach)
+  const identitySection = `# Your Identity
+
+You are ${context.name.fullName}, ${context.demographicSummary}.`
+
+  const sections = [
+    identitySection,
+    emotionalLayer || buildMemorySection(context),  // Use emotional layer if available, else fallback
+    behavioralLayer || buildSkepticismSection(context),  // Use behavioral layer if available, else fallback
+    buildFormatGuidance(internalType),
+    buildBriefSection(brief),
+    `# The Content to Evaluate
+
+Please react to the following:
+
+---
+${stimulus}
+---`,
+    buildResponseInstructions()
+  ].filter(Boolean)
+
+  return sections.join('\n\n')
+}
+
+/**
+ * Build enhanced system prompt that incorporates emotional depth
+ */
+export function buildEnhancedSystemPrompt(activatedTraits: ActivatedTrait[]): string {
+  const basePrompt = buildPersonaSystemPrompt()
+
+  if (activatedTraits.length === 0) {
+    return basePrompt
+  }
+
+  const primaryTrait = activatedTraits[0]!
+  const emotionalContext = `
+
+EMOTIONAL CONTEXT FOR THIS EVALUATION:
+Your primary emotional lens: ${primaryTrait.feeling_seed}
+This comes from a real experience that shapes how you see all similar marketing.
+
+When you see content that triggers these feelings:
+- Let the emotion color your response naturally
+- Don't suppress or rationalize away your gut reaction
+- Your past experience makes you who you are`
+
+  return basePrompt + emotionalContext
+}
