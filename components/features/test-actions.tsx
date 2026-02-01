@@ -29,8 +29,10 @@ interface TestActionsProps {
 export function TestActions({ test, projectId }: TestActionsProps) {
   const router = useRouter()
   const [isRunning, setIsRunning] = useState(false)
+  const [isCancelling, setIsCancelling] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const runTest = async () => {
@@ -60,6 +62,34 @@ export function TestActions({ test, projectId }: TestActionsProps) {
       setIsRunning(false)
     }
     // Note: Don't set isRunning to false on success - page will refresh
+  }
+
+  const cancelTest = async () => {
+    setIsCancelling(true)
+    setError(null)
+
+    try {
+      const response = await fetch(`/api/tests/${test.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelled' })
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to cancel test')
+      }
+
+      toast.success('Test cancelled')
+      setIsCancelDialogOpen(false)
+      router.refresh()
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Something went wrong'
+      setError(message)
+      toast.error(message)
+    } finally {
+      setIsCancelling(false)
+    }
   }
 
   const deleteTest = async () => {
@@ -108,10 +138,62 @@ export function TestActions({ test, projectId }: TestActionsProps) {
         )}
 
         {test.status === 'running' && (
-          <Button variant="destructive" disabled>
-            <XCircle className="w-4 h-4 mr-2" />
-            Cancel
-          </Button>
+          <Dialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
+            <DialogTrigger asChild>
+              <Button variant="destructive" disabled={isCancelling}>
+                {isCancelling ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Cancelling...
+                  </>
+                ) : (
+                  <>
+                    <XCircle className="w-4 h-4 mr-2" />
+                    Cancel
+                  </>
+                )}
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <div className="flex items-center gap-2 text-primary mb-2">
+                  <AlertTriangle className="w-5 h-5" />
+                  <DialogTitle>Cancel Test</DialogTitle>
+                </div>
+                <DialogDescription>
+                  Are you sure you want to cancel <span className="font-bold text-foreground">&quot;{test.name}&quot;</span>?
+                  This will stop the test and any partial results will be lost.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter className="mt-6">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCancelDialogOpen(false)}
+                  disabled={isCancelling}
+                >
+                  Keep Running
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={cancelTest}
+                  disabled={isCancelling}
+                  className="gap-2"
+                >
+                  {isCancelling ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Cancelling...
+                    </>
+                  ) : (
+                    <>
+                      <XCircle className="w-4 h-4" />
+                      Cancel Test
+                    </>
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         )}
 
         {(test.status === 'draft' || test.status === 'failed' || test.status === 'cancelled') && (

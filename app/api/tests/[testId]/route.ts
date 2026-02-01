@@ -109,6 +109,76 @@ export async function GET(
 }
 
 /**
+ * PATCH /api/tests/[testId]
+ * Update test status (e.g., cancel a running test)
+ */
+export async function PATCH(
+  request: NextRequest,
+  { params }: RouteParams
+) {
+  try {
+    const { testId } = await params
+    const authSupabase = await createAuthClient()
+
+    // Verify authentication
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = await request.json()
+    const { status } = body
+
+    // Only allow cancellation for now
+    if (status !== 'cancelled') {
+      return NextResponse.json(
+        { error: 'Only cancellation is supported' },
+        { status: 400 }
+      )
+    }
+
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
+    // Check test exists and is running
+    const { data: test, error: testError } = await adminClient
+      .from('pressure_tests')
+      .select('id, status, project_id')
+      .eq('id', testId)
+      .single()
+
+    if (testError || !test) {
+      return NextResponse.json({ error: 'Test not found' }, { status: 404 })
+    }
+
+    if (test.status !== 'running') {
+      return NextResponse.json(
+        { error: 'Can only cancel a running test' },
+        { status: 400 }
+      )
+    }
+
+    // Update test status to cancelled
+    const { error: updateError } = await adminClient
+      .from('pressure_tests')
+      .update({ status: 'cancelled' })
+      .eq('id', testId)
+
+    if (updateError) {
+      console.error('Error cancelling test:', updateError)
+      return NextResponse.json({ error: 'Failed to cancel test' }, { status: 500 })
+    }
+
+    revalidatePath(`/projects/${test.project_id}`)
+    revalidatePath(`/projects/${test.project_id}/tests/${testId}`)
+    return NextResponse.json({ success: true, status: 'cancelled' })
+  } catch (error) {
+    console.error('Error in PATCH /api/tests/[testId]:', error)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
+}
+
+/**
  * DELETE /api/tests/[testId]
  * Delete a test (only if draft or cancelled)
  */
