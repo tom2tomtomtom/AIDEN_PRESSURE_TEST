@@ -187,7 +187,7 @@ export function StrengthsSection({ strengths, verbatimHighlights = [] }: Strengt
           <Text style={styles.quoteSectionTitle}>Supporting Voices</Text>
           {strengthQuotes.map((quote, index) => (
             <View key={index} style={styles.quoteCard}>
-              <Text style={styles.quoteText}>&ldquo;{safeText(quote.quote)}&rdquo;</Text>
+              <Text style={styles.quoteText}>"{safeText(quote.quote)}"</Text>
               <Text style={styles.quoteAttribution}>
                 {safeText(quote.persona_name)} ({safeText(quote.archetype)})
               </Text>

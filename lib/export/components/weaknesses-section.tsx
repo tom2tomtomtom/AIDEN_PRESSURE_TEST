@@ -193,7 +193,7 @@ export function WeaknessesSection({ weaknesses, verbatimHighlights = [] }: Weakn
           <Text style={styles.quoteSectionTitle}>Critical Voices</Text>
           {weaknessQuotes.map((quote, index) => (
             <View key={index} style={styles.quoteCard}>
-              <Text style={styles.quoteText}>&ldquo;{safeText(quote.quote)}&rdquo;</Text>
+              <Text style={styles.quoteText}>"{safeText(quote.quote)}"</Text>
               <Text style={styles.quoteAttribution}>
                 {safeText(quote.persona_name)} ({safeText(quote.archetype)})
               </Text>
