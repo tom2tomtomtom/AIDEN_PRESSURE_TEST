@@ -190,9 +190,21 @@ export async function GET(
     })
   } catch (error) {
     console.error('Error generating PDF:', error)
+    // Log more details about the error
+    if (error instanceof Error) {
+      console.error('Error name:', error.name)
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
     return NextResponse.json(
-      { error: 'Failed to generate PDF report' },
+      {
+        error: 'Failed to generate PDF report',
+        details: error instanceof Error ? error.message : 'Unknown error'
+      },
       { status: 500 }
     )
   }
 }
+
+// Force Node.js runtime (not Edge) for PDF generation
+export const runtime = 'nodejs'

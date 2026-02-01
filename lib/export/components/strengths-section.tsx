@@ -1,13 +1,21 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, baseStyles } from '../report-styles'
+import { colors, fonts, fontSize, spacing } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
-    ...baseStyles.page,
+    backgroundColor: colors.black,
+    padding: spacing.page,
+    fontFamily: fonts.body,
+    color: colors.white,
   },
   sectionTitle: {
-    ...baseStyles.sectionTitle,
+    fontSize: fontSize.h1,
+    fontFamily: fonts.heading,
+    color: colors.white,
+    marginBottom: spacing.section,
+    borderBottomWidth: 2,
     borderBottomColor: colors.scoreHigh,
+    paddingBottom: spacing.small,
   },
   intro: {
     fontSize: fontSize.body,
@@ -97,10 +105,19 @@ const styles = StyleSheet.create({
     color: colors.whiteMuted,
   },
   footer: {
-    ...baseStyles.footer,
+    position: 'absolute',
+    bottom: 30,
+    left: spacing.page,
+    right: spacing.page,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: colors.whiteDim,
+    paddingTop: spacing.small,
   },
   footerText: {
-    ...baseStyles.footerText,
+    fontSize: fontSize.tiny,
+    color: colors.whiteDim,
   },
 })
 

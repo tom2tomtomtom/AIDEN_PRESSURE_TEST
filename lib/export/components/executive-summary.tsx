@@ -1,15 +1,24 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, baseStyles, getScoreColor, getScoreVerdict } from '../report-styles'
+import { colors, fonts, fontSize, spacing, getScoreColor, getScoreVerdict } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
-    ...baseStyles.page,
+    backgroundColor: colors.black,
+    padding: spacing.page,
+    fontFamily: fonts.body,
+    color: colors.white,
   },
   header: {
     marginBottom: spacing.section,
   },
   sectionTitle: {
-    ...baseStyles.sectionTitle,
+    fontSize: fontSize.h1,
+    fontFamily: fonts.heading,
+    color: colors.white,
+    marginBottom: spacing.section,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.redHot,
+    paddingBottom: spacing.small,
   },
   verdictContainer: {
     backgroundColor: colors.blackCard,
@@ -73,10 +82,19 @@ const styles = StyleSheet.create({
     lineHeight: 1.5,
   },
   footer: {
-    ...baseStyles.footer,
+    position: 'absolute',
+    bottom: 30,
+    left: spacing.page,
+    right: spacing.page,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: colors.whiteDim,
+    paddingTop: spacing.small,
   },
   footerText: {
-    ...baseStyles.footerText,
+    fontSize: fontSize.tiny,
+    color: colors.whiteDim,
   },
 })
 

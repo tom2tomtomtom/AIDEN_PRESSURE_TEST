@@ -1,12 +1,21 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, baseStyles, getScoreColor } from '../report-styles'
+import { colors, fonts, fontSize, spacing, getScoreColor } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
-    ...baseStyles.page,
+    backgroundColor: colors.black,
+    padding: spacing.page,
+    fontFamily: fonts.body,
+    color: colors.white,
   },
   sectionTitle: {
-    ...baseStyles.sectionTitle,
+    fontSize: fontSize.h1,
+    fontFamily: fonts.heading,
+    color: colors.white,
+    marginBottom: spacing.section,
+    borderBottomWidth: 2,
+    borderBottomColor: colors.redHot,
+    paddingBottom: spacing.small,
   },
   scoresContainer: {
     flexDirection: 'row',
@@ -35,10 +44,9 @@ const styles = StyleSheet.create({
     height: 4,
     backgroundColor: colors.blackCard,
     marginTop: spacing.small,
-    overflow: 'hidden',
   },
   scoreBarFill: {
-    height: '100%',
+    height: 4,
   },
   distributionSection: {
     marginTop: spacing.section * 2,
@@ -68,10 +76,19 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   footer: {
-    ...baseStyles.footer,
+    position: 'absolute',
+    bottom: 30,
+    left: spacing.page,
+    right: spacing.page,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: colors.whiteDim,
+    paddingTop: spacing.small,
   },
   footerText: {
-    ...baseStyles.footerText,
+    fontSize: fontSize.tiny,
+    color: colors.whiteDim,
   },
 })
 
@@ -95,9 +112,9 @@ export function ScoresDashboard({
   purchaseIntentDistribution,
 }: ScoresDashboardProps) {
   const scores = [
-    { value: pressureScore, label: 'Pressure Score', description: 'Overall strength' },
-    { value: gutAttractionIndex, label: 'Gut Attraction', description: 'Immediate appeal' },
-    { value: credibilityScore, label: 'Credibility', description: 'Trust & belief' },
+    { value: pressureScore, label: 'Pressure Score' },
+    { value: gutAttractionIndex, label: 'Gut Attraction' },
+    { value: credibilityScore, label: 'Credibility' },
   ]
 
   return (

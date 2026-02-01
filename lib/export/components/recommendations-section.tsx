@@ -1,13 +1,21 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, baseStyles } from '../report-styles'
+import { colors, fonts, fontSize, spacing } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
-    ...baseStyles.page,
+    backgroundColor: colors.black,
+    padding: spacing.page,
+    fontFamily: fonts.body,
+    color: colors.white,
   },
   sectionTitle: {
-    ...baseStyles.sectionTitle,
+    fontSize: fontSize.h1,
+    fontFamily: fonts.heading,
+    color: colors.white,
+    marginBottom: spacing.section,
+    borderBottomWidth: 2,
     borderBottomColor: '#6366f1',
+    paddingBottom: spacing.small,
   },
   intro: {
     fontSize: fontSize.body,
@@ -78,7 +86,6 @@ const styles = StyleSheet.create({
   },
   badgeContainer: {
     flexDirection: 'row',
-    gap: spacing.tiny,
   },
   summarySection: {
     marginTop: spacing.section,
@@ -106,10 +113,19 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   footer: {
-    ...baseStyles.footer,
+    position: 'absolute',
+    bottom: 30,
+    left: spacing.page,
+    right: spacing.page,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: colors.whiteDim,
+    paddingTop: spacing.small,
   },
   footerText: {
-    ...baseStyles.footerText,
+    fontSize: fontSize.tiny,
+    color: colors.whiteDim,
   },
 })
 
@@ -142,7 +158,7 @@ export function RecommendationsSection({ recommendations }: RecommendationsSecti
 
   // Sort by priority - must_fix first
   const sortedRecommendations = [...recommendations].sort((a, b) => {
-    const order = { must_fix: 0, should_improve: 1, nice_to_have: 2 }
+    const order: Record<string, number> = { must_fix: 0, should_improve: 1, nice_to_have: 2 }
     return (order[a.priority] ?? 2) - (order[b.priority] ?? 2)
   })
 
@@ -157,7 +173,7 @@ export function RecommendationsSection({ recommendations }: RecommendationsSecti
     <Page size="A4" style={styles.page}>
       <Text style={styles.sectionTitle}>Recommendations</Text>
       <Text style={styles.intro}>
-        Prioritized actions based on panel feedback. Focus on &ldquo;Must Fix&rdquo; items first for
+        Prioritized actions based on panel feedback. Focus on Must Fix items first for
         maximum impact.
       </Text>
 
