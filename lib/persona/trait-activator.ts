@@ -574,3 +574,4 @@ function getTraitData(archetypeSlug: string): PhantomTrait[] {
 
   return traitSets[archetypeSlug] || []
 }
+// Trigger deploy 20260201071640
