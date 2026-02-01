@@ -98,7 +98,7 @@ export function TestCompleteModal({
     return undefined
   }, [isOpen])
 
-  const confettiColors = ['#ff2e2e', '#ff6b00', '#ffeb3b', '#ffffff']
+  const confettiColors: string[] = ['#ff2e2e', '#ff6b00', '#ffeb3b', '#ffffff']
 
   const getVerdict = (score: number) => {
     if (score >= 80) return 'Excellent performance across all metrics'
@@ -118,7 +118,7 @@ export function TestCompleteModal({
               <ConfettiParticle
                 key={i}
                 delay={i * 50}
-                color={confettiColors[i % confettiColors.length]}
+                color={confettiColors[i % confettiColors.length] ?? '#ffffff'}
               />
             ))}
           </div>
