@@ -210,6 +210,13 @@ export default async function TestPage({ params }: TestPageProps) {
         </Card>
       )}
 
+      {/* Debug: Show responses count */}
+      <div className="p-4 border border-yellow-500 bg-yellow-500/10 text-yellow-500 text-sm">
+        <strong>DEBUG:</strong> responses count = {responses?.length ?? 'null'},
+        error = {responsesError?.message ?? 'none'}
+        {responses?.length ? ` | First response has archetype: ${responses[0]?.archetype ? 'yes' : 'no'}` : ''}
+      </div>
+
       {/* Conversation Transcripts */}
       {responses && responses.length > 0 && (
         <ConversationTranscript
