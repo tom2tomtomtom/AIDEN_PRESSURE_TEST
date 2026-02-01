@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, getScoreColor } from '../report-styles'
+import { colors, fonts, fontSize, spacing, getScoreColor, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -124,17 +124,17 @@ export function ScoresDashboard({
       <View style={styles.scoresContainer}>
         {scores.map((score, index) => (
           <View key={index} style={styles.scoreCard}>
-            <Text style={[styles.scoreValue, { color: getScoreColor(score.value) }]}>
-              {Math.round(score.value)}
+            <Text style={[styles.scoreValue, { color: getScoreColor(score.value || 0) }]}>
+              {safeText(Math.round(score.value || 0))}
             </Text>
-            <Text style={styles.scoreLabel}>{score.label}</Text>
+            <Text style={styles.scoreLabel}>{safeText(score.label)}</Text>
             <View style={styles.scoreBar}>
               <View
                 style={[
                   styles.scoreBarFill,
                   {
-                    width: `${score.value}%`,
-                    backgroundColor: getScoreColor(score.value),
+                    width: `${score.value || 0}%`,
+                    backgroundColor: getScoreColor(score.value || 0),
                   },
                 ]}
               />
@@ -149,7 +149,7 @@ export function ScoresDashboard({
           <View style={styles.distributionRow}>
             <Text style={styles.distributionLabel}>Average Score</Text>
             <Text style={styles.distributionValue}>
-              {purchaseIntentAvg.toFixed(1)} / 10
+              {safeText(purchaseIntentAvg.toFixed(1))} / 10
             </Text>
           </View>
           {purchaseIntentDistribution && (
@@ -157,19 +157,19 @@ export function ScoresDashboard({
               <View style={styles.distributionRow}>
                 <Text style={styles.distributionLabel}>High Intent (8-10)</Text>
                 <Text style={[styles.distributionValue, { color: colors.scoreHigh }]}>
-                  {purchaseIntentDistribution.high}%
+                  {safeText(purchaseIntentDistribution.high)}%
                 </Text>
               </View>
               <View style={styles.distributionRow}>
                 <Text style={styles.distributionLabel}>Medium Intent (5-7)</Text>
                 <Text style={[styles.distributionValue, { color: colors.scoreMedium }]}>
-                  {purchaseIntentDistribution.medium}%
+                  {safeText(purchaseIntentDistribution.medium)}%
                 </Text>
               </View>
               <View style={styles.distributionRow}>
                 <Text style={styles.distributionLabel}>Low Intent (1-4)</Text>
                 <Text style={[styles.distributionValue, { color: colors.scoreLow }]}>
-                  {purchaseIntentDistribution.low}%
+                  {safeText(purchaseIntentDistribution.low)}%
                 </Text>
               </View>
             </>

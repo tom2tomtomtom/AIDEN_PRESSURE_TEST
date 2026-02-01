@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing } from '../report-styles'
+import { colors, fonts, fontSize, spacing, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -170,9 +170,9 @@ export function WeaknessesSection({ weaknesses, verbatimHighlights = [] }: Weakn
       {sortedWeaknesses.map((weakness, index) => (
         <View key={index} style={styles.weaknessCard}>
           <View style={styles.weaknessHeader}>
-            <Text style={styles.weaknessTitle}>{weakness.point}</Text>
+            <Text style={styles.weaknessTitle}>{safeText(weakness.point)}</Text>
             <Text style={[styles.severityBadge, getSeverityStyle(weakness.severity)]}>
-              {weakness.severity}
+              {safeText(weakness.severity)}
             </Text>
           </View>
           {weakness.evidence && weakness.evidence.length > 0 && (
@@ -180,7 +180,7 @@ export function WeaknessesSection({ weaknesses, verbatimHighlights = [] }: Weakn
               <Text style={styles.evidenceLabel}>Panel Feedback</Text>
               {weakness.evidence.slice(0, 3).map((evidence, i) => (
                 <Text key={i} style={styles.evidenceItem}>
-                  {evidence}
+                  {safeText(evidence)}
                 </Text>
               ))}
             </View>
@@ -193,9 +193,9 @@ export function WeaknessesSection({ weaknesses, verbatimHighlights = [] }: Weakn
           <Text style={styles.quoteSectionTitle}>Critical Voices</Text>
           {weaknessQuotes.map((quote, index) => (
             <View key={index} style={styles.quoteCard}>
-              <Text style={styles.quoteText}>&ldquo;{quote.quote}&rdquo;</Text>
+              <Text style={styles.quoteText}>&ldquo;{safeText(quote.quote)}&rdquo;</Text>
               <Text style={styles.quoteAttribution}>
-                {quote.persona_name} ({quote.archetype})
+                {safeText(quote.persona_name)} ({safeText(quote.archetype)})
               </Text>
             </View>
           ))}

@@ -290,3 +290,30 @@ export function getScoreVerdict(score: number): string {
   if (score >= 30) return 'Weak'
   return 'Critical'
 }
+
+// Helper to safely convert any value to a string for PDF rendering
+// This prevents React error #31 when database returns objects instead of strings
+export function safeText(value: unknown): string {
+  if (value === null || value === undefined) {
+    return ''
+  }
+  if (typeof value === 'string') {
+    return value
+  }
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value)
+  }
+  if (typeof value === 'object') {
+    // Handle arrays
+    if (Array.isArray(value)) {
+      return value.map(v => safeText(v)).join(', ')
+    }
+    // Handle objects - try to stringify
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return '[Object]'
+    }
+  }
+  return String(value)
+}

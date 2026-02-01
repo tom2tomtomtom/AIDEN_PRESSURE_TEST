@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, getScoreColor, getScoreVerdict } from '../report-styles'
+import { colors, fonts, fontSize, spacing, getScoreColor, getScoreVerdict, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -149,8 +149,8 @@ export function ExecutiveSummary({
       <View style={styles.verdictContainer}>
         <Text style={styles.scoreLabel}>Pressure Score</Text>
         <Text style={[styles.score, { color: scoreColor }]}>{Math.round(pressureScore)}</Text>
-        <Text style={styles.verdictText}>{verdict}</Text>
-        {oneLineVerdict && <Text style={styles.verdictDescription}>{oneLineVerdict}</Text>}
+        <Text style={styles.verdictText}>{safeText(verdict)}</Text>
+        {oneLineVerdict && <Text style={styles.verdictDescription}>{safeText(oneLineVerdict)}</Text>}
       </View>
 
       {takeaways.length > 0 && (
@@ -160,7 +160,7 @@ export function ExecutiveSummary({
             <View key={index} style={styles.takeawayItem}>
               <Text style={styles.takeawayNumber}>{index + 1}</Text>
               <View style={styles.takeawayContent}>
-                <Text style={styles.takeawayText}>{takeaway}</Text>
+                <Text style={styles.takeawayText}>{safeText(takeaway)}</Text>
               </View>
             </View>
           ))}

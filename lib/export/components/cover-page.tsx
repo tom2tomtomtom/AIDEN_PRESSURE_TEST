@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing } from '../report-styles'
+import { colors, fonts, fontSize, spacing, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -92,17 +92,17 @@ export function CoverPage({ testName, projectName, stimulusType, createdAt, comp
       <View style={styles.topSection}>
         <Text style={styles.brandLabel}>Pressure Test Report</Text>
         <View style={styles.decorativeLine} />
-        <Text style={styles.title}>{testName}</Text>
-        <Text style={styles.subtitle}>{projectName}</Text>
+        <Text style={styles.title}>{safeText(testName)}</Text>
+        <Text style={styles.subtitle}>{safeText(projectName)}</Text>
 
         <View style={styles.metaContainer}>
           <View style={styles.metaRow}>
             <Text style={styles.metaLabel}>Type</Text>
-            <Text style={styles.metaValue}>{stimulusType}</Text>
+            <Text style={styles.metaValue}>{safeText(stimulusType)}</Text>
           </View>
           <View style={styles.metaRow}>
             <Text style={styles.metaLabel}>Date</Text>
-            <Text style={styles.metaValue}>{formattedDate}</Text>
+            <Text style={styles.metaValue}>{safeText(formattedDate)}</Text>
           </View>
         </View>
       </View>

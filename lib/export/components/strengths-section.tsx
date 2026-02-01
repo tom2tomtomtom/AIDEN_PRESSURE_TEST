@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing } from '../report-styles'
+import { colors, fonts, fontSize, spacing, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -164,9 +164,9 @@ export function StrengthsSection({ strengths, verbatimHighlights = [] }: Strengt
       {strengths.map((strength, index) => (
         <View key={index} style={styles.strengthCard}>
           <View style={styles.strengthHeader}>
-            <Text style={styles.strengthTitle}>{strength.point}</Text>
+            <Text style={styles.strengthTitle}>{safeText(strength.point)}</Text>
             <Text style={[styles.confidenceBadge, getConfidenceStyle(strength.confidence)]}>
-              {strength.confidence}
+              {safeText(strength.confidence)}
             </Text>
           </View>
           {strength.evidence && strength.evidence.length > 0 && (
@@ -174,7 +174,7 @@ export function StrengthsSection({ strengths, verbatimHighlights = [] }: Strengt
               <Text style={styles.evidenceLabel}>Supporting Evidence</Text>
               {strength.evidence.slice(0, 3).map((evidence, i) => (
                 <Text key={i} style={styles.evidenceItem}>
-                  {evidence}
+                  {safeText(evidence)}
                 </Text>
               ))}
             </View>
@@ -187,9 +187,9 @@ export function StrengthsSection({ strengths, verbatimHighlights = [] }: Strengt
           <Text style={styles.quoteSectionTitle}>Supporting Voices</Text>
           {strengthQuotes.map((quote, index) => (
             <View key={index} style={styles.quoteCard}>
-              <Text style={styles.quoteText}>&ldquo;{quote.quote}&rdquo;</Text>
+              <Text style={styles.quoteText}>&ldquo;{safeText(quote.quote)}&rdquo;</Text>
               <Text style={styles.quoteAttribution}>
-                {quote.persona_name} ({quote.archetype})
+                {safeText(quote.persona_name)} ({safeText(quote.archetype)})
               </Text>
             </View>
           ))}

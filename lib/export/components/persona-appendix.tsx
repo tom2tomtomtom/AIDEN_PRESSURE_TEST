@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing, getScoreColor } from '../report-styles'
+import { colors, fonts, fontSize, spacing, getScoreColor, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -169,18 +169,18 @@ export function PersonaAppendix({ responses }: PersonaAppendixProps) {
             <View key={response.id} style={styles.personaCard}>
               <View style={styles.personaHeader}>
                 <View style={styles.personaInfo}>
-                  <Text style={styles.personaName}>{response.generated_name}</Text>
-                  <Text style={styles.archetypeBadge}>{response.archetype.name}</Text>
+                  <Text style={styles.personaName}>{safeText(response.generated_name)}</Text>
+                  <Text style={styles.archetypeBadge}>{safeText(response.archetype?.name)}</Text>
                 </View>
                 <View style={styles.metricsContainer}>
                   <View style={styles.metricItem}>
                     <Text
                       style={[
                         styles.metricValue,
-                        { color: getScoreColor(response.response_data.purchase_intent * 10) },
+                        { color: getScoreColor((response.response_data?.purchase_intent || 0) * 10) },
                       ]}
                     >
-                      {response.response_data.purchase_intent}
+                      {safeText(response.response_data?.purchase_intent)}
                     </Text>
                     <Text style={styles.metricLabel}>Intent</Text>
                   </View>
@@ -188,10 +188,10 @@ export function PersonaAppendix({ responses }: PersonaAppendixProps) {
                     <Text
                       style={[
                         styles.metricValue,
-                        { color: getScoreColor(response.response_data.credibility_rating * 10) },
+                        { color: getScoreColor((response.response_data?.credibility_rating || 0) * 10) },
                       ]}
                     >
-                      {response.response_data.credibility_rating}
+                      {safeText(response.response_data?.credibility_rating)}
                     </Text>
                     <Text style={styles.metricLabel}>Credibility</Text>
                   </View>
@@ -200,23 +200,23 @@ export function PersonaAppendix({ responses }: PersonaAppendixProps) {
 
               <View style={styles.responseSection}>
                 <Text style={styles.responseLabel}>Gut Reaction</Text>
-                <Text style={styles.responseText}>{response.response_data.gut_reaction}</Text>
+                <Text style={styles.responseText}>{safeText(response.response_data?.gut_reaction)}</Text>
               </View>
 
               <View style={styles.responseSection}>
                 <Text style={styles.responseLabel}>Considered View</Text>
-                <Text style={styles.responseText}>{response.response_data.considered_view}</Text>
+                <Text style={styles.responseText}>{safeText(response.response_data?.considered_view)}</Text>
               </View>
 
-              {response.response_data.private_thought && (
+              {response.response_data?.private_thought && (
                 <View style={styles.responseSection}>
                   <Text style={styles.responseLabel}>Private Thought</Text>
-                  <Text style={styles.responseText}>{response.response_data.private_thought}</Text>
+                  <Text style={styles.responseText}>{safeText(response.response_data.private_thought)}</Text>
                 </View>
               )}
 
               <Text style={styles.emotionalBadge}>
-                {response.response_data.emotional_response}
+                {safeText(response.response_data?.emotional_response)}
               </Text>
             </View>
           ))}

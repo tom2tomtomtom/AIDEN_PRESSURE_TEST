@@ -1,5 +1,5 @@
 import { Page, View, Text, StyleSheet } from '@react-pdf/renderer'
-import { colors, fonts, fontSize, spacing } from '../report-styles'
+import { colors, fonts, fontSize, spacing, safeText } from '../report-styles'
 
 const styles = StyleSheet.create({
   page: {
@@ -184,16 +184,16 @@ export function RecommendationsSection({ recommendations }: RecommendationsSecti
             <View style={styles.recommendationHeader}>
               <View style={styles.badgeContainer}>
                 <Text style={[styles.priorityBadge, priorityStyle.badge]}>
-                  {formatPriority(rec.priority)}
+                  {formatPriority(safeText(rec.priority))}
                 </Text>
                 {rec.effort && (
-                  <Text style={styles.effortBadge}>{rec.effort} effort</Text>
+                  <Text style={styles.effortBadge}>{safeText(rec.effort)} effort</Text>
                 )}
               </View>
             </View>
-            <Text style={styles.recommendationTitle}>{rec.recommendation}</Text>
+            <Text style={styles.recommendationTitle}>{safeText(rec.recommendation)}</Text>
             {rec.rationale && (
-              <Text style={styles.recommendationRationale}>{rec.rationale}</Text>
+              <Text style={styles.recommendationRationale}>{safeText(rec.rationale)}</Text>
             )}
           </View>
         )
