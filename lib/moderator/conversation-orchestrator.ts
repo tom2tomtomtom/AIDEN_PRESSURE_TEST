@@ -590,9 +590,9 @@ export async function storeConversationTurns(
     archetype_id: turn.archetypeId || null,
     content: turn.content,
     turn_type: turn.turnType,
-    in_response_to: turn.inResponseTo
-      ? turns.find(t => t.turnNumber === turn.inResponseTo)?.turnNumber
-      : null,
+    // Note: in_response_to requires UUID but we don't have IDs until after insert
+    // Setting to null for now - could do a two-pass insert if needed
+    in_response_to: null,
     is_revised: turn.isRevised || false
   }))
 
