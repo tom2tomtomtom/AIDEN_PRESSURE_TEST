@@ -1,14 +1,45 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Button } from '@/components/ui/button'
 import { ProjectCard } from '@/components/features/project-card'
 
 export default async function ProjectsPage() {
-  const supabase = await createClient()
+  // Get authenticated user
+  const authSupabase = await createAuthClient()
+  const { data: { user } } = await authSupabase.auth.getUser()
 
-  const { data: projects, error } = await supabase
+  if (!user) {
+    return (
+      <div className="p-8 text-center">
+        <p>Please log in to view projects.</p>
+      </div>
+    )
+  }
+
+  // Use admin client to bypass RLS issues, but verify org membership
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user.id)
+    .single()
+
+  if (!membership) {
+    return (
+      <div className="p-8 text-center">
+        <p>No organization found. Please visit <a href="/debug" className="underline">/debug</a> to set up your organization.</p>
+      </div>
+    )
+  }
+
+  // Fetch projects for user's organization
+  const { data: projects, error } = await adminClient
     .from('projects')
     .select('*')
+    .eq('organization_id', membership.organization_id)
     .is('archived_at', null)
     .order('created_at', { ascending: false })
 

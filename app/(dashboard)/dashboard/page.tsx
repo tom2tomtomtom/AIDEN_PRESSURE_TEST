@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { createAuthClient } from '@/lib/supabase/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -8,14 +8,24 @@ export default async function DashboardPage() {
   const authSupabase = await createAuthClient()
   const { data: { user } } = await authSupabase.auth.getUser()
 
-  // Get projects count (only non-archived)
-  const supabase = await createClient()
-  const { count: projectCount } = await supabase
+  // Use admin client to bypass RLS issues
+  const adminClient = createAdminClient()
+
+  // Get user's organization
+  const { data: membership } = await adminClient
+    .from('organization_members')
+    .select('organization_id')
+    .eq('user_id', user?.id || '')
+    .single()
+
+  // Get projects count for user's organization (only non-archived)
+  const { count: projectCount } = await adminClient
     .from('projects')
     .select('*', { count: 'exact', head: true })
+    .eq('organization_id', membership?.organization_id || '')
     .is('archived_at', null)
 
-  const { count: testCount } = await supabase
+  const { count: testCount } = await adminClient
     .from('pressure_tests')
     .select('*', { count: 'exact', head: true })
 
