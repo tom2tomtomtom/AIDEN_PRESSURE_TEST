@@ -9,7 +9,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { PanelSelector } from './panel-selector'
 import { SkepticismSlider } from './skepticism-slider'
-import { ChevronLeft, ChevronRight, Loader2, Beaker, Plus, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Loader2, Beaker, Plus, X, RefreshCw, Trash2 } from 'lucide-react'
+import { useDraftRecovery } from '@/hooks/useDraftRecovery'
 
 interface TestWizardProps {
   projectId: string
@@ -52,9 +53,25 @@ const defaultConfig: TestConfig = {
 export function TestWizard({ projectId }: TestWizardProps) {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState<WizardStep>('basics')
-  const [config, setConfig] = useState<TestConfig>(defaultConfig)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Draft recovery for form persistence
+  const {
+    data: config,
+    setData: setConfig,
+    hasDraft,
+    isRecovering,
+    recoverDraft,
+    discardDraft,
+    clearDraft,
+    getRelativeTime,
+  } = useDraftRecovery<TestConfig>({
+    key: `test_wizard_${projectId}`,
+    defaultValue: defaultConfig,
+    debounceMs: 500,
+    maxAgeMs: 7 * 24 * 60 * 60 * 1000, // 7 days
+  })
 
   const currentStepIndex = STEPS.findIndex(s => s.id === currentStep)
   const currentStepData = STEPS[currentStepIndex]
@@ -62,7 +79,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
   const isLastStep = currentStepIndex === STEPS.length - 1
 
   const updateConfig = <K extends keyof TestConfig>(key: K, value: TestConfig[K]) => {
-    setConfig(prev => ({ ...prev, [key]: value }))
+    setConfig((prev: TestConfig) => ({ ...prev, [key]: value }), config.name || 'Untitled Test')
   }
 
   const canProceed = (): boolean => {
@@ -90,24 +107,24 @@ export function TestWizard({ projectId }: TestWizardProps) {
 
   const addHeadline = () => {
     if (config.headlines.length < 30) {
-      setConfig(prev => ({ ...prev, headlines: [...prev.headlines, ''] }))
+      setConfig((prev: TestConfig) => ({ ...prev, headlines: [...prev.headlines, ''] }), config.name || 'Untitled Test')
     }
   }
 
   const removeHeadline = (index: number) => {
     if (config.headlines.length > 2) {
-      setConfig(prev => ({
+      setConfig((prev: TestConfig) => ({
         ...prev,
         headlines: prev.headlines.filter((_, i) => i !== index)
-      }))
+      }), config.name || 'Untitled Test')
     }
   }
 
   const updateHeadline = (index: number, value: string) => {
-    setConfig(prev => ({
+    setConfig((prev: TestConfig) => ({
       ...prev,
       headlines: prev.headlines.map((h, i) => i === index ? value : h)
-    }))
+    }), config.name || 'Untitled Test')
   }
 
   const goNext = () => {
@@ -169,6 +186,7 @@ export function TestWizard({ projectId }: TestWizardProps) {
       }
 
       const { test } = await response.json()
+      clearDraft() // Clear saved draft on successful submission
       router.push(`/projects/${projectId}/tests/${test.id}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong')
@@ -177,8 +195,62 @@ export function TestWizard({ projectId }: TestWizardProps) {
     }
   }
 
+  // Show loading state while checking for drafts
+  if (isRecovering) {
+    return (
+      <div className="max-w-3xl mx-auto">
+        <Card>
+          <CardContent className="py-8">
+            <div className="flex items-center justify-center gap-2 text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              <span>Checking for saved drafts...</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      {/* Draft Recovery Prompt */}
+      {hasDraft && currentStep === 'basics' && (
+        <Card className="border-orange-accent bg-orange-500/5">
+          <CardContent className="py-4">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <RefreshCw className="h-5 w-5 text-orange-accent mt-0.5" />
+                <div>
+                  <p className="font-medium text-sm">Unsaved test draft found</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Last edited {getRelativeTime()}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={discardDraft}
+                  className="text-xs"
+                >
+                  <Trash2 className="h-3 w-3 mr-1" />
+                  Discard
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={recoverDraft}
+                  className="text-xs bg-orange-accent hover:bg-orange-accent/90"
+                >
+                  <RefreshCw className="h-3 w-3 mr-1" />
+                  Recover Draft
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Progress indicator */}
       <div className="flex items-center justify-between">
         {STEPS.map((step, index) => (

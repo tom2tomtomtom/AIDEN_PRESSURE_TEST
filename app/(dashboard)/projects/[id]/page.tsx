@@ -113,9 +113,16 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             <CardTitle>Pressure Tests</CardTitle>
             <CardDescription>Run tests to validate your concepts</CardDescription>
           </div>
-          <Button asChild>
-            <Link href={`/projects/${id}/tests/new`}>New Test</Link>
-          </Button>
+          <div className="flex gap-2">
+            {tests && tests.filter(t => t.status === 'completed').length >= 2 && (
+              <Button asChild variant="outline">
+                <Link href={`/projects/${id}/compare`}>Compare Tests</Link>
+              </Button>
+            )}
+            <Button asChild>
+              <Link href={`/projects/${id}/tests/new`}>New Test</Link>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
           {!tests || tests.length === 0 ? (

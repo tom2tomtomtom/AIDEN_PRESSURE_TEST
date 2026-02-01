@@ -12,6 +12,7 @@ import { ArchetypeQuotes } from '@/components/results/archetype-quotes'
 import { HiddenConcerns } from '@/components/results/hidden-concerns'
 import { ReactionSpectrum } from '@/components/results/reaction-spectrum'
 import { ConversationTranscript } from '@/components/results/conversation-transcript'
+import { PersonaResponsesEnhanced } from '@/components/features/persona-responses-enhanced'
 
 interface TestPageProps {
   params: Promise<{ id: string; testId: string }>
@@ -170,6 +171,9 @@ export default async function TestPage({ params }: TestPageProps) {
 
                   {/* Hidden concerns - social vs private tension */}
                   <HiddenConcerns responses={responses} />
+
+                  {/* Enhanced persona responses with view modes */}
+                  <PersonaResponsesEnhanced responses={responses} />
                 </>
               )}
             </>
