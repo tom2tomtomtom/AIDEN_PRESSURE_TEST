@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
 
 // Validation schema for creating a test
@@ -24,12 +26,26 @@ const createTestSchema = z.object({
  */
 export async function POST(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
 
     // Verify authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
+    // Get user's organization
+    const { data: membership } = await adminClient
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!membership) {
+      return NextResponse.json({ error: 'No organization found' }, { status: 403 })
     }
 
     // Parse and validate body
@@ -46,10 +62,11 @@ export async function POST(request: NextRequest) {
     const { project_id, name, stimulus_type, stimulus_content, stimulus_context, stimulus_claims, panel_config } = validationResult.data
 
     // Verify user has access to project
-    const { data: project, error: projectError } = await supabase
+    const { data: project, error: projectError } = await adminClient
       .from('projects')
       .select('id, organization_id')
       .eq('id', project_id)
+      .eq('organization_id', membership.organization_id)
       .single()
 
     if (projectError || !project) {
@@ -57,7 +74,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create test
-    const { data: test, error: createError } = await supabase
+    const { data: test, error: createError } = await adminClient
       .from('pressure_tests')
       .insert({
         project_id,
@@ -77,6 +94,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to create test' }, { status: 500 })
     }
 
+    revalidatePath(`/projects/${project_id}`)
     return NextResponse.json({ test }, { status: 201 })
   } catch (error) {
     console.error('Error in POST /api/tests:', error)
@@ -90,12 +108,26 @@ export async function POST(request: NextRequest) {
  */
 export async function GET(request: NextRequest) {
   try {
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
 
     // Verify authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
+    // Get user's organization
+    const { data: membership } = await adminClient
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!membership) {
+      return NextResponse.json({ error: 'No organization found' }, { status: 403 })
     }
 
     // Get project_id from query params
@@ -107,10 +139,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Verify user has access to project
-    const { data: project, error: projectError } = await supabase
+    const { data: project, error: projectError } = await adminClient
       .from('projects')
       .select('id')
       .eq('id', projectId)
+      .eq('organization_id', membership.organization_id)
       .single()
 
     if (projectError || !project) {
@@ -118,7 +151,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get tests with basic result info
-    const { data: tests, error: testsError } = await supabase
+    const { data: tests, error: testsError } = await adminClient
       .from('pressure_tests')
       .select(`
         id,

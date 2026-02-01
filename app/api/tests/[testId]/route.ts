@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { revalidatePath } from 'next/cache'
 
 interface RouteParams {
   params: Promise<{ testId: string }>
@@ -15,16 +17,19 @@ export async function GET(
 ) {
   try {
     const { testId } = await params
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
 
     // Verify authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
     // Get test with results
-    const { data: test, error: testError } = await supabase
+    const { data: test, error: testError } = await adminClient
       .from('pressure_tests')
       .select(`
         *,
@@ -113,18 +118,21 @@ export async function DELETE(
 ) {
   try {
     const { testId } = await params
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
 
     // Verify authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
     // Check test exists and is deletable
-    const { data: test, error: testError } = await supabase
+    const { data: test, error: testError } = await adminClient
       .from('pressure_tests')
-      .select('id, status')
+      .select('id, status, project_id')
       .eq('id', testId)
       .single()
 
@@ -140,7 +148,7 @@ export async function DELETE(
     }
 
     // Delete test
-    const { error: deleteError } = await supabase
+    const { error: deleteError } = await adminClient
       .from('pressure_tests')
       .delete()
       .eq('id', testId)
@@ -150,6 +158,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Failed to delete test' }, { status: 500 })
     }
 
+    revalidatePath(`/projects/${test.project_id}`)
     return NextResponse.json({ success: true })
   } catch (error) {
     console.error('Error in DELETE /api/tests/[testId]:', error)

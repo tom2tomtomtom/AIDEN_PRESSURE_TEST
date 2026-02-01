@@ -1,15 +1,37 @@
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET() {
   try {
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
+    const { data: { user } } = await authSupabase.auth.getUser()
 
-    const { data, error } = await supabase
+    if (!user) {
+      return NextResponse.json(
+        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
+        { status: 401 }
+      )
+    }
+
+    const adminClient = createAdminClient()
+
+    // Get user's organization
+    const { data: membership } = await adminClient
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .single()
+
+    if (!membership) {
+      return NextResponse.json({ data: [] })
+    }
+
+    const { data, error } = await adminClient
       .from('projects')
       .select('*')
+      .eq('organization_id', membership.organization_id)
       .is('archived_at', null)
       .order('created_at', { ascending: false })
 
@@ -31,7 +53,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
     const body = await request.json()
 
     if (!body.name) {
@@ -42,7 +64,7 @@ export async function POST(request: Request) {
     }
 
     // Get the authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json(
         { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },

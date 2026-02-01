@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { after } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createAuthClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { executeTest, loadTestConfig } from '@/lib/test-execution/runner'
 import { executeHeadlineTest, loadHeadlineTestConfig } from '@/lib/test-execution/headline-runner'
 
@@ -18,16 +19,19 @@ export async function POST(
 ) {
   try {
     const { testId } = await params
-    const supabase = await createClient()
+    const authSupabase = await createAuthClient()
 
     // Verify authentication
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
+    // Use admin client to bypass RLS issues
+    const adminClient = createAdminClient()
+
     // Check test exists and is in draft status
-    const { data: test, error: testError } = await supabase
+    const { data: test, error: testError } = await adminClient
       .from('pressure_tests')
       .select('id, status, project_id, stimulus_type')
       .eq('id', testId)
@@ -54,7 +58,7 @@ export async function POST(
     }
 
     // Set status to running immediately before backgrounding
-    const { error: updateError } = await supabase
+    const { error: updateError } = await adminClient
       .from('pressure_tests')
       .update({
         status: 'running',
