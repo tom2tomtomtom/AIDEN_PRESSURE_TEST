@@ -5,10 +5,23 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 
-// Initialize client
-export const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY!,
-})
+// Lazy-initialized client (to allow env vars to be loaded first)
+let _anthropic: Anthropic | null = null
+
+function getClient(): Anthropic {
+  if (!_anthropic) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY environment variable is not set')
+    }
+    _anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    })
+  }
+  return _anthropic
+}
+
+// Export getter for direct access if needed
+export const anthropic = { get client() { return getClient() } }
 
 // Temperature presets for different tasks
 export const TEMPERATURES = {
@@ -101,7 +114,7 @@ export async function complete(
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
-      const response = await anthropic.messages.create({
+      const response = await getClient().messages.create({
         model,
         max_tokens: maxTokens,
         temperature,
@@ -285,7 +298,7 @@ export async function* completeStream(
     system
   } = options
 
-  const stream = anthropic.messages.stream({
+  const stream = getClient().messages.stream({
     model,
     max_tokens: maxTokens,
     temperature,

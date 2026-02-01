@@ -3,7 +3,10 @@
  * Loads persona archetypes from database with caching
  */
 
-import { createAdminClient } from '@/lib/supabase/admin'
+import { createAdminAuthClient } from '@/lib/supabase/admin'
+
+// Use auth client (public schema) for RPC calls since our functions are in public schema
+const createRpcClient = createAdminAuthClient
 
 export interface PersonaArchetype {
   id: string
@@ -58,37 +61,44 @@ function isCacheValid(): boolean {
 
 /**
  * Load all archetypes (with caching)
+ * Uses RPC function to access ppt schema
  */
 export async function loadAllArchetypes(): Promise<PersonaArchetype[]> {
   if (isCacheValid() && archetypeCache) {
     return Array.from(archetypeCache.values())
   }
 
-  const supabase = createAdminClient()
+  const supabase = createRpcClient()
 
-  const { data, error } = await supabase
-    .from('persona_archetypes')
-    .select('*')
-    .order('name')
+  const { data, error } = await supabase.rpc('get_all_archetypes')
 
   if (error) {
     console.error('Error loading archetypes:', error)
     throw new Error('Failed to load archetypes')
   }
 
+  // RPC returns JSONB directly, extract the data
+  const archetypes = (data || []).map((item: any) => {
+    // Handle both direct JSONB and wrapped response formats
+    return typeof item === 'object' && item !== null
+      ? (item.get_all_archetypes || item) as PersonaArchetype
+      : item
+  })
+
   // Update cache
   archetypeCache = new Map()
-  for (const archetype of data || []) {
-    archetypeCache.set(archetype.id, archetype as PersonaArchetype)
-    archetypeCache.set(archetype.slug, archetype as PersonaArchetype)
+  for (const archetype of archetypes) {
+    archetypeCache.set(archetype.id, archetype)
+    archetypeCache.set(archetype.slug, archetype)
   }
   cacheTimestamp = Date.now()
 
-  return data as PersonaArchetype[]
+  return archetypes
 }
 
 /**
  * Load a single archetype by ID
+ * Uses RPC function to access ppt schema
  */
 export async function loadArchetypeById(id: string): Promise<PersonaArchetype | null> {
   // Check cache first
@@ -96,13 +106,9 @@ export async function loadArchetypeById(id: string): Promise<PersonaArchetype | 
     return archetypeCache.get(id) || null
   }
 
-  const supabase = createAdminClient()
+  const supabase = createRpcClient()
 
-  const { data, error } = await supabase
-    .from('persona_archetypes')
-    .select('*')
-    .eq('id', id)
-    .single()
+  const { data, error } = await supabase.rpc('get_archetype_by_id', { archetype_id: id })
 
   if (error) {
     if (error.code === 'PGRST116') {
@@ -112,19 +118,27 @@ export async function loadArchetypeById(id: string): Promise<PersonaArchetype | 
     throw new Error('Failed to load archetype')
   }
 
+  if (!data) return null
+
+  // Handle wrapped JSONB response
+  const archetype = (typeof data === 'object' && data.get_archetype_by_id)
+    ? data.get_archetype_by_id as PersonaArchetype
+    : data as PersonaArchetype
+
   // Update cache
   if (!archetypeCache) {
     archetypeCache = new Map()
     cacheTimestamp = Date.now()
   }
-  archetypeCache.set(data.id, data as PersonaArchetype)
-  archetypeCache.set(data.slug, data as PersonaArchetype)
+  archetypeCache.set(archetype.id, archetype)
+  archetypeCache.set(archetype.slug, archetype)
 
-  return data as PersonaArchetype
+  return archetype
 }
 
 /**
  * Load a single archetype by slug
+ * Uses RPC function to access ppt schema
  */
 export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetype | null> {
   // Check cache first
@@ -132,13 +146,9 @@ export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetyp
     return archetypeCache.get(slug) || null
   }
 
-  const supabase = createAdminClient()
+  const supabase = createRpcClient()
 
-  const { data, error } = await supabase
-    .from('persona_archetypes')
-    .select('*')
-    .eq('slug', slug)
-    .single()
+  const { data, error } = await supabase.rpc('get_archetype_by_slug', { archetype_slug: slug })
 
   if (error) {
     if (error.code === 'PGRST116') {
@@ -148,60 +158,43 @@ export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetyp
     throw new Error('Failed to load archetype')
   }
 
+  if (!data) return null
+
+  // Handle wrapped JSONB response
+  const archetype = (typeof data === 'object' && data.get_archetype_by_slug)
+    ? data.get_archetype_by_slug as PersonaArchetype
+    : data as PersonaArchetype
+
   // Update cache
   if (!archetypeCache) {
     archetypeCache = new Map()
     cacheTimestamp = Date.now()
   }
-  archetypeCache.set(data.id, data as PersonaArchetype)
-  archetypeCache.set(data.slug, data as PersonaArchetype)
+  archetypeCache.set(archetype.id, archetype)
+  archetypeCache.set(archetype.slug, archetype)
 
-  return data as PersonaArchetype
+  return archetype
 }
 
 /**
  * Load archetypes with memory counts
+ * Uses RPC function to access ppt schema
  */
 export async function loadArchetypesWithStats(): Promise<ArchetypeWithStats[]> {
-  const supabase = createAdminClient()
+  // Load archetypes via RPC
+  const archetypes = await loadAllArchetypes()
 
-  // Get archetypes
-  const { data: archetypes, error: archError } = await supabase
-    .from('persona_archetypes')
-    .select('*')
-    .order('name')
-
-  if (archError) {
-    console.error('Error loading archetypes:', archError)
-    throw new Error('Failed to load archetypes')
-  }
-
-  // Get memory counts per archetype
-  const { data: memoryCounts, error: memError } = await supabase
-    .from('phantom_memories')
-    .select('archetype_id')
-
-  if (memError) {
-    console.error('Error loading memory counts:', memError)
-    throw new Error('Failed to load memory counts')
-  }
-
-  // Count memories per archetype
-  const countMap = new Map<string, number>()
-  for (const m of memoryCounts || []) {
-    const current = countMap.get(m.archetype_id) || 0
-    countMap.set(m.archetype_id, current + 1)
-  }
-
-  // Combine data
-  return (archetypes || []).map(archetype => ({
+  // For now, return with 0 memory counts (phantom_memories also needs RPC)
+  // TODO: Create RPC for memory counts when phantom_memories table is populated
+  return archetypes.map(archetype => ({
     ...archetype,
-    memoryCount: countMap.get(archetype.id) || 0
+    memoryCount: 0
   })) as ArchetypeWithStats[]
 }
 
 /**
- * Load multiple archetypes by IDs
+ * Load multiple archetypes by IDs or slugs
+ * Uses RPC function to access ppt schema
  */
 export async function loadArchetypesByIds(ids: string[]): Promise<PersonaArchetype[]> {
   if (ids.length === 0) return []
@@ -217,29 +210,11 @@ export async function loadArchetypesByIds(ids: string[]): Promise<PersonaArchety
     }
   }
 
-  const supabase = createAdminClient()
+  // Load all and filter (since we don't have a batch RPC function)
+  const all = await loadAllArchetypes()
+  const idSet = new Set(ids)
 
-  const { data, error } = await supabase
-    .from('persona_archetypes')
-    .select('*')
-    .in('id', ids)
-
-  if (error) {
-    console.error('Error loading archetypes:', error)
-    throw new Error('Failed to load archetypes')
-  }
-
-  // Update cache
-  if (!archetypeCache) {
-    archetypeCache = new Map()
-    cacheTimestamp = Date.now()
-  }
-  for (const archetype of data || []) {
-    archetypeCache.set(archetype.id, archetype as PersonaArchetype)
-    archetypeCache.set(archetype.slug, archetype as PersonaArchetype)
-  }
-
-  return data as PersonaArchetype[]
+  return all.filter(a => idSet.has(a.id) || idSet.has(a.slug))
 }
 
 /**

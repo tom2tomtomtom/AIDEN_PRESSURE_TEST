@@ -304,3 +304,129 @@ export function validatePersonaResponse(response: unknown): response is PersonaR
     typeof r.what_would_convince === 'string'
   )
 }
+
+// =============================================================================
+// MULTI-TURN CONVERSATION SUPPORT
+// =============================================================================
+
+/**
+ * Context provided when generating a revised response after moderator clarification
+ */
+export interface ModeratorContext {
+  clarification: string        // What the moderator said
+  creativeIntent: string       // The intended creative approach
+  previousTurns?: string[]     // Previous conversation turns
+}
+
+/**
+ * Build prompt for a revised response after moderator provides context
+ */
+export function buildRevisedResponsePrompt(
+  context: PersonaContext,
+  stimulus: string,
+  stimulusType: string,
+  brief: string | undefined,
+  moderatorContext: ModeratorContext,
+  initialResponse: PersonaResponseSchema
+): string {
+  const basePrompt = buildPersonaResponsePrompt(context, stimulus, stimulusType, brief)
+
+  return `${basePrompt}
+
+# Important: This is a REVISED Response
+
+You already provided your initial reaction to this content. Here's what happened:
+
+## Your Initial Response:
+- Gut reaction: "${initialResponse.gut_reaction}"
+- Considered view: "${initialResponse.considered_view}"
+- Purchase intent: ${initialResponse.purchase_intent}/10
+- Credibility: ${initialResponse.credibility_rating}/10
+- You were feeling: ${initialResponse.emotional_response}
+
+## The Moderator Then Said:
+"${moderatorContext.clarification}"
+
+## The Creative Intent Was:
+${moderatorContext.creativeIntent}
+
+## Your Task Now:
+Provide a REVISED response now that you understand the creative intent better.
+
+IMPORTANT GUIDELINES FOR REVISION:
+1. You may change your view if the context genuinely shifts your perception
+2. You may maintain your view if your concerns still stand
+3. You may partially adjust - some things may land better, others may not
+4. Be authentic to your persona - don't just tell the moderator what they want to hear
+5. Real consumers don't completely flip their views instantly, but they do sometimes see things differently with context
+
+If your view has shifted, explain WHY in your considered_view. If it hasn't, explain what would need to change for it to land better.`
+}
+
+/**
+ * Build prompt for a follow-up response to a moderator probe
+ */
+export function buildFollowUpResponsePrompt(
+  context: PersonaContext,
+  stimulus: string,
+  moderatorQuestion: string,
+  previousResponse: string
+): string {
+  return `You are ${context.name.fullName}, ${context.demographicSummary}.
+
+${context.psychographicSummary}
+
+${context.voiceSummary}
+
+## The Marketing Content You Were Shown:
+${stimulus}
+
+## Your Previous Response:
+"${previousResponse}"
+
+## The Moderator Now Asks:
+"${moderatorQuestion}"
+
+## Instructions:
+Respond naturally as ${context.name.firstName} would in a focus group setting.
+
+- Keep your response to 2-4 sentences
+- Stay in character with your persona's voice and values
+- Be specific rather than vague
+- If asked about feelings, explore the emotional dimension
+- If asked for examples, give concrete ones from your perspective
+- If asked what would help, give actionable suggestions
+
+Don't start with "Well," or "I think" - just respond naturally.`
+}
+
+/**
+ * Build system prompt for multi-turn conversation
+ */
+export function buildConversationSystemPrompt(): string {
+  return `You are an AI simulating a real consumer persona in a moderated focus group discussion.
+
+CRITICAL GUIDELINES FOR CONVERSATION:
+
+1. STAY IN CHARACTER
+   - Maintain consistent personality, values, and voice throughout
+   - Your past experiences and skepticism level shape ALL your responses
+   - Don't break character to explain yourself
+
+2. RESPOND NATURALLY
+   - Speak as you would in a real focus group
+   - Use your persona's vocabulary and speech patterns
+   - React authentically to moderator questions
+
+3. EVOLVE AUTHENTICALLY
+   - It's OK to adjust your view with new information
+   - But don't flip completely just to please the moderator
+   - Real people are consistent but not rigid
+
+4. BE SPECIFIC
+   - When probed, give concrete details
+   - Share examples from your (persona's) life
+   - Avoid vague or generic responses
+
+Respond conversationally - this is a discussion, not a survey.`
+}

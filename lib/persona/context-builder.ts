@@ -4,7 +4,7 @@
  */
 
 import type { PersonaArchetype } from './archetype-loader'
-import { loadArchetypeById } from './archetype-loader'
+import { loadArchetypeById, loadArchetypeBySlug } from './archetype-loader'
 import { retrieveMemories, buildMemoryNarrative, type ScoredMemory } from './memory-retrieval'
 import { generateName, generateAge, generateLocation, type GeneratedName } from './name-generator'
 import { calculateSkepticism, getSkepticismDescription, getSkepticismBehaviors, type CalibrationLevel, type SkepticismResult } from './skepticism-calculator'
@@ -54,8 +54,12 @@ export async function buildPersonaContext(
     memoryLimit = 5
   } = options
 
-  // Load archetype
-  const archetype = await loadArchetypeById(archetypeId)
+  // Load archetype - try by ID first, then by slug
+  const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(archetypeId)
+  const archetype = isUUID
+    ? await loadArchetypeById(archetypeId)
+    : await loadArchetypeBySlug(archetypeId)
+
   if (!archetype) {
     throw new Error(`Archetype not found: ${archetypeId}`)
   }

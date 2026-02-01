@@ -65,15 +65,26 @@ export async function retrieveMemories(
   const claims = detectClaims(stimulusText)
 
   // Fetch all memories for this archetype and category
-  const { data: memories, error } = await supabase
-    .from('phantom_memories')
-    .select('*')
-    .eq('archetype_id', archetypeId)
-    .eq('category', category)
+  // Note: phantom_memories is in ppt schema, may not be accessible via REST API
+  let memories: PhantomMemory[] | null = null
 
-  if (error) {
-    console.error('Error fetching memories:', error)
-    throw new Error('Failed to retrieve memories')
+  try {
+    const { data, error } = await supabase
+      .from('phantom_memories')
+      .select('*')
+      .eq('archetype_id', archetypeId)
+      .eq('category', category)
+
+    if (error) {
+      // Schema not accessible or other error - fall back to seed data
+      console.log('Memories not accessible via REST, using seed data fallback')
+      memories = null
+    } else {
+      memories = data as PhantomMemory[]
+    }
+  } catch (e) {
+    console.log('Error accessing memories, using seed data fallback:', e)
+    memories = null
   }
 
   if (!memories || memories.length === 0) {
