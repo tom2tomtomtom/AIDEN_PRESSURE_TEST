@@ -90,7 +90,7 @@ export default async function TestPage({ params }: TestPageProps) {
     .single()
 
   // Get persona responses
-  const { data: responses } = await adminClient
+  const { data: responses, error: responsesError } = await adminClient
     .from('persona_responses')
     .select(`
       *,
@@ -98,6 +98,13 @@ export default async function TestPage({ params }: TestPageProps) {
     `)
     .eq('test_id', testId)
     .order('created_at', { ascending: true })
+
+  // Debug logging
+  console.log('[Test Page] responses count:', responses?.length || 0)
+  console.log('[Test Page] responses error:', responsesError)
+  if (responses?.length) {
+    console.log('[Test Page] first response:', JSON.stringify(responses[0], null, 2))
+  }
 
   return (
     <div className="space-y-6">
