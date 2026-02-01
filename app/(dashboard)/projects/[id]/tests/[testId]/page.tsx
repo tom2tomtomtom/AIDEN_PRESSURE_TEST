@@ -90,16 +90,44 @@ export default async function TestPage({ params }: TestPageProps) {
     .single()
 
   // Get persona responses (without archetype join - relationship not set up)
-  const { data: rawResponses, error: responsesError } = await adminClient
+  const { data: rawResponses } = await adminClient
     .from('persona_responses')
     .select('*')
     .eq('test_id', testId)
     .order('created_at', { ascending: true })
 
-  // Get archetypes separately if we have responses
-  let responses = rawResponses
+  // Transform flat DB structure to nested structure expected by components
+  let responses: Array<{
+    id: string
+    archetype_id: string
+    archetype: {
+      id: string
+      name: string
+      slug: string
+      category: string
+      baseline_skepticism: string
+    }
+    generated_name: string
+    response_data: {
+      gut_reaction: string
+      considered_view: string
+      social_response: string
+      private_thought: string
+      purchase_intent: number
+      credibility_rating: number
+      emotional_response: string
+      key_concerns: string[]
+      what_would_convince: string[]
+      what_works?: string[]
+    }
+    memories_used: string[]
+    created_at: string
+  }> | null = null
+
   if (rawResponses && rawResponses.length > 0) {
+    // Get archetypes separately
     const archetypeIds = [...new Set(rawResponses.map(r => r.archetype_id).filter(Boolean))]
+    let archetypeMap = new Map<string, { id: string; name: string; slug: string; category: string; baseline_skepticism: string }>()
 
     if (archetypeIds.length > 0) {
       const { data: archetypes } = await adminClient
@@ -107,19 +135,40 @@ export default async function TestPage({ params }: TestPageProps) {
         .select('id, name, slug, category, baseline_skepticism')
         .in('id', archetypeIds)
 
-      // Map archetypes to responses
-      const archetypeMap = new Map(archetypes?.map(a => [a.id, a]) || [])
-      responses = rawResponses.map(r => ({
-        ...r,
-        archetype: archetypeMap.get(r.archetype_id) || {
-          id: r.archetype_id,
-          name: r.archetype_id || 'Unknown',
-          slug: r.archetype_id || 'unknown',
-          category: 'unknown',
-          baseline_skepticism: 'medium'
-        }
-      }))
+      archetypeMap = new Map(archetypes?.map(a => [a.id, a]) || [])
     }
+
+    // Transform responses to expected structure
+    responses = rawResponses.map(r => ({
+      id: r.id,
+      archetype_id: r.archetype_id,
+      archetype: archetypeMap.get(r.archetype_id) || {
+        id: r.archetype_id || 'unknown',
+        name: r.persona_context?.archetype || r.archetype_id || 'Unknown',
+        slug: r.archetype_id || 'unknown',
+        category: 'unknown',
+        baseline_skepticism: r.persona_context?.skepticism || 'medium'
+      },
+      generated_name: r.persona_name || 'Unknown Persona',
+      response_data: {
+        gut_reaction: r.gut_reaction || '',
+        considered_view: r.considered_view || '',
+        social_response: r.social_response || '',
+        private_thought: r.private_thought || '',
+        purchase_intent: r.purchase_intent || 0,
+        credibility_rating: r.credibility_rating || 0,
+        emotional_response: r.emotional_response || 'neutral',
+        key_concerns: r.key_concerns || [],
+        what_would_convince: Array.isArray(r.what_would_convince)
+          ? r.what_would_convince
+          : r.what_would_convince
+            ? [r.what_would_convince]
+            : [],
+        what_works: r.what_works || []
+      },
+      memories_used: r.triggered_memories || [],
+      created_at: r.created_at
+    }))
   }
 
   return (
@@ -231,14 +280,9 @@ export default async function TestPage({ params }: TestPageProps) {
         <strong>DEBUG:</strong> responses count = {responses?.length ?? 'null'}
         {responses?.length ? (
           <>
-            <br />Keys: {Object.keys(responses[0] || {}).join(', ')}
+            <br />First persona: {responses[0]?.generated_name}
             <br />Has response_data: {responses[0]?.response_data ? 'yes' : 'no'}
-            <br />response_data type: {typeof responses[0]?.response_data}
-            {responses[0]?.response_data && (
-              <>
-                <br />response_data keys: {Object.keys(responses[0].response_data || {}).join(', ')}
-              </>
-            )}
+            <br />emotional_response: {responses[0]?.response_data?.emotional_response || 'missing'}
           </>
         ) : null}
       </div>
