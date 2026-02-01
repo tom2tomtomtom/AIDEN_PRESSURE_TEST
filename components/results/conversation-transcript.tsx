@@ -11,6 +11,7 @@ interface ResponseData {
   considered_view: string
   social_response: string
   private_thought: string
+  body_language?: string
   purchase_intent: number
   credibility_rating: number
   emotional_response: string
@@ -242,6 +243,17 @@ function TranscriptCard({ response, stimulus, stimulusType }: {
                       : 'I think it could work as is.'}
                 </PersonaMessage>
               </>
+            )}
+
+            {/* Body Language Observation */}
+            {data.body_language && (
+              <div className="mt-4 pt-4 border-t border-border-subtle border-dashed">
+                <p className="text-xs text-white-muted/60 uppercase tracking-wider mb-2 flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 bg-orange-accent rounded-full"></span>
+                  Observer Note: Body Language
+                </p>
+                <p className="text-sm text-white-muted italic">{data.body_language}</p>
+              </div>
             )}
 
             {/* Summary scores bar */}

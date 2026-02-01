@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { TestActions } from '@/components/features/test-actions'
+import { ExportButton } from '@/components/features/export-button'
 import { TestResults } from '@/components/features/test-results'
 import { HeadlineResults } from '@/components/features/headline-results'
 import { TestExecutionView } from '@/components/features/test-execution-view'
@@ -199,7 +200,12 @@ export default async function TestPage({ params }: TestPageProps) {
             {stimulusLabels[test.stimulus_type] || test.stimulus_type} • Created {new Date(test.created_at).toLocaleDateString()}
           </p>
         </div>
-        <TestActions test={test} projectId={id} />
+        <div className="flex gap-2">
+          {test.status === 'completed' && (
+            <ExportButton testId={testId} testName={test.name} />
+          )}
+          <TestActions test={test} projectId={id} />
+        </div>
       </div>
 
       {/* Stimulus Card */}

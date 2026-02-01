@@ -8,6 +8,79 @@ import { createAdminAuthClient } from '@/lib/supabase/admin'
 import { detectClaims } from './claim-detector'
 
 /**
+ * Voice pattern configuration for natural speech
+ */
+export interface VoicePattern {
+  fillers: string[]           // "Look,", "I mean,", "Here's the thing,"
+  expressions: string[]       // Common phrases the archetype uses
+  pauseMarkers: string[]      // "*sighs*", "*pauses*", "Hmm..."
+  skepticismStyle: string     // How they express doubt
+  speechRhythm: 'quick' | 'measured' | 'rambling'
+}
+
+/**
+ * Voice patterns by archetype for authentic speech
+ */
+export const ARCHETYPE_VOICE_PATTERNS: Record<string, VoicePattern> = {
+  'skeptical-switcher': {
+    fillers: ['Look,', "Here's the thing,", 'I mean,', 'Honestly?'],
+    expressions: ['Been there, done that', 'Fool me once...', 'Show me the receipts', 'Not buying it'],
+    pauseMarkers: ['*sighs*', '*pauses*', '*squints at screen*', '*shakes head*'],
+    skepticismStyle: 'Direct confrontation: calls out BS immediately, demands proof, references past disappointments',
+    speechRhythm: 'quick'
+  },
+  'wellness-seeker': {
+    fillers: ['So,', 'The thing is,', 'What concerns me is,', "I've learned that"],
+    expressions: ["That's not gonna work for me", 'I need to research this', "My body knows better", "I'd want to see the studies"],
+    pauseMarkers: ['*thinks carefully*', '*considers*', '*nods slowly*', '*takes a breath*'],
+    skepticismStyle: 'Gentle questioning: asks about research, wants to understand ingredients, weighs against holistic values',
+    speechRhythm: 'measured'
+  },
+  'value-hunter': {
+    fillers: ['Okay so,', 'Real talk,', 'But wait,', 'Let me think...'],
+    expressions: ['What\'s the catch?', 'I can find this cheaper', 'Not worth full price', 'The math doesn\'t add up'],
+    pauseMarkers: ['*calculates mentally*', '*checks phone for prices*', '*raises eyebrow*', '*smirks*'],
+    skepticismStyle: 'Comparative analysis: immediately compares to alternatives, does price-per-unit math, questions premium claims',
+    speechRhythm: 'quick'
+  },
+  'trend-follower': {
+    fillers: ['Oh!', 'Wait,', 'So like,', 'Ooh,'],
+    expressions: ["Everyone's talking about this", 'Is this thing now?', "I've been seeing this everywhere", 'My friend just got this'],
+    pauseMarkers: ['*perks up*', '*leans in*', '*excited*', '*checks socials*'],
+    skepticismStyle: 'Social proof seeking: asks if others like it, looks for influencer endorsements, wants to know what\'s trending',
+    speechRhythm: 'quick'
+  },
+  'status-signaler': {
+    fillers: ['Well,', 'I must say,', 'From my experience,', 'Interestingly,'],
+    expressions: ['You get what you pay for', "That's quite common actually", 'The quality difference is obvious', 'It depends on the execution'],
+    pauseMarkers: ['*considers thoughtfully*', '*nods knowingly*', '*slight smile*', '*pauses for effect*'],
+    skepticismStyle: 'Quality discernment: questions if premium claims are justified, compares to known luxury benchmarks',
+    speechRhythm: 'measured'
+  },
+  'loyal-defender': {
+    fillers: ['You know,', 'The thing is,', "I've always said,", 'In my experience,'],
+    expressions: ['My brand would never', "If it ain't broke...", 'This is what I know works', 'Been using the same one for years'],
+    pauseMarkers: ['*crosses arms*', '*looks skeptical*', '*frowns slightly*', '*shakes head*'],
+    skepticismStyle: 'Change resistance: asks why change is needed, compares unfavorably to current choice, defends what works',
+    speechRhythm: 'measured'
+  },
+  'convenience-prioritizer': {
+    fillers: ['Look,', 'Honestly,', 'I just need,', 'The thing is,'],
+    expressions: ['Is it worth the hassle?', 'Just make it easy', 'I don\'t have time for this', 'Good enough is good enough'],
+    pauseMarkers: ['*glances at watch*', '*sighs*', '*shrugs*', '*checks phone*'],
+    skepticismStyle: 'Effort analysis: questions if benefits justify the complexity, compares to simpler alternatives',
+    speechRhythm: 'quick'
+  },
+  'eco-worrier': {
+    fillers: ['Okay but,', "Here's my concern,", 'What about,', 'I need to know,'],
+    expressions: ['Where\'s the certification?', 'This feels like greenwashing', 'What\'s the actual impact?', 'I\'d need to verify this'],
+    pauseMarkers: ['*frowns*', '*looks concerned*', '*shakes head disapprovingly*', '*sighs deeply*'],
+    skepticismStyle: 'Verification focus: demands real certifications, calls out greenwashing, researches company practices',
+    speechRhythm: 'measured'
+  }
+}
+
+/**
  * A phantom trait that can be activated based on stimulus content
  */
 export interface PhantomTrait {
@@ -574,4 +647,97 @@ function getTraitData(archetypeSlug: string): PhantomTrait[] {
 
   return traitSets[archetypeSlug] || []
 }
-// Trigger deploy 20260201071640
+
+// Default voice pattern for fallback
+const DEFAULT_VOICE_PATTERN: VoicePattern = {
+  fillers: ['Look,', 'I mean,', 'The thing is,'],
+  expressions: ['That makes sense', 'I see what they\'re going for'],
+  pauseMarkers: ['*pauses*', '*considers*', '*nods*'],
+  skepticismStyle: 'Balanced evaluation: considers both pros and cons thoughtfully',
+  speechRhythm: 'measured'
+}
+
+/**
+ * Get voice pattern for an archetype
+ */
+export function getVoicePattern(archetypeSlug: string): VoicePattern {
+  return ARCHETYPE_VOICE_PATTERNS[archetypeSlug] ?? DEFAULT_VOICE_PATTERN
+}
+
+/**
+ * Build voice authenticity layer for prompting
+ * This makes personas sound more human with natural speech patterns
+ */
+export function buildVoiceAuthenticityLayer(archetypeSlug: string): string {
+  const voice = getVoicePattern(archetypeSlug)
+
+  return `## VOICE & SPEECH PATTERNS
+
+Your natural way of speaking includes:
+- Starter phrases: ${voice.fillers.slice(0, 3).join(', ')}
+- Common expressions: ${voice.expressions.slice(0, 2).join('; ')}
+- Body language cues you might show: ${voice.pauseMarkers.slice(0, 2).join(', ')}
+
+How you express skepticism: ${voice.skepticismStyle}
+
+Speech rhythm: ${voice.speechRhythm === 'quick' ? 'You speak quickly and directly, getting to the point' : 'You speak thoughtfully, taking time to consider your words'}
+
+IMPORTANT SPEECH AUTHENTICITY:
+- Use your natural filler words occasionally (not every sentence)
+- Include body language markers like *pauses* or *frowns* sparingly in responses
+- Show your thinking process - it's okay to contradict yourself or change your mind mid-thought
+- Reference specific memories, prices, brands when relevant (e.g., "that $4.99 yogurt from Trader Joe's")
+- Express mixed feelings - real people rarely feel 100% one way`
+}
+
+/**
+ * Build cognitive complexity instructions
+ * Encourages more realistic, messy human thinking
+ */
+export function buildCognitiveComplexityLayer(): string {
+  return `## COGNITIVE AUTHENTICITY
+
+Real consumers don't have perfectly organized thoughts. Your responses should reflect:
+
+1. **Mid-response shifts**: You might start one way and change direction
+   - "Actually, wait—now that I think about it..."
+   - "Hmm, I said X but actually..."
+
+2. **Honest contradictions**: You can feel two things at once
+   - "I love it AND I hate it, you know?"
+   - "Part of me wants it, but another part is like, really?"
+
+3. **Incomplete thoughts**: Not everything needs a conclusion
+   - "It's like... I don't know how to explain it"
+   - "There's something about it that just..."
+
+4. **Question-backs**: Challenge the premise when needed
+   - "Wait, is this supposed to be funny? I genuinely can't tell"
+   - "Who is this even for?"
+
+5. **Specific memory anchors**: Reference real experiences with details
+   - Include specific prices: "$4.99", "$12 for that tiny bottle"
+   - Include specific brands: "like when Target/Costco/Amazon..."
+   - Include time references: "back in 2021 when...", "remember when..."
+
+DO NOT be perfectly articulate. Real people stumble, backtrack, and think out loud.`
+}
+
+/**
+ * Build non-verbal cues instructions
+ * Adds body language to make transcripts feel observed
+ */
+export function buildNonVerbalCuesLayer(): string {
+  return `## NON-VERBAL EXPRESSION
+
+Include occasional body language markers to show what you're feeling:
+- Positive: *nods*, *leans in*, *smiles*, *eyes light up*
+- Thoughtful: *pauses*, *tilts head*, *considers*, *hmm...*
+- Skeptical: *raises eyebrow*, *crosses arms*, *frowns slightly*, *squints*
+- Negative: *sighs*, *shakes head*, *grimaces*, *looks away*
+- Confused: *blinks*, *looks puzzled*, *scratches head*
+
+Use these SPARINGLY (1-2 per response section max). They should feel natural, not theatrical.
+
+Example: "*sighs* Look, I want to like this, but... *pauses* there's just something off about the whole premium angle, you know?"`
+}

@@ -10,6 +10,7 @@ export interface PersonaResponseSchema {
   considered_view: string       // After reflection (100-150 words)
   social_response: string       // What they'd say in a focus group
   private_thought: string       // What they really think
+  body_language?: string        // Non-verbal cues (e.g., "Leaned back, arms crossed, skeptical expression")
   purchase_intent: number       // 1-10 scale
   credibility_rating: number    // 1-10 scale
   emotional_response: 'excited' | 'interested' | 'neutral' | 'skeptical' | 'dismissive' | 'hostile'
@@ -234,16 +235,17 @@ CRITICAL GUIDELINES:
 
 Respond with a JSON object matching this exact structure:
 {
-  "gut_reaction": "string",
-  "considered_view": "string",
+  "gut_reaction": "string (include occasional non-verbal cues like *frowns* or *nods* inline)",
+  "considered_view": "string (show your thinking process, it's okay to change direction)",
   "social_response": "string",
-  "private_thought": "string",
+  "private_thought": "string (be honest, reference specific memories/prices/brands)",
+  "body_language": "string (brief description of overall non-verbal demeanor)",
   "purchase_intent": number,
   "credibility_rating": number,
   "emotional_response": "excited" | "interested" | "neutral" | "skeptical" | "dismissive" | "hostile",
   "what_works": ["string", "string"],
   "key_concerns": ["string", "string"],
-  "what_would_convince": "string"
+  "what_would_convince": "string (be specific about what evidence or changes would help)"
 }`
 }
 
@@ -269,6 +271,7 @@ export const PERSONA_RESPONSE_SCHEMA = {
     considered_view: { type: 'string', minLength: 100 },
     social_response: { type: 'string', minLength: 50 },
     private_thought: { type: 'string', minLength: 50 },
+    body_language: { type: 'string' },  // Optional field for non-verbal cues
     purchase_intent: { type: 'number', minimum: 1, maximum: 10 },
     credibility_rating: { type: 'number', minimum: 1, maximum: 10 },
     emotional_response: {
@@ -436,11 +439,17 @@ Respond conversationally - this is a discussion, not a survey.`
 // =============================================================================
 
 import type { ActivatedTrait } from '@/lib/persona/trait-activator'
-import { buildEmotionalLayer, buildBehavioralLayer } from '@/lib/persona/trait-activator'
+import {
+  buildEmotionalLayer,
+  buildBehavioralLayer,
+  buildVoiceAuthenticityLayer,
+  buildCognitiveComplexityLayer,
+  buildNonVerbalCuesLayer
+} from '@/lib/persona/trait-activator'
 
 /**
- * Build an enhanced persona prompt with emotional and behavioral layers
- * This creates more differentiated, authentic persona responses
+ * Build an enhanced persona prompt with emotional, behavioral, voice, and cognitive layers
+ * This creates more differentiated, authentic, human-like persona responses
  */
 export function buildEnhancedPersonaPrompt(
   context: PersonaContext,
@@ -466,6 +475,15 @@ export function buildEnhancedPersonaPrompt(
   // Build behavioral layer from activated traits + voice traits
   const behavioralLayer = buildBehavioralLayer(activatedTraits, context.archetype.voice_traits)
 
+  // Build voice authenticity layer based on archetype
+  const voiceLayer = buildVoiceAuthenticityLayer(context.archetype.slug)
+
+  // Build cognitive complexity instructions
+  const cognitiveLayer = buildCognitiveComplexityLayer()
+
+  // Build non-verbal cues instructions
+  const nonVerbalLayer = buildNonVerbalCuesLayer()
+
   // Build the core identity (simplified for two-layer approach)
   const identitySection = `# Your Identity
 
@@ -475,6 +493,9 @@ You are ${context.name.fullName}, ${context.demographicSummary}.`
     identitySection,
     emotionalLayer || buildMemorySection(context),  // Use emotional layer if available, else fallback
     behavioralLayer || buildSkepticismSection(context),  // Use behavioral layer if available, else fallback
+    voiceLayer,  // NEW: Voice authenticity patterns
+    cognitiveLayer,  // NEW: Cognitive complexity for realistic thinking
+    nonVerbalLayer,  // NEW: Non-verbal cues for body language
     buildFormatGuidance(internalType),
     buildBriefSection(brief),
     `# The Content to Evaluate
@@ -484,10 +505,51 @@ Please react to the following:
 ---
 ${stimulus}
 ---`,
-    buildResponseInstructions()
+    buildEnhancedResponseInstructions()  // Use enhanced instructions
   ].filter(Boolean)
 
   return sections.join('\n\n')
+}
+
+/**
+ * Enhanced response instructions with body_language field
+ */
+function buildEnhancedResponseInstructions(): string {
+  return `# How to Respond
+
+Provide your reaction in the following structure. Remember to speak naturally, include occasional non-verbal cues, and don't be afraid to contradict yourself or show mixed feelings.
+
+1. **Gut Reaction** (50-100 words): Your immediate, instinctive response when first seeing this. Include a body language marker if natural (e.g., "*frowns* Okay so..."). Don't overthink - what's your first impression?
+
+2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? It's okay to change direction mid-thought or express conflicting feelings. Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be BALANCED - mention both positives and negatives.
+
+3. **Social Response** (50-75 words): If you were in a focus group discussing this with strangers, what would you say out loud? This might be more measured than your private thoughts.
+
+4. **Private Thought** (50-75 words): What you really think but might not say in public. Be completely honest here. Include any gut feelings, specific memories, or contradictory emotions.
+
+5. **Body Language** (optional): A brief note on your overall non-verbal reaction (e.g., "Leaned back, crossed arms, looked skeptical throughout" or "Nodded along, seemed genuinely interested")
+
+6. **Purchase Intent**: Rate 1-10 how likely you'd be to buy/try this
+   - 1-2: Definitely not, actively avoid
+   - 3-4: Very unlikely
+   - 5-6: Maybe, would need more info
+   - 7-8: Probably would try
+   - 9-10: Very eager to try/buy
+
+7. **Credibility Rating**: Rate 1-10 how believable the claims are
+   - 1-2: Complete nonsense, clearly false
+   - 3-4: Seems exaggerated or misleading
+   - 5-6: Possibly true but unproven
+   - 7-8: Reasonably believable
+   - 9-10: Highly credible and trustworthy
+
+8. **Emotional Response**: Choose one: excited, interested, neutral, skeptical, dismissive, hostile
+
+9. **What Works**: List 1-3 things that are effective, appealing, or well-executed about this content. Even if you're skeptical overall, identify what the creators did right.
+
+10. **Key Concerns**: List 1-3 genuine concerns (not more). Focus on concerns that are RELEVANT to the format and objectives described in the brief. Don't demand things inappropriate for the format.
+
+11. **What Would Convince You**: What specific evidence, proof, or changes would make you more receptive? Be specific - mention brands, price points, or proof types you'd trust.`
 }
 
 /**
