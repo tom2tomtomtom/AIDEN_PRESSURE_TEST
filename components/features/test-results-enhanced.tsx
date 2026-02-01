@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import {
   BarChart3,
@@ -11,7 +12,9 @@ import {
   FileText,
   Lightbulb,
   Eye,
-  AlertCircle
+  AlertCircle,
+  Copy,
+  Check
 } from 'lucide-react'
 
 // Import new visualization components
@@ -189,6 +192,47 @@ function getPriorityColor(priority: string): string {
     default:
       return 'bg-white-muted/20 text-white-muted border-white-muted/50'
   }
+}
+
+// Recommendation card with copy functionality
+function RecommendationCard({ rec }: { rec: { priority: string; recommendation: string; rationale: string; effort?: string } }) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    const text = `${rec.recommendation}\n\nRationale: ${rec.rationale}`
+    await navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <div className="border border-border-subtle p-4">
+      <div className="flex items-start gap-3">
+        <Badge className={getPriorityColor(rec.priority)}>
+          {rec.priority.replace('_', ' ')}
+        </Badge>
+        <div className="flex-1">
+          <p className="font-medium text-white-full">{rec.recommendation}</p>
+          <p className="text-sm text-white-muted mt-1">{rec.rationale}</p>
+          {rec.effort && (
+            <p className="text-xs text-white-dim mt-2">Effort: {rec.effort}</p>
+          )}
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleCopy}
+          className="shrink-0"
+        >
+          {copied ? (
+            <Check className="h-4 w-4 text-green-500" />
+          ) : (
+            <Copy className="h-4 w-4" />
+          )}
+        </Button>
+      </div>
+    </div>
+  )
 }
 
 // Overview tab content
@@ -379,17 +423,7 @@ function OverviewTab({ results }: { results: TestResult }) {
           <CardContent>
             <div className="space-y-4">
               {recommendations.map((rec, i) => (
-                <div key={i} className="border border-border-subtle p-4">
-                  <div className="flex items-start gap-3">
-                    <Badge className={getPriorityColor(rec.priority)}>
-                      {rec.priority.replace('_', ' ')}
-                    </Badge>
-                    <div className="flex-1">
-                      <p className="font-medium text-white-full">{rec.recommendation}</p>
-                      <p className="text-sm text-white-muted mt-1">{rec.rationale}</p>
-                    </div>
-                  </div>
-                </div>
+                <RecommendationCard key={i} rec={rec} />
               ))}
             </div>
           </CardContent>
