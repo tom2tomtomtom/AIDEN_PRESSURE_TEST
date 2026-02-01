@@ -98,7 +98,6 @@ export function TestProgressTracker({
 
     let eventSource: EventSource | null = null
     let pollInterval: NodeJS.Timeout | null = null
-    let usePolling = false
 
     const startSSE = () => {
       eventSource = new EventSource(`/api/tests/${testId}/progress`)
@@ -119,7 +118,6 @@ export function TestProgressTracker({
       eventSource.onerror = () => {
         console.log('SSE error, falling back to polling')
         eventSource?.close()
-        usePolling = true
         startPolling()
       }
     }
