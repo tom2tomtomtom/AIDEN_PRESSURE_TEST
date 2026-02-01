@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
@@ -99,6 +100,7 @@ async function updateProject(request: Request, { params }: RouteParams) {
       )
     }
 
+    revalidatePath('/projects')
     return NextResponse.json({ data })
   } catch {
     return NextResponse.json(
@@ -121,8 +123,49 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
     const { id } = await params
     const supabase = await createClient()
 
-    // Soft delete
-    const { error } = await supabase
+    // Get the authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
+        { status: 401 }
+      )
+    }
+
+    // Use admin client to verify user owns the project's organization
+    const adminClient = createAdminClient()
+
+    // Get the project's organization_id
+    const { data: project, error: projectError } = await adminClient
+      .from('projects')
+      .select('organization_id')
+      .eq('id', id)
+      .single()
+
+    if (projectError || !project) {
+      return NextResponse.json(
+        { error: { code: 'NOT_FOUND', message: 'Project not found' } },
+        { status: 404 }
+      )
+    }
+
+    // Verify user is a member of the project's organization
+    const { data: membership, error: memberError } = await adminClient
+      .from('organization_members')
+      .select('organization_id')
+      .eq('user_id', user.id)
+      .eq('organization_id', project.organization_id)
+      .single()
+
+    if (memberError || !membership) {
+      return NextResponse.json(
+        { error: { code: 'FORBIDDEN', message: 'You do not have access to this project' } },
+        { status: 403 }
+      )
+    }
+
+    // Soft delete using admin client
+    const { error } = await adminClient
       .from('projects')
       .update({ archived_at: new Date().toISOString() })
       .eq('id', id)
@@ -134,6 +177,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
       )
     }
 
+    revalidatePath('/projects')
     return NextResponse.json({ success: true })
   } catch {
     return NextResponse.json(

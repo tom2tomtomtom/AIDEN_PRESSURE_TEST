@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
@@ -83,6 +84,7 @@ export async function POST(request: Request) {
       )
     }
 
+    revalidatePath('/projects')
     return NextResponse.json({ data }, { status: 201 })
   } catch {
     return NextResponse.json(
