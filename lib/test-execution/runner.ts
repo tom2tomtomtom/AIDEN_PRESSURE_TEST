@@ -146,12 +146,13 @@ export async function executeTest(config: TestConfig): Promise<ExecutionResult> 
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
 
-    // Update test status to failed
+    // Update test status to failed with error message
     await supabase
       .from('pressure_tests')
       .update({
         status: 'failed',
-        completed_at: new Date().toISOString()
+        completed_at: new Date().toISOString(),
+        error_message: errorMessage
       })
       .eq('id', config.testId)
 

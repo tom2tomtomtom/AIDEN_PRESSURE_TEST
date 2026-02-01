@@ -154,7 +154,10 @@ export function formatResponseForStorage(response: GeneratedResponse): {
     what_works: response.response.what_works || [],
     key_concerns: response.response.key_concerns || [],
     what_would_convince: response.response.what_would_convince,
-    triggered_memories: response.personaContext.memories.map(m => m.id),
+    // Filter out seed memory IDs (non-UUID format) - only store real database memory UUIDs
+    triggered_memories: response.personaContext.memories
+      .map(m => m.id)
+      .filter(id => !id.startsWith('seed-')),
     memory_influence_summary: response.personaContext.memoryNarrative || '',
     generation_time_ms: response.generationTimeMs,
     tokens_used: response.usage.totalTokens
