@@ -50,7 +50,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </CardContent>
         </Card>
       </Link>
-      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+      <div className="absolute top-4 right-4">
         <DeleteProjectButton projectId={project.id} projectName={project.name} variant="icon" />
       </div>
     </div>

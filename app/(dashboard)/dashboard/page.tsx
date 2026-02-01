@@ -8,11 +8,12 @@ export default async function DashboardPage() {
   const authSupabase = await createAuthClient()
   const { data: { user } } = await authSupabase.auth.getUser()
 
-  // Get projects count
+  // Get projects count (only non-archived)
   const supabase = await createClient()
   const { count: projectCount } = await supabase
     .from('projects')
     .select('*', { count: 'exact', head: true })
+    .is('archived_at', null)
 
   const { count: testCount } = await supabase
     .from('pressure_tests')
