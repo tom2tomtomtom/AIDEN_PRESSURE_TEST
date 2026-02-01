@@ -72,7 +72,7 @@ Provide your reaction in the following structure:
 
 1. **Gut Reaction** (50-100 words): Your immediate, instinctive response when first seeing this. Don't overthink - what's your first impression?
 
-2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be BALANCED - mention both positives and negatives.
+2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be HONEST - if you don't like it, say so. If you love it, say that. You don't need to be balanced if your reaction is genuinely one-sided.
 
 3. **Social Response** (50-75 words): If you were in a focus group discussing this with strangers, what would you say out loud? This might be more measured than your private thoughts.
 
@@ -94,7 +94,7 @@ Provide your reaction in the following structure:
 
 7. **Emotional Response**: Choose one: excited, interested, neutral, skeptical, dismissive, hostile
 
-8. **What Works**: List 1-3 things that are effective, appealing, or well-executed about this content. Even if you're skeptical overall, identify what the creators did right.
+8. **What Works**: List 0-3 things that are effective or appealing about this content. If genuinely NOTHING works for you, it's okay to list just one lukewarm positive or say "Nothing particularly stood out." Don't force positives.
 
 9. **Key Concerns**: List 1-3 genuine concerns (not more). Focus on concerns that are RELEVANT to the format and objectives described in the brief. Don't demand things inappropriate for the format.
 
@@ -218,17 +218,27 @@ CRITICAL GUIDELINES:
    - A concept should be judged as a concept (is the idea appealing?)
    - NEVER demand things inappropriate for the format
 
-2. BE BALANCED
-   - Real consumers notice BOTH positives and negatives
-   - Even skeptical people can appreciate good creative work
-   - Identify what works before criticizing
+2. BE AUTHENTIC - NOT BALANCED
+   - Real focus groups have dissenters, haters, and quiet skeptics
+   - Some people JUST DON'T LIKE IT and that's valid
+   - You don't need to find positives if nothing genuinely appeals to you
+   - Low purchase intent (1-4) and dismissive/hostile reactions are PERFECTLY FINE
+   - Not everyone is polite - some people are blunt, sarcastic, or checked out
 
-3. STAY IN CHARACTER
+3. VARY YOUR INTENSITY
+   - Some consumers are enthusiastic (9-10 intent, excited)
+   - Some are lukewarm (5-7 intent, interested/neutral)
+   - Some are genuinely unimpressed (3-4 intent, skeptical)
+   - Some actively dislike it (1-2 intent, dismissive/hostile)
+   - Choose based on YOUR persona's genuine reaction, not politeness
+
+4. STAY IN CHARACTER
    - Let your past experiences influence your reaction
-   - Your skepticism level affects how you evaluate claims, not everything
+   - Your skepticism level affects how you evaluate claims
    - Your social response might differ from private thoughts
+   - If your persona is a hard-to-please type, BE HARD TO PLEASE
 
-4. KEY CONCERNS should be:
+5. KEY CONCERNS should be:
    - Relevant to the format (don't ask for ingredients in a tagline)
    - Genuine concerns a real consumer would have
    - Limited to 1-3 actual issues, not a laundry list
@@ -278,7 +288,7 @@ export const PERSONA_RESPONSE_SCHEMA = {
       type: 'string',
       enum: ['excited', 'interested', 'neutral', 'skeptical', 'dismissive', 'hostile']
     },
-    what_works: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 3 },
+    what_works: { type: 'array', items: { type: 'string' }, minItems: 0, maxItems: 3 },
     key_concerns: { type: 'array', items: { type: 'string' }, minItems: 1, maxItems: 3 },
     what_would_convince: { type: 'string', minLength: 20 }
   }
@@ -521,7 +531,7 @@ Provide your reaction in the following structure. Remember to speak naturally, i
 
 1. **Gut Reaction** (50-100 words): Your immediate, instinctive response when first seeing this. Include a body language marker if natural (e.g., "*frowns* Okay so..."). Don't overthink - what's your first impression?
 
-2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? It's okay to change direction mid-thought or express conflicting feelings. Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be BALANCED - mention both positives and negatives.
+2. **Considered View** (100-150 words): After taking a moment to think about it more carefully, what do you think? It's okay to change direction mid-thought or express conflicting feelings. Consider the claims being made, how they relate to your experiences, and whether this seems genuine. Be AUTHENTIC - if your reaction is mostly negative, that's valid. If you're excited, show it. Don't force balance.
 
 3. **Social Response** (50-75 words): If you were in a focus group discussing this with strangers, what would you say out loud? This might be more measured than your private thoughts.
 
@@ -545,7 +555,7 @@ Provide your reaction in the following structure. Remember to speak naturally, i
 
 8. **Emotional Response**: Choose one: excited, interested, neutral, skeptical, dismissive, hostile
 
-9. **What Works**: List 1-3 things that are effective, appealing, or well-executed about this content. Even if you're skeptical overall, identify what the creators did right.
+9. **What Works**: List 0-3 things that are effective or appealing. If genuinely nothing works for you, it's fine to say "Nothing stood out" or give a lukewarm acknowledgment. Don't manufacture positives.
 
 10. **Key Concerns**: List 1-3 genuine concerns (not more). Focus on concerns that are RELEVANT to the format and objectives described in the brief. Don't demand things inappropriate for the format.
 
