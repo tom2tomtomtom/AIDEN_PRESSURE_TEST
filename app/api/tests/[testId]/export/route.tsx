@@ -161,6 +161,17 @@ export async function GET(
       created_at: r.created_at as string,
     }))
 
+    // Debug: Log data being passed to PDF
+    console.log('[PDF Export] Test data:', JSON.stringify(testData, null, 2))
+    console.log('[PDF Export] Project data:', JSON.stringify(projectData, null, 2))
+    console.log('[PDF Export] Result data keys:', Object.keys(testResultData))
+    console.log('[PDF Export] Result strengths sample:', JSON.stringify(testResultData.key_strengths?.[0], null, 2))
+    console.log('[PDF Export] Result weaknesses sample:', JSON.stringify(testResultData.key_weaknesses?.[0], null, 2))
+    console.log('[PDF Export] Responses count:', responses.length)
+    if (responses.length > 0) {
+      console.log('[PDF Export] First response sample:', JSON.stringify(responses[0], null, 2))
+    }
+
     // Generate PDF using JSX
     const pdfBuffer = await renderToBuffer(
       <PressureTestReport

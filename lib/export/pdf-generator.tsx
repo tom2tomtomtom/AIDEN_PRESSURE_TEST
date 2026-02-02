@@ -119,28 +119,32 @@ export function PressureTestReport({
   responses,
   options = { includeAppendix: true },
 }: PressureTestReportProps) {
-  const stimulusType = stimulusLabels[test.stimulus_type] || test.stimulus_type
+  const stimulusType = stimulusLabels[test.stimulus_type] || String(test.stimulus_type)
+
+  // Ensure all string values are actually strings
+  const safeTestName = String(test.name || 'Untitled Test')
+  const safeProjectName = String(project.name || 'Untitled Project')
 
   return (
     <Document
-      title={`Pressure Test Report - ${test.name}`}
+      title={`Pressure Test Report - ${safeTestName}`}
       author="AIDEN"
-      subject={`Pressure Test results for ${test.name}`}
+      subject={`Pressure Test results for ${safeTestName}`}
       creator="AIDEN Pressure Test Platform"
     >
       {/* Cover Page */}
       <CoverPage
-        testName={test.name}
-        projectName={project.name}
+        testName={safeTestName}
+        projectName={safeProjectName}
         stimulusType={stimulusType}
-        createdAt={test.created_at}
-        completedAt={test.completed_at}
+        createdAt={String(test.created_at || '')}
+        completedAt={test.completed_at ? String(test.completed_at) : undefined}
       />
 
       {/* Executive Summary */}
       <ExecutiveSummary
-        pressureScore={result.pressure_score}
-        oneLineVerdict={result.one_line_verdict}
+        pressureScore={Number(result.pressure_score) || 0}
+        oneLineVerdict={result.one_line_verdict ? String(result.one_line_verdict) : undefined}
         keyStrengths={result.key_strengths}
         keyWeaknesses={result.key_weaknesses}
         recommendations={result.recommendations}
@@ -148,9 +152,9 @@ export function PressureTestReport({
 
       {/* Scores Dashboard */}
       <ScoresDashboard
-        pressureScore={result.pressure_score}
-        gutAttractionIndex={result.gut_attraction_index}
-        credibilityScore={result.credibility_score}
+        pressureScore={Number(result.pressure_score) || 0}
+        gutAttractionIndex={Number(result.gut_attraction_index) || 0}
+        credibilityScore={Number(result.credibility_score) || 0}
         purchaseIntentAvg={result.purchase_intent_avg}
         purchaseIntentDistribution={result.purchase_intent_distribution}
       />
