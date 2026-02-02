@@ -1,9 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { renderToBuffer } from '@react-pdf/renderer'
+import { renderToBuffer, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
 import { createAuthClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { PressureTestReport } from '@/lib/export/pdf-generator'
 import type { TestData, ProjectData, TestResultData, PersonaResponseData } from '@/lib/export/pdf-generator'
+
+// Minimal test PDF to verify @react-pdf/renderer works
+const minimalStyles = StyleSheet.create({
+  page: { backgroundColor: '#000', padding: 40 },
+  text: { color: '#fff', fontSize: 24 }
+})
+
+function MinimalTestPDF({ testName }: { testName: string }) {
+  return (
+    <Document>
+      <Page size="A4" style={minimalStyles.page}>
+        <View>
+          <Text style={minimalStyles.text}>Test Report: {testName}</Text>
+        </View>
+      </Page>
+    </Document>
+  )
+}
 
 interface RouteParams {
   params: Promise<{ testId: string }>
@@ -161,16 +179,22 @@ export async function GET(
       created_at: r.created_at as string,
     }))
 
+    // Try minimal PDF first to verify @react-pdf/renderer works
+    console.log('[PDF Export] Testing minimal PDF generation...')
+    try {
+      const minimalBuffer = await renderToBuffer(
+        <MinimalTestPDF testName={String(test.name || 'Test')} />
+      )
+      console.log('[PDF Export] Minimal PDF succeeded, size:', minimalBuffer.byteLength)
+    } catch (minimalError) {
+      console.error('[PDF Export] Even minimal PDF failed:', minimalError)
+      throw minimalError
+    }
+
     // Debug: Log data being passed to PDF
     console.log('[PDF Export] Test data:', JSON.stringify(testData, null, 2))
     console.log('[PDF Export] Project data:', JSON.stringify(projectData, null, 2))
     console.log('[PDF Export] Result data keys:', Object.keys(testResultData))
-    console.log('[PDF Export] Result strengths sample:', JSON.stringify(testResultData.key_strengths?.[0], null, 2))
-    console.log('[PDF Export] Result weaknesses sample:', JSON.stringify(testResultData.key_weaknesses?.[0], null, 2))
-    console.log('[PDF Export] Responses count:', responses.length)
-    if (responses.length > 0) {
-      console.log('[PDF Export] First response sample:', JSON.stringify(responses[0], null, 2))
-    }
 
     // Generate PDF using JSX
     const pdfBuffer = await renderToBuffer(
