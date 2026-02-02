@@ -58,10 +58,12 @@ interface TestResultData {
   pressure_score: number
   gut_attraction_index: number
   credibility_score: number
+  purchase_intent_avg?: number
   one_line_verdict?: string
-  key_strengths?: Array<{ point: string; evidence: string[] }>
-  key_weaknesses?: Array<{ point: string; evidence: string[] }>
-  recommendations?: Array<{ recommendation: string; priority: string }>
+  key_strengths?: Array<{ point: string; evidence: string[]; confidence?: string }>
+  key_weaknesses?: Array<{ point: string; evidence: string[]; severity?: string }>
+  recommendations?: Array<{ recommendation: string; rationale?: string; priority: string; effort?: string }>
+  verbatim_highlights?: Array<{ persona_name: string; archetype: string; quote: string; topic: string }>
 }
 
 export function generatePDF(
@@ -276,19 +278,82 @@ export function generatePDF(
     doc.text('Key Strengths', margin, y)
     doc.setDrawColor(34, 197, 94) // scoreHigh
     doc.line(margin, y + 3, margin + 45, y + 3)
-    y += 15
+    y += 8
 
-    result.key_strengths.slice(0, 4).forEach(strength => {
-      checkNewPage(30)
+    doc.setTextColor(153, 153, 153)
+    doc.setFontSize(9)
+    doc.text('These elements resonated positively with the phantom consumer panel.', margin, y)
+    y += 12
+
+    result.key_strengths.slice(0, 5).forEach(strength => {
+      const cardHeight = 20 + (strength.evidence?.length || 0) * 6
+      checkNewPage(cardHeight + 10)
+
       doc.setFillColor(5, 46, 22)
       doc.setDrawColor(34, 197, 94)
-      doc.roundedRect(margin, y, contentWidth, 25, 2, 2, 'FD')
+      doc.setLineWidth(0.5)
+      doc.roundedRect(margin, y, contentWidth, cardHeight, 2, 2, 'FD')
+
+      // Confidence badge
+      if (strength.confidence) {
+        const badgeColors: Record<string, [number, number, number]> = {
+          'high': [34, 197, 94],
+          'medium': [234, 179, 8],
+          'low': [102, 102, 102]
+        }
+        const [br, bg, bb] = badgeColors[strength.confidence] || [102, 102, 102]
+        doc.setFillColor(br, bg, bb)
+        doc.roundedRect(margin + contentWidth - 25, y + 3, 20, 5, 1, 1, 'F')
+        doc.setTextColor(0, 0, 0)
+        doc.setFontSize(6)
+        doc.text(strength.confidence.toUpperCase(), margin + contentWidth - 23, y + 6.5)
+      }
 
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(11)
-      y = addWrappedText(safeText(strength.point), margin + 5, y + 8, contentWidth - 10)
-      y += 20
+      y = addWrappedText(safeText(strength.point), margin + 5, y + 8, contentWidth - 35)
+
+      // Evidence
+      if (strength.evidence && strength.evidence.length > 0) {
+        doc.setTextColor(102, 102, 102)
+        doc.setFontSize(7)
+        doc.text('SUPPORTING EVIDENCE', margin + 5, y + 3)
+        y += 5
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(8)
+        strength.evidence.slice(0, 2).forEach(ev => {
+          y = addWrappedText('• ' + safeText(ev), margin + 7, y + 2, contentWidth - 15, 4)
+        })
+      }
+      y += 8
     })
+
+    // Strength quotes
+    const strengthQuotes = result.verbatim_highlights?.filter(v => v.topic === 'strength').slice(0, 2) || []
+    if (strengthQuotes.length > 0) {
+      checkNewPage(40)
+      y += 5
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(11)
+      doc.text('Supporting Voices', margin, y)
+      y += 8
+
+      strengthQuotes.forEach(quote => {
+        checkNewPage(25)
+        doc.setFillColor(15, 15, 15)
+        doc.setDrawColor(34, 197, 94)
+        doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'FD')
+        doc.setTextColor(255, 255, 255)
+        doc.setFontSize(9)
+        doc.setFont('helvetica', 'italic')
+        y = addWrappedText('"' + safeText(quote.quote) + '"', margin + 5, y + 6, contentWidth - 10, 4)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(7)
+        doc.text(`— ${safeText(quote.persona_name)} (${safeText(quote.archetype)})`, margin + 5, y + 4)
+        y += 10
+      })
+    }
 
     addFooter(doc, 'Page 4')
   }
@@ -305,19 +370,82 @@ export function generatePDF(
     doc.text('Key Weaknesses', margin, y)
     doc.setDrawColor(239, 68, 68) // scoreLow
     doc.line(margin, y + 3, margin + 50, y + 3)
-    y += 15
+    y += 8
 
-    result.key_weaknesses.slice(0, 4).forEach(weakness => {
-      checkNewPage(30)
+    doc.setTextColor(153, 153, 153)
+    doc.setFontSize(9)
+    doc.text('These friction points were identified by the panel. Addressing these will improve performance.', margin, y)
+    y += 12
+
+    result.key_weaknesses.slice(0, 5).forEach(weakness => {
+      const cardHeight = 20 + (weakness.evidence?.length || 0) * 6
+      checkNewPage(cardHeight + 10)
+
       doc.setFillColor(69, 10, 10)
       doc.setDrawColor(239, 68, 68)
-      doc.roundedRect(margin, y, contentWidth, 25, 2, 2, 'FD')
+      doc.setLineWidth(0.5)
+      doc.roundedRect(margin, y, contentWidth, cardHeight, 2, 2, 'FD')
+
+      // Severity badge
+      if (weakness.severity) {
+        const badgeColors: Record<string, [number, number, number]> = {
+          'critical': [255, 46, 46],
+          'major': [255, 107, 0],
+          'minor': [102, 102, 102]
+        }
+        const [br, bg, bb] = badgeColors[weakness.severity] || [102, 102, 102]
+        doc.setFillColor(br, bg, bb)
+        doc.roundedRect(margin + contentWidth - 25, y + 3, 20, 5, 1, 1, 'F')
+        doc.setTextColor(255, 255, 255)
+        doc.setFontSize(6)
+        doc.text(weakness.severity.toUpperCase(), margin + contentWidth - 23, y + 6.5)
+      }
 
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(11)
-      y = addWrappedText(safeText(weakness.point), margin + 5, y + 8, contentWidth - 10)
-      y += 20
+      y = addWrappedText(safeText(weakness.point), margin + 5, y + 8, contentWidth - 35)
+
+      // Evidence
+      if (weakness.evidence && weakness.evidence.length > 0) {
+        doc.setTextColor(102, 102, 102)
+        doc.setFontSize(7)
+        doc.text('PANEL FEEDBACK', margin + 5, y + 3)
+        y += 5
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(8)
+        weakness.evidence.slice(0, 2).forEach(ev => {
+          y = addWrappedText('• ' + safeText(ev), margin + 7, y + 2, contentWidth - 15, 4)
+        })
+      }
+      y += 8
     })
+
+    // Weakness quotes
+    const weaknessQuotes = result.verbatim_highlights?.filter(v => v.topic === 'weakness').slice(0, 2) || []
+    if (weaknessQuotes.length > 0) {
+      checkNewPage(40)
+      y += 5
+      doc.setTextColor(255, 255, 255)
+      doc.setFontSize(11)
+      doc.text('Critical Voices', margin, y)
+      y += 8
+
+      weaknessQuotes.forEach(quote => {
+        checkNewPage(25)
+        doc.setFillColor(15, 15, 15)
+        doc.setDrawColor(239, 68, 68)
+        doc.roundedRect(margin, y, contentWidth, 20, 2, 2, 'FD')
+        doc.setTextColor(255, 255, 255)
+        doc.setFontSize(9)
+        doc.setFont('helvetica', 'italic')
+        y = addWrappedText('"' + safeText(quote.quote) + '"', margin + 5, y + 6, contentWidth - 10, 4)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(7)
+        doc.text(`— ${safeText(quote.persona_name)} (${safeText(quote.archetype)})`, margin + 5, y + 4)
+        y += 10
+      })
+    }
 
     addFooter(doc, 'Page 5')
   }
@@ -334,32 +462,87 @@ export function generatePDF(
     doc.text('Recommendations', margin, y)
     doc.setDrawColor(99, 102, 241) // indigo
     doc.line(margin, y + 3, margin + 55, y + 3)
-    y += 15
+    y += 8
 
-    result.recommendations.slice(0, 5).forEach(rec => {
-      checkNewPage(30)
-      doc.setFillColor(30, 27, 75)
-      doc.setDrawColor(99, 102, 241)
-      doc.roundedRect(margin, y, contentWidth, 25, 2, 2, 'FD')
+    doc.setTextColor(153, 153, 153)
+    doc.setFontSize(9)
+    doc.text('Prioritized actions based on panel feedback. Focus on Must Fix items first.', margin, y)
+    y += 12
 
-      // Priority badge
-      const priorityColors: Record<string, [number, number, number]> = {
+    result.recommendations.slice(0, 6).forEach(rec => {
+      const hasRationale = rec.rationale && rec.rationale.length > 0
+      const cardHeight = hasRationale ? 35 : 22
+      checkNewPage(cardHeight + 10)
+
+      // Card background color based on priority
+      const bgColors: Record<string, [number, number, number]> = {
+        'must_fix': [45, 10, 10],
+        'should_improve': [45, 30, 10],
+        'nice_to_have': [30, 27, 75]
+      }
+      const borderColors: Record<string, [number, number, number]> = {
         'must_fix': [255, 46, 46],
         'should_improve': [255, 107, 0],
-        'nice_to_have': [59, 130, 246]
+        'nice_to_have': [99, 102, 241]
       }
-      const [pr, pg, pb] = priorityColors[rec.priority] || [102, 102, 102]
-      doc.setFillColor(pr, pg, pb)
-      doc.roundedRect(margin + 5, y + 3, 25, 6, 1, 1, 'F')
+      const [bgr, bgg, bgb] = bgColors[rec.priority] || [30, 27, 75]
+      const [bdr, bdg, bdb] = borderColors[rec.priority] || [99, 102, 241]
+
+      doc.setFillColor(bgr, bgg, bgb)
+      doc.setDrawColor(bdr, bdg, bdb)
+      doc.setLineWidth(0.8)
+      doc.roundedRect(margin, y, contentWidth, cardHeight, 2, 2, 'FD')
+
+      // Priority badge
+      doc.setFillColor(bdr, bdg, bdb)
+      doc.roundedRect(margin + 5, y + 3, 28, 6, 1, 1, 'F')
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(6)
-      doc.text(rec.priority.replace('_', ' ').toUpperCase(), margin + 7, y + 7)
+      doc.text(rec.priority.replace(/_/g, ' ').toUpperCase(), margin + 7, y + 7)
+
+      // Effort badge
+      if (rec.effort) {
+        doc.setFillColor(30, 30, 30)
+        doc.roundedRect(margin + 35, y + 3, 22, 6, 1, 1, 'F')
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(6)
+        doc.text(rec.effort.toUpperCase() + ' EFFORT', margin + 37, y + 7)
+      }
 
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(11)
       y = addWrappedText(safeText(rec.recommendation), margin + 5, y + 15, contentWidth - 10)
-      y += 15
+
+      // Rationale
+      if (hasRationale) {
+        doc.setTextColor(153, 153, 153)
+        doc.setFontSize(8)
+        y = addWrappedText(safeText(rec.rationale), margin + 5, y + 3, contentWidth - 10, 4)
+      }
+      y += 8
     })
+
+    // Action summary
+    checkNewPage(45)
+    y += 5
+    doc.setFillColor(15, 15, 15)
+    doc.roundedRect(margin, y, contentWidth, 35, 2, 2, 'F')
+
+    doc.setTextColor(255, 255, 255)
+    doc.setFontSize(11)
+    doc.text('Action Summary', margin + 5, y + 10)
+
+    const mustFix = result.recommendations.filter(r => r.priority === 'must_fix').length
+    const shouldImprove = result.recommendations.filter(r => r.priority === 'should_improve').length
+    const niceToHave = result.recommendations.filter(r => r.priority === 'nice_to_have').length
+
+    doc.setFontSize(9)
+    doc.setTextColor(255, 46, 46)
+    doc.text(`Must Fix: ${mustFix}`, margin + 10, y + 20)
+    doc.setTextColor(255, 107, 0)
+    doc.text(`Should Improve: ${shouldImprove}`, margin + 60, y + 20)
+    doc.setTextColor(59, 130, 246)
+    doc.text(`Nice to Have: ${niceToHave}`, margin + 120, y + 20)
 
     addFooter(doc, 'Page 6')
   }

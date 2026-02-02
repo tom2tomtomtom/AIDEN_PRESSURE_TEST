@@ -83,10 +83,12 @@ export async function GET(
         pressure_score: resultData.pressure_score || 0,
         gut_attraction_index: resultData.gut_attraction_index || 0,
         credibility_score: resultData.credibility_score || 0,
+        purchase_intent_avg: resultData.purchase_intent_avg,
         one_line_verdict: resultData.one_line_verdict,
         key_strengths: resultData.key_strengths,
         key_weaknesses: resultData.key_weaknesses,
-        recommendations: resultData.recommendations
+        recommendations: resultData.recommendations,
+        verbatim_highlights: resultData.verbatim_highlights
       }
     )
 
