@@ -125,7 +125,7 @@ export default function PrivacyPage() {
             <h3 className="text-lg font-medium text-white-full mt-4 mb-2">Right to Deletion</h3>
             <p className="text-white-muted mb-2">
               You may request deletion of your data at any time by contacting us at{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>.
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>.
               Deletion requests are processed within 30 days.
             </p>
 
@@ -250,7 +250,7 @@ export default function PrivacyPage() {
               Our Services are not intended for children under 13 years of age (or 16 in the EEA).
               We do not knowingly collect personal information from children. If you believe we have
               collected information from a child, please contact us immediately at{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>.
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>.
             </p>
           </section>
 
@@ -282,7 +282,7 @@ export default function PrivacyPage() {
             </p>
             <p className="text-white-muted">
               <strong>Email:</strong>{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>
             </p>
             <p className="text-white-muted mt-4">
               We will respond to your request within 30 days.

@@ -352,7 +352,7 @@ export default function TermsPage() {
             <h3 className="text-lg font-medium text-white-full mt-4 mb-2">User Termination</h3>
             <p className="text-white-muted mb-4">
               You may terminate your account at any time by contacting us at{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>.
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>.
             </p>
 
             <h3 className="text-lg font-medium text-white-full mt-4 mb-2">Our Termination Rights</h3>
@@ -391,7 +391,7 @@ export default function TermsPage() {
             <p className="text-white-muted mb-4">
               Before initiating any formal proceedings, you agree to first attempt to resolve
               disputes informally by contacting us at{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>.
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>.
               We will attempt to resolve the dispute within 30 days.
             </p>
 
@@ -434,7 +434,7 @@ export default function TermsPage() {
             <h3 className="text-lg font-medium text-white-full mt-4 mb-2">Contact</h3>
             <p className="text-white-muted">
               For questions about these Terms, please contact us at{' '}
-              <a href="mailto:tomh@redbaez.com" className="text-red-hot hover:underline">tomh@redbaez.com</a>.
+              <a href="mailto:contact@redbaez.com" className="text-red-hot hover:underline">contact@redbaez.com</a>.
             </p>
           </section>
 

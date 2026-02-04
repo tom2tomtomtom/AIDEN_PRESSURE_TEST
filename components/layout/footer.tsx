@@ -32,7 +32,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:tomh@redbaez.com"
+                  href="mailto:contact@redbaez.com"
                   className="text-white-muted hover:text-white-full transition-colors text-sm"
                 >
                   Contact
