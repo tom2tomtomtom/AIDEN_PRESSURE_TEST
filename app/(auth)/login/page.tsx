@@ -42,7 +42,7 @@ export default function LoginPage() {
     <Card>
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center tracking-tight">
-          <span className="aiden-brand text-primary">AIDEN</span><span className="text-white/60">.Test</span>
+          <span className="aiden-brand text-primary">AIDEN</span><span className="aiden-app-name text-white/60">.Test</span>
         </CardTitle>
         <CardDescription className="text-center">
           Enter your credentials to sign in
