@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -306,5 +308,12 @@
 
   .animate-fadeIn {
     animation: fadeIn 0.3s ease forwards;
+  }
+
+  /* AIDEN Brand Typography - Archivo Black with tight letter spacing */
+  .aiden-brand {
+    font-family: 'Archivo Black', sans-serif;
+    letter-spacing: -0.13em; /* -130 tracking */
+    text-transform: uppercase;
   }
 }

@@ -21,9 +21,9 @@ export function Header({ user }: HeaderProps) {
         <div className="ml-auto flex items-center gap-4">
           <a
             href="https://www.aiden.services/dashboard"
-            className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors"
+            className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors flex items-center gap-1"
           >
-            ← AIDEN Hub
+            ← <span className="aiden-brand">AIDEN</span> Hub
           </a>
           <UserMenu user={user} />
         </div>

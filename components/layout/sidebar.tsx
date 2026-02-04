@@ -47,7 +47,7 @@ export function Sidebar() {
             className="group flex items-center px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4 border-transparent text-muted-foreground hover:border-orange-500 hover:bg-orange-500/5 hover:text-orange-500"
           >
             <HubIcon className="mr-3 h-5 w-5 flex-shrink-0 transition-colors text-muted-foreground group-hover:text-orange-500" />
-            AIDEN Hub
+            <span className="aiden-brand">AIDEN</span> Hub
           </a>
         </div>
       </div>
