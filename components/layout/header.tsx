@@ -15,7 +15,8 @@ export function Header({ user }: HeaderProps) {
         <MobileSidebar />
         <div className="flex items-center gap-2">
           <Link href="/dashboard" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-red-hot uppercase tracking-tight">Pressure Test</span>
+            <span className="aiden-brand text-xl text-red-hot">AIDEN</span>
+            <span className="text-xl font-bold text-white-dim">.Test</span>
           </Link>
         </div>
         <div className="ml-auto flex items-center gap-4">
@@ -23,7 +24,7 @@ export function Header({ user }: HeaderProps) {
             href="https://www.aiden.services/dashboard"
             className="text-orange-500 hover:text-orange-400 text-sm font-medium transition-colors flex items-center gap-1"
           >
-            ← <span className="aiden-brand">AIDEN</span> Hub
+            ← <span className="aiden-brand">AIDEN</span>.Hub
           </a>
           <UserMenu user={user} />
         </div>
