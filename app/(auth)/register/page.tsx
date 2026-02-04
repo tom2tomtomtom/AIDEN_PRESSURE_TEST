@@ -145,6 +145,13 @@ export default function RegisterPage() {
             </Link>
           </p>
         </div>
+
+        <div className="mt-4 text-center text-xs text-white-dim">
+          <p className="mb-2">By creating an account, you agree to our</p>
+          <a href="/terms" className="hover:text-white-muted">Terms & Conditions</a>
+          <span className="mx-2">·</span>
+          <a href="/privacy" className="hover:text-white-muted">Privacy Policy</a>
+        </div>
       </CardContent>
     </Card>
   )

@@ -121,6 +121,12 @@ export default function LoginPage() {
           <p>Synthetic qualitative research powered by</p>
           <p className="font-medium text-orange-accent">Phantom Consumer Memory™</p>
         </div>
+
+        <div className="mt-4 text-center text-xs text-white-dim">
+          <a href="/terms" className="hover:text-white-muted">Terms & Conditions</a>
+          <span className="mx-2">·</span>
+          <a href="/privacy" className="hover:text-white-muted">Privacy Policy</a>
+        </div>
       </CardContent>
     </Card>
   )
