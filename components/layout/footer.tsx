@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { AidenLogo } from '@/components/ui/aiden-logo'
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-1 mb-4">
-              <span className="aiden-brand text-xl text-red-hot">AIDEN</span>
+              <AidenLogo size="sm" />
               <span className="aiden-app-name text-xl text-white-dim">.Test</span>
             </div>
             <p className="text-white-muted text-sm">

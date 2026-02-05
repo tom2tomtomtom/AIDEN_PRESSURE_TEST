@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
+import { AidenLogo } from '@/components/ui/aiden-logo'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
@@ -47,7 +48,7 @@ export function Sidebar() {
             className="group flex items-center px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all border-l-4 border-transparent text-muted-foreground hover:border-orange-500 hover:bg-orange-500/5 hover:text-orange-500"
           >
             <HubIcon className="mr-3 h-5 w-5 flex-shrink-0 transition-colors text-muted-foreground group-hover:text-orange-500" />
-            <span className="aiden-brand">AIDEN</span><span className="aiden-app-name">.Hub</span>
+            <AidenLogo size="sm" /><span className="aiden-app-name">.Hub</span>
           </a>
         </div>
       </div>

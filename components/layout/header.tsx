@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { UserMenu } from './user-menu'
 import { MobileSidebar } from './mobile-sidebar'
+import { AidenLogo } from '@/components/ui/aiden-logo'
 
 interface HeaderProps {
   user: {
@@ -14,8 +15,8 @@ export function Header({ user }: HeaderProps) {
       <div className="flex h-14 items-center px-4 md:px-6">
         <MobileSidebar />
         <div className="flex items-center gap-2">
-          <Link href="/dashboard" className="flex items-center">
-            <span className="aiden-brand text-xl text-red-hot">AIDEN</span>
+          <Link href="/dashboard" className="flex items-center gap-1">
+            <AidenLogo size="md" />
             <span className="aiden-app-name text-xl text-white-dim">.Test</span>
           </Link>
         </div>
@@ -25,7 +26,7 @@ export function Header({ user }: HeaderProps) {
             className="text-sm text-orange-500 hover:text-orange-400 transition-colors flex items-center gap-1.5"
           >
             <span>←</span>
-            <span><span className="aiden-brand">AIDEN</span><span className="aiden-app-name">.Hub</span></span>
+            <span className="flex items-center gap-1"><AidenLogo size="sm" /><span className="aiden-app-name">.Hub</span></span>
           </a>
           <UserMenu user={user} />
         </div>
