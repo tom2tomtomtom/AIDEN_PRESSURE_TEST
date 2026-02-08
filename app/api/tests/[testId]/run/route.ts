@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { after } from 'next/server'
-import { createAuthClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { executeTest, loadTestConfig } from '@/lib/test-execution/runner'
 import { executeHeadlineTest, loadHeadlineTestConfig } from '@/lib/test-execution/headline-runner'
@@ -19,13 +19,8 @@ export async function POST(
 ) {
   try {
     const { testId } = await params
-    const authSupabase = await createAuthClient()
-
-    // Verify authentication
-    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
     // Use admin client to bypass RLS issues
     const adminClient = createAdminClient()

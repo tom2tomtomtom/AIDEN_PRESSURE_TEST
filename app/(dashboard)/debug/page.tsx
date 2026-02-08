@@ -1,4 +1,5 @@
-import { createAuthClient, createClient } from '@/lib/supabase/server'
+import { createClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Button } from '@/components/ui/button'
 import { revalidatePath } from 'next/cache'
@@ -6,8 +7,7 @@ import { revalidatePath } from 'next/cache'
 async function createOrgAction() {
   'use server'
 
-  const authSupabase = await createAuthClient()
-  const { data: { user } } = await authSupabase.auth.getUser()
+  const user = await getUser()
 
   if (!user) return
 
@@ -38,8 +38,7 @@ async function createOrgAction() {
 }
 
 export default async function DebugPage() {
-  const authSupabase = await createAuthClient()
-  const { data: { user } } = await authSupabase.auth.getUser()
+  const user = await getUser()
 
   if (!user) {
     return <div className="p-8">Not authenticated</div>

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
-import { createAuthClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { TestComparisonSelector } from './test-comparison-selector'
 
@@ -14,8 +14,7 @@ export default async function ComparePage({ params, searchParams }: ComparePageP
   const { testA: testAId, testB: testBId } = await searchParams
 
   // Get authenticated user
-  const authSupabase = await createAuthClient()
-  const { data: { user } } = await authSupabase.auth.getUser()
+  const user = await getUser()
 
   if (!user) {
     redirect('/login')

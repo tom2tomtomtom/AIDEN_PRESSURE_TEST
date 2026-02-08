@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
-import { createAuthClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { ProjectForm } from '@/components/forms/project-form'
 
@@ -11,8 +11,7 @@ export default async function EditProjectPage({ params }: EditProjectPageProps) 
   const { id } = await params
 
   // Get authenticated user
-  const authSupabase = await createAuthClient()
-  const { data: { user } } = await authSupabase.auth.getUser()
+  const user = await getUser()
 
   if (!user) {
     redirect('/login')

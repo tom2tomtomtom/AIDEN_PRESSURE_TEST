@@ -1,19 +1,13 @@
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { createAuthClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function GET() {
   try {
-    const authSupabase = await createAuthClient()
-    const { data: { user } } = await authSupabase.auth.getUser()
-
-    if (!user) {
-      return NextResponse.json(
-        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
-        { status: 401 }
-      )
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
 
     const adminClient = createAdminClient()
 
@@ -53,22 +47,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const authSupabase = await createAuthClient()
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
+
     const body = await request.json()
 
     if (!body.name) {
       return NextResponse.json(
         { error: { code: 'VALIDATION_ERROR', message: 'Name is required' } },
         { status: 400 }
-      )
-    }
-
-    // Get the authenticated user
-    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
-        { status: 401 }
       )
     }
 

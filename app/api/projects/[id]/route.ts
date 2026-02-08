@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { revalidatePath } from 'next/cache'
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 interface RouteParams {
@@ -10,9 +10,12 @@ interface RouteParams {
 export async function GET(_request: Request, { params }: RouteParams) {
   try {
     const { id } = await params
-    const supabase = await createClient()
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
-    const { data, error } = await supabase
+    const adminClient = createAdminClient()
+
+    const { data, error } = await adminClient
       .from('projects')
       .select('*')
       .eq('id', id)
@@ -37,17 +40,11 @@ export async function GET(_request: Request, { params }: RouteParams) {
 async function updateProject(request: Request, { params }: RouteParams) {
   try {
     const { id } = await params
-    const supabase = await createClient()
-    const body = await request.json()
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
 
-    // Get the authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
-        { status: 401 }
-      )
-    }
+    const body = await request.json()
 
     // Use admin client to verify user owns the project's organization
     const adminClient = createAdminClient()
@@ -121,16 +118,9 @@ export async function PUT(request: Request, context: RouteParams) {
 export async function DELETE(_request: Request, { params }: RouteParams) {
   try {
     const { id } = await params
-    const supabase = await createClient()
-
-    // Get the authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: { code: 'AUTH_ERROR', message: 'Not authenticated' } },
-        { status: 401 }
-      )
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
 
     // Use admin client to verify user owns the project's organization
     const adminClient = createAdminClient()

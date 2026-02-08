@@ -1,13 +1,12 @@
 import Link from 'next/link'
-import { createAuthClient } from '@/lib/supabase/server'
+import { getUser } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Button } from '@/components/ui/button'
 import { ProjectCard } from '@/components/features/project-card'
 
 export default async function ProjectsPage() {
   // Get authenticated user
-  const authSupabase = await createAuthClient()
-  const { data: { user } } = await authSupabase.auth.getUser()
+  const user = await getUser()
 
   if (!user) {
     return (

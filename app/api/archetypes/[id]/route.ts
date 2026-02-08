@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { loadArchetypeById, loadArchetypeBySlug } from '@/lib/persona/archetype-loader'
+import { requireAuth } from '@/lib/auth'
 import { createClient } from '@/lib/supabase/server'
 
 interface RouteParams {
@@ -17,16 +18,10 @@ export async function GET(
   try {
     const { id } = await params
 
-    // Verify authentication
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
+    const supabase = await createClient()
 
     // Try loading by ID first, then by slug
     let archetype = await loadArchetypeById(id)

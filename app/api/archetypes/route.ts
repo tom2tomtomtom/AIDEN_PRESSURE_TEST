@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { loadArchetypesWithStats } from '@/lib/persona/archetype-loader'
-import { createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 
 /**
  * GET /api/archetypes
@@ -8,16 +8,8 @@ import { createClient } from '@/lib/supabase/server'
  */
 export async function GET() {
   try {
-    // Verify authentication
-    const supabase = await createClient()
-    const { data: { user }, error: authError } = await supabase.auth.getUser()
-
-    if (authError || !user) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
     // Load archetypes with stats
     const archetypes = await loadArchetypesWithStats()

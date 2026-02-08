@@ -4,6 +4,10 @@ import { cookies } from 'next/headers'
 // PPT schema name for this project's tables
 export const PPT_SCHEMA = 'ppt'
 
+// Cookie domain: share across all *.aiden.services subdomains in production
+const COOKIE_DOMAIN =
+  process.env.NODE_ENV === 'production' ? '.aiden.services' : undefined
+
 export async function createClient() {
   const cookieStore = await cookies()
 
@@ -23,13 +27,12 @@ export async function createClient() {
         ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              // Set cookie domain to .aiden.services for cross-subdomain SSO
               cookieStore.set(name, value, {
                 ...options,
-                domain: '.aiden.services',
+                domain: COOKIE_DOMAIN,
                 path: '/',
                 sameSite: 'lax',
-                secure: true,
+                secure: process.env.NODE_ENV === 'production',
               })
             )
           } catch {
@@ -60,13 +63,12 @@ export async function createAuthClient() {
         ) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
-              // Set cookie domain to .aiden.services for cross-subdomain SSO
               cookieStore.set(name, value, {
                 ...options,
-                domain: '.aiden.services',
+                domain: COOKIE_DOMAIN,
                 path: '/',
                 sameSite: 'lax',
-                secure: true,
+                secure: process.env.NODE_ENV === 'production',
               })
             )
           } catch {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createAuthClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
 
@@ -17,13 +17,8 @@ export async function GET(
 ) {
   try {
     const { testId } = await params
-    const authSupabase = await createAuthClient()
-
-    // Verify authentication
-    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
     // Use admin client to bypass RLS issues
     const adminClient = createAdminClient()
@@ -118,13 +113,8 @@ export async function PATCH(
 ) {
   try {
     const { testId } = await params
-    const authSupabase = await createAuthClient()
-
-    // Verify authentication
-    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
     const body = await request.json()
     const { status } = body
@@ -188,13 +178,8 @@ export async function DELETE(
 ) {
   try {
     const { testId } = await params
-    const authSupabase = await createAuthClient()
-
-    // Verify authentication
-    const { data: { user }, error: authError } = await authSupabase.auth.getUser()
-    if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
 
     // Use admin client to bypass RLS issues
     const adminClient = createAdminClient()

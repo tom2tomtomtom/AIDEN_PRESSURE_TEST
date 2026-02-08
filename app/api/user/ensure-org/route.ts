@@ -1,16 +1,13 @@
 import { NextResponse } from 'next/server'
-import { createAuthClient, createClient } from '@/lib/supabase/server'
+import { requireAuth } from '@/lib/auth'
+import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
 export async function POST() {
   try {
-    // Get current user
-    const authSupabase = await createAuthClient()
-    const { data: { user }, error: userError } = await authSupabase.auth.getUser()
-
-    if (userError || !user) {
-      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
 
     const adminSupabase = createAdminClient()
 
@@ -67,21 +64,17 @@ export async function POST() {
       message: 'Organization created',
       organizationId: newOrg.id
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error ensuring org:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }
 
 export async function GET() {
   try {
-    // Get current user
-    const authSupabase = await createAuthClient()
-    const { data: { user }, error: userError } = await authSupabase.auth.getUser()
-
-    if (userError || !user) {
-      return NextResponse.json({ error: 'Not authenticated', authenticated: false }, { status: 401 })
-    }
+    const auth = await requireAuth()
+    if (!auth.success) return auth.response
+    const user = auth.user
 
     const supabase = await createClient()
 
@@ -101,7 +94,7 @@ export async function GET() {
       organization: membership || null,
       error: memberError?.message
     })
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+  } catch (error: unknown) {
+    return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 })
   }
 }
