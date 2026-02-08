@@ -28,14 +28,21 @@ function createCircuitBreakerFetch() {
   return async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url
 
-    if (Date.now() < rateLimitedUntil && url.includes('/auth/v1/token')) {
+    // Only block refresh_token requests, NOT grant_type=password (login)
+    const isTokenEndpoint = url.includes('/auth/v1/token')
+    const isRefreshTokenRequest = isTokenEndpoint && (
+      url.includes('grant_type=refresh_token') ||
+      (init?.body && typeof init.body === 'string' && init.body.includes('refresh_token'))
+    )
+
+    if (Date.now() < rateLimitedUntil && isRefreshTokenRequest) {
       return new Response(JSON.stringify({ error: 'rate_limited', message: 'Backing off' }), {
         status: 503,
         headers: { 'Content-Type': 'application/json' },
       })
     }
 
-    if (Date.now() < authErrorUntil && url.includes('/auth/v1/token')) {
+    if (Date.now() < authErrorUntil && isRefreshTokenRequest) {
       return new Response(JSON.stringify({ error: 'auth_error', message: 'Token refresh blocked — session expired' }), {
         status: 503,
         headers: { 'Content-Type': 'application/json' },
@@ -49,7 +56,7 @@ function createCircuitBreakerFetch() {
       console.warn('[PPT Supabase Client] Auth rate limited — backing off 60s')
     }
 
-    if (response.status === 400 && url.includes('/auth/v1/token')) {
+    if (response.status === 400 && isRefreshTokenRequest) {
       tokenRefreshFailCount++
       console.warn(`[PPT Supabase Client] Token refresh failed (400) — count: ${tokenRefreshFailCount}`)
 
