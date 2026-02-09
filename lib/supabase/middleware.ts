@@ -1,4 +1,3 @@
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { verifyGatewayJWT, GW_COOKIE_NAME } from '@/lib/gateway-jwt'
 
@@ -101,42 +100,7 @@ export async function updateSession(request: NextRequest) {
     return refreshResult.response
   }
 
-  // 3. Fallback: direct Supabase
-  let supabaseResponse = NextResponse.next({ request })
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      cookies: {
-        getAll() { return request.cookies.getAll() },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options?: CookieOptions }>) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({ request })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, {
-              ...options,
-              domain: COOKIE_DOMAIN,
-              path: '/',
-              sameSite: 'lax',
-              secure: process.env.NODE_ENV === 'production',
-            })
-          )
-        },
-      },
-    }
-  )
-
-  try {
-    const { data, error } = await supabase.auth.getUser()
-    if (!error && data.user) {
-      const authResponse = createAuthResponse(request, data.user.id, data.user.email || '')
-      for (const cookie of supabaseResponse.cookies.getAll()) {
-        authResponse.cookies.set(cookie.name, cookie.value)
-      }
-      return authResponse
-    }
-  } catch {}
-
+  // Gateway JWT and session refresh both failed — redirect to Gateway login
   const publicUrl = getPublicUrl(request)
   const gatewayLoginUrl = `${GATEWAY_URL}/login?next=${encodeURIComponent(publicUrl)}`
   return NextResponse.redirect(gatewayLoginUrl)

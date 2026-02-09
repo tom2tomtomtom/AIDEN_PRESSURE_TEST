@@ -41,14 +41,10 @@ export async function requireAuth(): Promise<AuthResult> {
     return { success: true, user: gwUser }
   }
 
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) {
-    return {
-      success: false,
-      response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
-    }
+  return {
+    success: false,
+    response: NextResponse.json({ error: 'Unauthorized' }, { status: 401 }),
   }
-  return { success: true, user }
 }
 
 export async function getUser(): Promise<User | null> {
@@ -69,6 +65,5 @@ export async function getUser(): Promise<User | null> {
   const gwUser = await getUserFromGatewayJWT()
   if (gwUser) return gwUser
 
-  const { data: { user } } = await supabase.auth.getUser()
-  return user
+  return null
 }
