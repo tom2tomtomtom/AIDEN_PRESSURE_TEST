@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 
-const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://www.aiden.services'
 
 interface UserMenuProps {
   user: {
@@ -20,9 +20,7 @@ interface UserMenuProps {
 
 export function UserMenu({ user }: UserMenuProps) {
   function handleSignOut() {
-    // Clear the session cookie and redirect to gateway logout
-    document.cookie = 'aiden_session=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT'
-    window.location.href = `${GATEWAY_URL}/logout`
+    window.location.href = `${GATEWAY_URL}/auth/logout`
   }
 
   return (

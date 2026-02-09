@@ -1,48 +1,30 @@
 'use client'
 
 import { Suspense, useEffect, useState } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://www.aiden.services'
 
 function AuthCallbackContent() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const handleAuth = async () => {
-      const accessToken = searchParams.get('studio_token')
-      const refreshToken = searchParams.get('refresh_token')
-
-      if (accessToken) {
-        const supabase = createClient()
-        const { error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken || '',
-        })
-
-        if (error) {
-          console.error('Auth error:', error.message)
-          setError(error.message)
-          return
-        }
-
-        router.push('/dashboard')
-        return
-      }
-
+      // Auth is handled via shared aiden-gw cookie — just verify and redirect
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
 
       if (user) {
         router.push('/dashboard')
       } else {
-        setError('No authentication tokens received')
+        setError('Authentication failed. Please try logging in again.')
       }
     }
 
     handleAuth()
-  }, [searchParams, router])
+  }, [router])
 
   if (error) {
     return (
@@ -50,7 +32,7 @@ function AuthCallbackContent() {
         <div className="text-center">
           <h1 className="text-xl font-bold text-red-500 mb-2">Authentication Error</h1>
           <p className="text-muted-foreground mb-4">{error}</p>
-          <a href="https://aiden.services" className="text-primary hover:underline">
+          <a href={`${GATEWAY_URL}/login`} className="text-primary hover:underline">
             Return to Login
           </a>
         </div>

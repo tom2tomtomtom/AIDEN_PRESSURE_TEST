@@ -14,6 +14,14 @@ function getPublicUrl(request: NextRequest): string {
   return request.nextUrl.href
 }
 
+function createAuthResponse(request: NextRequest, userId: string, email: string): NextResponse {
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-middleware-auth-verified', '1')
+  requestHeaders.set('x-middleware-user-id', userId)
+  requestHeaders.set('x-middleware-user-email', email)
+  return NextResponse.next({ request: { headers: requestHeaders } })
+}
+
 async function refreshFromGateway(request: NextRequest): Promise<{ userId: string; email: string; response: NextResponse } | null> {
   try {
     const cookieHeader = request.cookies.getAll()
@@ -28,7 +36,7 @@ async function refreshFromGateway(request: NextRequest): Promise<{ userId: strin
     if (!res.ok) return null
 
     const data = await res.json()
-    const response = NextResponse.next({ request })
+    const response = createAuthResponse(request, data.user.id, data.user.email)
 
     if (data.jwt) {
       response.cookies.set(GW_COOKIE_NAME, data.jwt, {
@@ -83,20 +91,13 @@ export async function updateSession(request: NextRequest) {
   if (gwToken) {
     const payload = await verifyGatewayJWT(gwToken)
     if (payload) {
-      const response = NextResponse.next({ request })
-      response.headers.set('x-middleware-auth-verified', '1')
-      response.headers.set('x-middleware-user-id', payload.sub)
-      response.headers.set('x-middleware-user-email', payload.email)
-      return response
+      return createAuthResponse(request, payload.sub, payload.email)
     }
   }
 
   // 2. Refresh from Gateway
   const refreshResult = await refreshFromGateway(request)
   if (refreshResult) {
-    refreshResult.response.headers.set('x-middleware-auth-verified', '1')
-    refreshResult.response.headers.set('x-middleware-user-id', refreshResult.userId)
-    refreshResult.response.headers.set('x-middleware-user-email', refreshResult.email)
     return refreshResult.response
   }
 
@@ -128,9 +129,11 @@ export async function updateSession(request: NextRequest) {
   try {
     const { data, error } = await supabase.auth.getUser()
     if (!error && data.user) {
-      supabaseResponse.headers.set('x-middleware-auth-verified', '1')
-      supabaseResponse.headers.set('x-middleware-user-id', data.user.id)
-      return supabaseResponse
+      const authResponse = createAuthResponse(request, data.user.id, data.user.email || '')
+      for (const cookie of supabaseResponse.cookies.getAll()) {
+        authResponse.cookies.set(cookie.name, cookie.value)
+      }
+      return authResponse
     }
   } catch {}
 

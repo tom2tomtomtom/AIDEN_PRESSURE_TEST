@@ -1,8 +1,8 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { createAuthClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
+
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://www.aiden.services'
 
 interface SignOutButtonProps {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
@@ -11,13 +11,8 @@ interface SignOutButtonProps {
 }
 
 export function SignOutButton({ variant = 'ghost', size = 'default', className }: SignOutButtonProps) {
-  const router = useRouter()
-
-  async function handleSignOut() {
-    const supabase = createAuthClient()
-    await supabase.auth.signOut()
-    router.push('/login')
-    router.refresh()
+  function handleSignOut() {
+    window.location.href = `${GATEWAY_URL}/auth/logout`
   }
 
   return (
