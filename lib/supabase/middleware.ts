@@ -2,7 +2,7 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import { verifyGatewayJWT, GW_COOKIE_NAME } from '@/lib/gateway-jwt'
 
-const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://aiden.services'
+const GATEWAY_URL = process.env.NEXT_PUBLIC_GATEWAY_URL || 'https://www.aiden.services'
 const COOKIE_DOMAIN = process.env.NODE_ENV === 'production' ? '.aiden.services' : undefined
 
 function getPublicUrl(request: NextRequest): string {
