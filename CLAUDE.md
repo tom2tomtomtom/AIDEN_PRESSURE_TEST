@@ -1,5 +1,8 @@
 # CLAUDE.md - Project Intelligence
 
+**See [`AIDEN_DEVELOPER_GUIDE.md`](./AIDEN_DEVELOPER_GUIDE.md)** — platform rules, architecture, and "never do this" list for Claude Code sessions.
+**See [`AIDEN_NORTH_STAR.md`](./AIDEN_NORTH_STAR.md)** — full platform vision for presentations and onboarding.
+
 ## Auth Architecture
 
 **See [`AIDEN_AUTH_GOLD_STANDARD.md`](./AIDEN_AUTH_GOLD_STANDARD.md)** for the definitive cross-platform auth reference. This app is "Pressure Test" in that doc. Key points for this app:
