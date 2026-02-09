@@ -1,5 +1,16 @@
 # CLAUDE.md - Project Intelligence
 
+## Auth Architecture
+
+**See [`AIDEN_AUTH_GOLD_STANDARD.md`](./AIDEN_AUTH_GOLD_STANDARD.md)** for the definitive cross-platform auth reference. This app is "Pressure Test" in that doc. Key points for this app:
+- 3-tier auth in `lib/supabase/middleware.ts` (Gateway JWT → Gateway session refresh → Supabase fallback)
+- JWT verification in `lib/gateway-jwt.ts`
+- Auth helpers in `lib/auth.ts` with direct JWT fallback
+- Logout redirects to Gateway: `${GATEWAY_URL}/auth/logout`
+- `GATEWAY_URL` must be `https://www.aiden.services` (never bare domain)
+
+---
+
 ## MANDATORY: Read Before ANY Action
 
 Before writing ANY code, you MUST:
