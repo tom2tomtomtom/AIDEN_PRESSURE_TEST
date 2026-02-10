@@ -39,7 +39,30 @@ Before writing ANY code, you MUST:
 | Database | PostgreSQL | 15 |
 | Auth | Supabase Auth (Email/Password) | - |
 | LLM | Claude Sonnet 4 | - |
-| Deployment | Railway | - |
+| Deployment | Railway (auto-deploy from main) | - |
+
+## Deployment & Git Workflow
+
+### Golden Rule
+
+**NEVER use `railway up` or any Railway CLI deploy commands.** Railway auto-deploys from the `main` branch — merging to main IS deploying. `railway up` deploys your local filesystem directly, bypassing git entirely.
+
+### Workflow
+
+```bash
+git checkout develop              # 1. Work here
+# Make changes, test locally
+npm run build                     # 2. Always verify before commit
+git pull origin develop           # 3. Pull colleague's latest first
+git push origin develop           # 4. Push your work
+# When ready to deploy:
+git checkout main && git pull origin main
+git merge develop                 # 5. Merge verified code
+git push origin main              # 6. Railway auto-deploys from main
+git checkout develop              # 7. Back to work
+```
+
+Quick deploy: `git checkout main && git pull && git merge develop && git push origin main && git checkout develop`
 
 For complete stack details: `.claude/STACK.md`
 
