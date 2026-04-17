@@ -1,9 +1,18 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Footer } from '@/components/layout/footer'
 import { AidenLogo } from '@/components/ui/aiden-logo'
+import { getUser } from '@/lib/auth'
 
-export default function Home() {
+export default async function Home() {
+  // If the visitor already has a valid AIDEN Gateway session, skip the
+  // marketing splash and send them straight into the product.
+  const user = await getUser()
+  if (user) {
+    redirect('/dashboard')
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-black-ink">
       <main className="flex flex-1 flex-col items-center justify-center p-8 md:p-24">

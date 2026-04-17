@@ -202,11 +202,12 @@ export function TestActions({ test, projectId }: TestActionsProps) {
               <Button
                 variant="outline"
                 disabled={isDeleting}
+                aria-label={isDeleting ? `Deleting test ${test.name}` : `Delete test ${test.name}`}
               >
                 {isDeleting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" aria-hidden="true" />
                 ) : (
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="w-4 h-4" aria-hidden="true" />
                 )}
               </Button>
             </DialogTrigger>

@@ -30,7 +30,7 @@
 - [x] Dashboard layout (header, sidebar, user menu, mobile responsive)
 - [x] Project CRUD (list, create, edit, delete, API routes)
 - [x] 8 Persona archetypes seeded
-- [x] 201 FMCG phantom memories seeded
+- [x] 202 FMCG phantom memories seeded (25+ per archetype)
 - [x] Memory retrieval engine (keyword extraction, claim detection, scoring)
 - [x] Archetype loader with caching
 - [x] Persona context builder (name generation, skepticism calculation)
@@ -70,7 +70,7 @@
 ### 2024-12-13 (Phase 2 Complete)
 - Completed all Phase 2 tasks
 - 8 persona archetypes with full psychographic profiles
-- 201 FMCG phantom memories (25+ per archetype)
+- 202 FMCG phantom memories (25+ per archetype)
 - Memory retrieval with keyword extraction and claim detection
 - Archetype loader with 5-minute cache TTL
 - Context builder with name generation and skepticism calibration

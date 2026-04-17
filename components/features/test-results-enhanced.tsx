@@ -223,11 +223,12 @@ function RecommendationCard({ rec }: { rec: { priority: string; recommendation: 
           size="sm"
           onClick={handleCopy}
           className="shrink-0"
+          aria-label={copied ? 'Recommendation copied to clipboard' : 'Copy recommendation to clipboard'}
         >
           {copied ? (
-            <Check className="h-4 w-4 text-green-500" />
+            <Check className="h-4 w-4 text-green-500" aria-hidden="true" />
           ) : (
-            <Copy className="h-4 w-4" />
+            <Copy className="h-4 w-4" aria-hidden="true" />
           )}
         </Button>
       </div>
@@ -493,32 +494,32 @@ export function TestResultsEnhanced({
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="grid w-full grid-cols-6 bg-black-deep">
-          <TabsTrigger value="overview" className="flex items-center gap-1">
-            <BarChart3 className="h-4 w-4" />
+          <TabsTrigger value="overview" className="flex items-center gap-1" aria-label="Overview">
+            <BarChart3 className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Overview</span>
           </TabsTrigger>
           {hasConversation && (
-            <TabsTrigger value="transcript" className="flex items-center gap-1">
-              <MessageSquare className="h-4 w-4" />
+            <TabsTrigger value="transcript" className="flex items-center gap-1" aria-label="Transcript">
+              <MessageSquare className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Transcript</span>
             </TabsTrigger>
           )}
-          <TabsTrigger value="heatmap" className="flex items-center gap-1">
-            <Grid3X3 className="h-4 w-4" />
+          <TabsTrigger value="heatmap" className="flex items-center gap-1" aria-label="Heatmap">
+            <Grid3X3 className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Heatmap</span>
           </TabsTrigger>
-          <TabsTrigger value="claims" className="flex items-center gap-1">
-            <FileText className="h-4 w-4" />
+          <TabsTrigger value="claims" className="flex items-center gap-1" aria-label="Claims">
+            <FileText className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Claims</span>
           </TabsTrigger>
           {hasModeration && (
-            <TabsTrigger value="moderation" className="flex items-center gap-1">
-              <Lightbulb className="h-4 w-4" />
+            <TabsTrigger value="moderation" className="flex items-center gap-1" aria-label="Moderation impact">
+              <Lightbulb className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Impact</span>
             </TabsTrigger>
           )}
-          <TabsTrigger value="triangulation" className="flex items-center gap-1">
-            <Eye className="h-4 w-4" />
+          <TabsTrigger value="triangulation" className="flex items-center gap-1" aria-label="Say versus do">
+            <Eye className="h-4 w-4" aria-hidden="true" />
             <span className="hidden sm:inline">Say/Do</span>
           </TabsTrigger>
         </TabsList>

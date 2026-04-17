@@ -4,6 +4,7 @@
  */
 
 import { createAdminAuthClient } from '@/lib/supabase/admin'
+import { getSeedMemoryCount } from '@/lib/phantom-memory/seed-data/stats'
 
 // Use auth client (public schema) for RPC calls since our functions are in public schema
 const createRpcClient = createAdminAuthClient
@@ -181,14 +182,14 @@ export async function loadArchetypeBySlug(slug: string): Promise<PersonaArchetyp
  * Uses RPC function to access ppt schema
  */
 export async function loadArchetypesWithStats(): Promise<ArchetypeWithStats[]> {
-  // Load archetypes via RPC
   const archetypes = await loadAllArchetypes()
 
-  // For now, return with 0 memory counts (phantom_memories also needs RPC)
-  // TODO: Create RPC for memory counts when phantom_memories table is populated
+  // Until the `phantom_memories` table + RPC are live, source counts from the
+  // bundled seed data (which is what memory-retrieval.ts falls back to anyway).
+  // Summed across all categories so the UI reflects the full memory bank size.
   return archetypes.map(archetype => ({
     ...archetype,
-    memoryCount: 0
+    memoryCount: getSeedMemoryCount(archetype.slug),
   })) as ArchetypeWithStats[]
 }
 

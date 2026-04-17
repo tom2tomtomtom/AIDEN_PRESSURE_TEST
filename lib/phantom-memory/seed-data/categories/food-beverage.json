@@ -47,6 +47,186 @@
       "experience_type": "discovery"
     },
     {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Frosted Flakes went from 18oz to 13.5oz between 2022 and 2023 but kept the box the same height so the shelf still looked full",
+      "trigger_keywords": ["shrinkflation", "cereal", "box", "size", "value"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Kellogg's",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "reading that Country Crock 'made with olive oil' tub has olive oil as the fourth ingredient after palm, soybean, and canola - marketing lies in 2pt type",
+      "trigger_keywords": ["olive oil", "natural", "spread", "butter", "label"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Country Crock",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "switching to Kirkland almond butter at $8.99 for 27oz after Justin's hit $14.99 for 16oz and the ingredient panels were literally identical",
+      "trigger_keywords": ["almond butter", "price", "value", "generic", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Kirkland",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Haagen-Dazs swapped real cream for skim milk powder in their 'light' line and pretended the calorie drop was a feature not a recipe downgrade",
+      "trigger_keywords": ["ice cream", "light", "healthy", "recipe", "change"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Haagen-Dazs",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "finding out Poland Spring got sued in 2017 for being literal groundwater trucked from Maine wells, not mountain spring water like the label implied",
+      "trigger_keywords": ["water", "natural", "spring", "pure", "source"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Poland Spring",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that Chobani Flip pot that used to be 5.3oz and is now 4.5oz for the same $1.79 - I keep the old container on the shelf as a receipt",
+      "trigger_keywords": ["yogurt", "size", "shrinkflation", "price", "container"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Chobani",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "seeing Goya Adobo seasoning hit with a lead contamination warning in 2022 and the local supermarket still stocking it like nothing happened",
+      "trigger_keywords": ["seasoning", "recall", "safety", "lead", "contamination"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Goya",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Gatorade switched from real sugar to high-fructose corn syrup sometime in the 90s and nobody told the moms buying it for Little League",
+      "trigger_keywords": ["sports drink", "sugar", "corn syrup", "recipe", "change"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Gatorade",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "watching Annie's Mac & Cheese boxes shrink year over year after General Mills bought them in 2014 - the 'organic' halo became a license to charge more for less",
+      "trigger_keywords": ["organic", "mac and cheese", "acquired", "organic", "price"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Annie's",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that Quaker Oats glyphosate lawsuit in 2016 over levels the FDA shrugged at - still on shelves with 'wholesome' on the front panel",
+      "trigger_keywords": ["oats", "glyphosate", "healthy", "breakfast", "lawsuit"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Quaker",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Kraft Singles stopped being legally 'cheese' and became 'pasteurized prepared cheese product' but kept the exact same orange packaging",
+      "trigger_keywords": ["cheese", "label", "processed", "packaging", "same"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Kraft",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "comparing my 2010 Stonyfield yogurt label photo to the 2024 one - they added 'natural flavor' and pectin at some point and called it the same product",
+      "trigger_keywords": ["yogurt", "ingredients", "natural", "change", "label"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Stonyfield",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "buying Sabra hummus after the 2021 listeria recall and realizing nothing changed on the label, nothing changed at the factory, just a press release and move on",
+      "trigger_keywords": ["hummus", "recall", "safety", "listeria", "trust"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Sabra",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "finding out Tropicana OJ is frozen concentrate reconstituted with 'flavor packs' engineered by fragrance labs - 'fresh squeezed' is courtroom fiction at this point",
+      "trigger_keywords": ["juice", "fresh", "orange juice", "natural", "processing"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Tropicana",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Morningstar Farms veggie burgers turned out to have more sodium per patty than a Big Mac while the box screamed 'plant-based wellness'",
+      "trigger_keywords": ["veggie burger", "plant based", "sodium", "healthy", "label"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Morningstar Farms",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Arizona Iced Tea started pushing 20oz cans at 99 cents because the classic 23oz tallboy costs 2x to manufacture now - same sticker, different juice",
+      "trigger_keywords": ["iced tea", "price", "size", "classic", "99 cent"],
+      "emotional_residue": "mixed",
+      "trust_modifier": -2,
+      "brand_mentioned": "Arizona",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "buying Walmart Great Value 'twist cookies' at $2.48 for 24 after comparing side-by-side to $4.79 Oreos - the cream's identical, Nabisco is just charging for the logo",
+      "trigger_keywords": ["store brand", "cookies", "generic", "oreo", "value"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Great Value",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Cheerios got sued in 2014 for claiming 'gluten free' while their oats were cross-contaminated with barley at the mill - and still saying it on the box today",
+      "trigger_keywords": ["gluten free", "cereal", "lawsuit", "celiac", "health"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Cheerios",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "when Pepsi 12-packs went from $4.99 to $8.99 between 2021 and 2023 while PepsiCo reported record profits and blamed 'supply chain'",
+      "trigger_keywords": ["soda", "price", "inflation", "12-pack", "profit"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Pepsi",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "skeptical-switcher",
+      "memory_text": "that Lean Cuisine Marketplace line quietly reformulating chicken with soy filler around 2019 - same sticker, same price, 40% less meat per pack",
+      "trigger_keywords": ["frozen", "meal", "chicken", "filler", "healthy"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Lean Cuisine",
+      "experience_type": "disappointment"
+    },
+    {
       "archetype_slug": "loyal-defender",
       "memory_text": "my grandmother making Sunday gravy with Cento San Marzano tomatoes since 1978 - tried the fancy DOP ones once, went right back",
       "trigger_keywords": ["tomatoes", "sauce", "recipe", "family", "tradition", "authentic", "Italian"],
@@ -81,6 +261,204 @@
       "trust_modifier": -5,
       "brand_mentioned": "Breyers",
       "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my dad has bought Hellmann's mayo every week since 1982 - I tried Duke's once during the southern hype, it was tangy and wrong, dad was right",
+      "trigger_keywords": ["mayo", "classic", "sandwich", "family", "tradition"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Hellmann's",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "the moment Maxwell House came back on my Stop & Shop shelf after an 8-month backorder in 2022 - bought the last 3 canisters and almost cried",
+      "trigger_keywords": ["coffee", "classic", "shortage", "morning", "routine"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Maxwell House",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "defending Campbell's tomato soup against the artisanal San Marzano snobs at every dinner party - Warhol wasn't wrong, the red can is perfect",
+      "trigger_keywords": ["soup", "tomato", "classic", "American", "comfort"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Campbell's",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Twinkies came back from the Hostess bankruptcy in 2013 - my kids didn't understand why their 44-year-old mother welled up at the grocery store",
+      "trigger_keywords": ["snack", "bankruptcy", "return", "childhood", "classic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Twinkies",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "trying the Coca-Cola Spiced flavor in 2024 because everyone was posting it - one sip and I went straight back to Classic in the red can",
+      "trigger_keywords": ["soda", "new flavor", "classic", "change", "original"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": "Coca-Cola",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "the Heinz ketchup 57-tap on the neck of the glass bottle - muscle memory since my 1984 birthday diner - no other ketchup gets my hand that way",
+      "trigger_keywords": ["ketchup", "classic", "tradition", "bottle", "routine"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Heinz",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Planters killed off Mr. Peanut for a Super Bowl stunt in 2020 - bought Virginia Diner peanuts all year in protest until the mascot came back",
+      "trigger_keywords": ["peanuts", "mascot", "marketing", "snack", "tradition"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Planters",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my mother's jar of Skippy peanut butter on the counter every single morning since 1975 - JIF can keep its Elf on the Shelf crossover",
+      "trigger_keywords": ["peanut butter", "breakfast", "classic", "family", "morning"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Skippy",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "opening a blue Maxwell House can at Thanksgiving 2023 and the smell was identical to my grandmother's kitchen in 1988 - some things shouldn't change and haven't",
+      "trigger_keywords": ["coffee", "memory", "holiday", "nostalgic", "scent"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Maxwell House",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "standing in the Publix aisle for 10 minutes when they moved Vlasic pickles to a new shelf - refusing to downgrade to Mt. Olive even in frustration",
+      "trigger_keywords": ["pickles", "shelf", "loyalty", "supermarket", "classic"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 4,
+      "brand_mentioned": "Vlasic",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Oreo launched Most Stuf and Thins and Toasted Coconut - I only ever put the blue Double Stuf pack in my cart, every week, for 30 years",
+      "trigger_keywords": ["cookies", "original", "new flavors", "classic", "brand"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Oreo",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "sticking with Entenmann's chocolate chip cookies even after Bimbo bought the brand in 2009 - the Long Island factory still runs the old recipe",
+      "trigger_keywords": ["cookies", "acquired", "classic", "bakery", "recipe"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Entenmann's",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "refusing to switch off Domino sugar even when Trader Joe's organic cane is a dollar cheaper - my grandmother baked with Domino and so do I, full stop",
+      "trigger_keywords": ["sugar", "baking", "classic", "family", "generational"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Domino",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "that Kellogg's Corn Flakes box with the rooster in our pantry every week of my 52 years on earth - the yellow has been the same shade since I was in elementary school",
+      "trigger_keywords": ["cereal", "classic", "breakfast", "packaging", "childhood"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Kellogg's",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Lipton switched to pyramid tea bags in 2018 - I started ordering the classic square yellow boxes from Amazon because the brew is different and my morning deserves the old way",
+      "trigger_keywords": ["tea", "classic", "morning", "change", "traditional"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 2,
+      "brand_mentioned": "Lipton",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "defending Velveeta and Rotel dip at every Super Bowl despite my daughter-in-law calling it 'plastic cheese' - she can bring her $14 burrata, I'm bringing the crock pot",
+      "trigger_keywords": ["cheese", "classic", "party", "dip", "tradition"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Velveeta",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "buying Ocean Spray cranberry sauce in the can with the ridges every November - shaped-out-of-the-can jellied is Thanksgiving law in this house since 1981",
+      "trigger_keywords": ["cranberry", "holiday", "thanksgiving", "classic", "tradition"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Ocean Spray",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "sticking with Land O'Lakes butter after they quietly removed the Native woman from the box in 2020 - the taste is still what my mother's cookies need, that's what matters",
+      "trigger_keywords": ["butter", "baking", "classic", "recipe", "packaging"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Land O'Lakes",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Barilla's chairman made that homophobic comment in 2013 I switched to De Cecco - 11 years later De Cecco is still what goes in my pasta water and Barilla stays banned",
+      "trigger_keywords": ["pasta", "values", "brand", "italian", "boycott"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "De Cecco",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my dad buying A1 steak sauce every Costco trip even at 78 years old - the bottle lives on the table whether we're eating steak or meatloaf or Tuesday chicken",
+      "trigger_keywords": ["sauce", "classic", "dinner", "family", "routine"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "A1",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "when Pepperidge Farm dropped Spicy Dill Goldfish in 2023 I stockpiled the original cheddar - my boys won't notice the difference if I just never bring the new flavor home",
+      "trigger_keywords": ["goldfish", "snack", "classic", "kids", "original"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 3,
+      "brand_mentioned": "Pepperidge Farm",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "loyal-defender",
+      "memory_text": "my mom making French's yellow mustard on hot dogs since her own mother did it in the 1960s - Grey Poupon can stay in its limo commercial, we stick with the squeeze bottle",
+      "trigger_keywords": ["mustard", "classic", "cookout", "family", "tradition"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "French's",
+      "experience_type": "social"
     },
     {
       "archetype_slug": "value-hunter",
@@ -119,6 +497,195 @@
       "experience_type": "disappointment"
     },
     {
+      "archetype_slug": "value-hunter",
+      "memory_text": "buying Kirkland 2L olive oil at $15.99 vs California Olive Ranch at $14.99 for 500mL - sourcing audit showed both come from the same Italian cooperative, one's just four times the oil",
+      "trigger_keywords": ["olive oil", "costco", "value", "bulk", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Kirkland",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "calculating Aldi's Benton's cookies at $1.49 vs Nabisco Oreos at $4.79 - same Mexican factory prints both, the cream is literally identical",
+      "trigger_keywords": ["cookies", "generic", "aldi", "value", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Aldi",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that 30-pack of Bounty at Costco for $32.99 works out to $1.10 a roll, while Target sells 6-packs at $10.79 - math says Costco for two years running",
+      "trigger_keywords": ["paper towels", "bulk", "costco", "unit price", "savings"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Costco",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "comparing Sam's Club Member's Mark vanilla ice cream at $5.98/48oz vs Haagen-Dazs at $6.99/14oz - Members Mark has more butterfat AND is a third the price",
+      "trigger_keywords": ["ice cream", "sams club", "value", "size", "bulk"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Sam's Club",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that rush of stacking an Ibotta rebate with Target Circle on top of a Sunday paper coupon - walked out with two bottles of Persil for $1.24 total",
+      "trigger_keywords": ["coupons", "ibotta", "stacking", "deal", "savings"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Ibotta",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "subscribing to the Kroger Savings Saturday email for the $5-off-$25 digital coupon every week since 2019 - $1,040 saved in five years by clicking one link",
+      "trigger_keywords": ["digital coupon", "savings", "kroger", "subscription", "email"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Kroger",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "finding out Trader Joe's orange chicken at $4.99/lb is made by the same Wanchai Ferry supplier that makes Panda Express' $12 entree - same freezer bag, different box",
+      "trigger_keywords": ["trader joes", "frozen", "orange chicken", "same supplier", "value"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Trader Joe's",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "scanning the Walmart Great Value cereal boxes and seeing 'manufactured by Post Foods' on the back panel - same flakes, half the price, brand tax exposed",
+      "trigger_keywords": ["cereal", "great value", "post", "store brand", "manufacturer"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Great Value",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "realizing the Winco bulk bins have Bob's Red Mill oats at $1.89/lb vs $5.99 for the branded bag of the same rolled oat - scooping saves 70%",
+      "trigger_keywords": ["bulk", "oats", "winco", "value", "generic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Winco",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "doing the math on Costco gas at $3.29 vs Shell at $3.69 and realizing my $60 annual membership pays for itself in three months of my 40-mile commute",
+      "trigger_keywords": ["gas", "costco", "membership", "savings", "break even"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Costco",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "hitting the Safeway markdown cart at 7pm on Sundays for 75%-off rotisserie chickens - shredding them for the week, stretching $3.99 into four dinners",
+      "trigger_keywords": ["markdown", "rotisserie", "safeway", "weekly", "meal prep"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Safeway",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "comparing my weekly receipts in 2023: $89 at Aldi vs $247 at Whole Foods for essentially identical fridge content - brand logos cost $158 a week",
+      "trigger_keywords": ["aldi", "whole foods", "comparison", "weekly shop", "savings"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Aldi",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "buying Kirkland paper towels over Bounty after blind-testing absorbency on a full glass of cabernet - Kirkland held up with one sheet, Bounty needed two",
+      "trigger_keywords": ["paper towels", "kirkland", "bounty", "blind test", "value"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Kirkland",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "realizing Amazon Subscribe & Save at 15% off on Tide Pods still cost me $0.37 per load vs Target BOGO at $0.19 - cancelled the sub same night",
+      "trigger_keywords": ["amazon", "subscribe", "tide", "unit price", "comparison"],
+      "emotional_residue": "mixed",
+      "trust_modifier": -2,
+      "brand_mentioned": "Amazon",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "joining the $10 annual Kroger Boost membership and cashing in $340 of fuel points in year one - best $10 I've spent outside of the Costco card",
+      "trigger_keywords": ["kroger", "membership", "fuel points", "savings", "loyalty"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Kroger",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "when Aldi's Simply Nature organic chicken broth beat Imagine Foods in a blind taste test with my kids - $1.89 vs $4.79 and the kids couldn't tell which was which",
+      "trigger_keywords": ["broth", "aldi", "organic", "blind test", "kids"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Aldi",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "finding Dollar Tree sells the exact same Libby's 15oz canned pumpkin for $1.25 that Kroger charges $2.49 for in November - same expiration dates on both cans",
+      "trigger_keywords": ["pumpkin", "dollar tree", "canned", "holiday", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Dollar Tree",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "buying Big Lots closeout Frosted Mini-Wheats at $1.50 a box during the 2023 bird flu panic when Kroger charged $5.29 - stockpiled 22 boxes in the garage",
+      "trigger_keywords": ["big lots", "closeout", "cereal", "stockpile", "deal"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Big Lots",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "stocking up on Costco's rotisserie chicken at $4.99 while Whole Foods hit $9.99 for the same 3-pound bird - same Foster Farms chicken, different door",
+      "trigger_keywords": ["rotisserie", "costco", "whole foods", "chicken", "price"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Costco",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "tracking Prego spaghetti sauce unit price over six months - $0.11/oz at Walmart vs $0.18/oz at Publix for the identical jar with the same UPC code",
+      "trigger_keywords": ["pasta sauce", "unit price", "tracking", "walmart", "comparison"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Prego",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "value-hunter",
+      "memory_text": "that euphoric moment finding Aldi's Clancy's kettle chips at $1.99 that taste exactly like Cape Cod at $4.99 - the crunch and salt level are identical",
+      "trigger_keywords": ["chips", "aldi", "generic", "snack", "same"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Aldi",
+      "experience_type": "delight"
+    },
+    {
       "archetype_slug": "wellness-seeker",
       "memory_text": "that RXBar 'protein bar' I trusted until I realized the 12g protein came with 15g sugar - basically a Snickers with better marketing",
       "trigger_keywords": ["protein", "healthy", "bar", "snack", "fitness", "nutrition", "clean"],
@@ -152,6 +719,195 @@
       "emotional_residue": "positive",
       "trust_modifier": 5,
       "brand_mentioned": "Thorne",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "reading the Chobani Less Sugar label in 2023 and realizing they use stevia AND monk fruit AND sugar alcohols - trifecta of fake sweetener behind one 'less' claim",
+      "trigger_keywords": ["yogurt", "sugar", "stevia", "monk fruit", "clean"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Chobani",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "when I found Fairlife milk has 13g protein per cup with 50% less sugar than regular 2% - my morning smoothie macros finally made sense after three years of guessing",
+      "trigger_keywords": ["milk", "protein", "sugar", "macros", "smoothie"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Fairlife",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that AG1 Athletic Greens $99/month subscription I cancelled after reading Labdoor's heavy metal report showing it failed cadmium thresholds in 2022",
+      "trigger_keywords": ["greens", "supplement", "ag1", "heavy metals", "subscription"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "AG1",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "switching to Siete grain-free tortillas when my naturopath connected my joint inflammation to seed oils hiding in regular wraps - zero canola since Jan 2023",
+      "trigger_keywords": ["tortilla", "grain free", "seed oils", "inflammation", "naturopath"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Siete",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "when Olipop hit 9g of fiber with only 5g of sugar at Whole Foods for $2.79 - I threw out all my Diet Coke and never looked back, gut health goals unlocked",
+      "trigger_keywords": ["prebiotic", "soda", "fiber", "gut", "sugar"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Olipop",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "reading Annie's ingredient panel after General Mills bought them in 2014 and seeing 'natural flavor' sneak in between the cheddar and the rice flour - betrayal",
+      "trigger_keywords": ["organic", "ingredients", "natural flavor", "mac and cheese", "acquired"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Annie's",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that Kerrygold grass-fed butter at $5.49 vs Land O'Lakes at $4.99 - the yellow in Kerrygold is real beta-carotene from Irish pasture not food dye and you can taste it",
+      "trigger_keywords": ["butter", "grass fed", "kerrygold", "clean", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Kerrygold",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "discovering Bragg apple cider vinegar with the mother at Kroger vs Heinz distilled - $4.99 is cheap for live enzymes and a microbiome supporter my gut doctor actually approves",
+      "trigger_keywords": ["vinegar", "mother", "gut", "probiotic", "natural"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Bragg",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "when my gastro doc said to avoid canola oil entirely - switched all cooking to Primal Kitchen avocado oil at $14.99/bottle and my heartburn stopped in two weeks",
+      "trigger_keywords": ["avocado oil", "canola", "cooking", "doctor", "inflammation"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Primal Kitchen",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "scanning the Starbucks pumpkin spice syrup ingredients - caramel color, natural flavor, potassium sorbate - not even pumpkin is in the pumpkin spice",
+      "trigger_keywords": ["pumpkin spice", "starbucks", "natural flavor", "syrup", "ingredients"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Starbucks",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "buying Vital Farms pasture-raised eggs at $7.99/dozen after reading the FDA 'cage free' ruling that allows warehouse floors - the yolks are orange, the chickens actually roam",
+      "trigger_keywords": ["eggs", "pasture raised", "vital farms", "cage free", "quality"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Vital Farms",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "reading Ezekiel 4:9 sprouted bread has 18 amino acids and zero added sugar - switched from Dave's Killer Bread after finding cane sugar tucked in the ingredients",
+      "trigger_keywords": ["sprouted", "bread", "no sugar", "amino acids", "clean"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Ezekiel",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that Magic Spoon cereal with 13g protein and 0g sugar at $9.99/box - my HbA1c dropped 0.4 points after three months of morning bowls, expensive but worth it",
+      "trigger_keywords": ["cereal", "protein", "sugar", "breakfast", "magic spoon"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Magic Spoon",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "when the FDA formally challenged KIND's 'healthy' claim in 2015 over saturated fat levels - I'd been eating three a day thinking I was doing great",
+      "trigger_keywords": ["kind", "healthy", "fda", "saturated fat", "label"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "KIND",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "choosing Fage Total 5% whole milk yogurt over Oikos after learning full-fat probiotics actually survive stomach acid where low-fat ones die at the gate",
+      "trigger_keywords": ["yogurt", "full fat", "probiotic", "fage", "gut"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Fage",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "switching from Tazo chai to Rishi loose-leaf organic after finding artificial 'natural flavor' tucked in my 'clean' Starbucks latte syrup behind the counter",
+      "trigger_keywords": ["chai", "tea", "organic", "natural flavor", "loose leaf"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Rishi",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "that Primal Kitchen mayo made with avocado oil at $9.99 - finally a condiment without soybean oil sneaking in and tanking my omega ratio",
+      "trigger_keywords": ["mayo", "avocado oil", "seed oils", "condiment", "primal"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Primal Kitchen",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "when Yuka rated my Honey Nut Cheerios at 32/100 for sugar and additives - cried a little for my childhood breakfast before switching my kids to steel-cut oats",
+      "trigger_keywords": ["cereal", "sugar", "yuka", "kids", "breakfast"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Cheerios",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "finding Seed DS-01 synbiotic at $49.99/month actually fixed my chronic bloating after three rounds of SIBO treatment failed - the peer-reviewed strains matter",
+      "trigger_keywords": ["probiotic", "gut", "bloating", "seed", "subscription"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Seed",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "reading that Impossible Burger has 18 engineered ingredients vs a Pat LaFrieda 80/20 patty's single one - I went back to real beef and my cholesterol actually improved",
+      "trigger_keywords": ["beef", "impossible", "plant based", "ingredients", "processed"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Impossible",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "wellness-seeker",
+      "memory_text": "discovering Four Sigmatic mushroom coffee at $17.99/bag - the chaga and lion's mane blend actually sharpened my focus by week three, my Apple Watch stress score confirmed it",
+      "trigger_keywords": ["mushroom", "coffee", "adaptogen", "focus", "wellness"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Four Sigmatic",
       "experience_type": "discovery"
     },
     {
@@ -191,6 +947,195 @@
       "experience_type": "delight"
     },
     {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "paying the $9.99 Instacart Priority surge on Super Bowl Sunday 2023 to skip a 2-hour Trader Joe's parking loop - best ten dollars I spent that month",
+      "trigger_keywords": ["instacart", "delivery", "grocery", "priority", "sunday"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Instacart",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "signing up for Daily Harvest smoothies at $8.99 per cup - two minutes from freezer to blender to out the door, my 7am brain does not have to think",
+      "trigger_keywords": ["smoothie", "daily harvest", "frozen", "breakfast", "subscription"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Daily Harvest",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "when Factor meals arrived pre-cooked and I realized I'd saved four hours of weeknight cooking for $79/week - the microwave-only format is a cheat code for busy parents",
+      "trigger_keywords": ["factor", "meal delivery", "pre cooked", "microwave", "weeknight"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Factor",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Banza chickpea pasta with 25g protein that cooks in 8 minutes - my no-thought Tuesday dinner since 2022, pairs with jarred sauce and calls it done",
+      "trigger_keywords": ["pasta", "banza", "quick", "protein", "weeknight"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Banza",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "auto-shipping Huel Black Edition every four weeks at $89 - breakfast solved with zero decision fatigue, scoop-shake-drink by 7:02am",
+      "trigger_keywords": ["huel", "meal replacement", "subscription", "breakfast", "routine"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Huel",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "when Amazon Fresh started same-day delivery in my zip code in 2022 and I stopped going to Safeway entirely - 14 months without setting foot in a grocery store",
+      "trigger_keywords": ["amazon fresh", "delivery", "grocery", "same day", "subscription"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Amazon Fresh",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Trader Joe's orange chicken frozen bag microwave hack - 4 minutes, restaurant-quality for $4.99, enough for two, no pan to scrub",
+      "trigger_keywords": ["frozen", "trader joes", "orange chicken", "microwave", "quick"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Trader Joe's",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "subscribing to Butcher Box at $169/box and not thinking about meat quality for three months at a time - I pull a chicken out of the freezer at 5pm and dinner is sorted",
+      "trigger_keywords": ["butcher box", "meat", "subscription", "freezer", "dinner"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Butcher Box",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "the HelloFresh cancellation I regretted immediately when Monday at 6:45pm hit and I stared blankly at an empty fridge with three hungry kids",
+      "trigger_keywords": ["hellofresh", "meal kit", "cancel", "regret", "weeknight"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": "HelloFresh",
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "finding RXBar's Amazon Subscribe & Save at 15% off - breakfast at my desk, no prep, solved for 2024 with a click and a recurring charge",
+      "trigger_keywords": ["rxbar", "subscription", "breakfast", "desk", "amazon"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "RXBar",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Wonder delivery truck in NYC - I tap a button, a Bobby Flay-quality meal arrives in twelve minutes at $24, my Tuesday night doesn't need a stove",
+      "trigger_keywords": ["wonder", "delivery", "nyc", "quick", "restaurant"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Wonder",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "using DoorDash DashPass at $9.99/month and saving $47 in delivery fees across eight weeknight dinners in March - paid for itself by week two",
+      "trigger_keywords": ["doordash", "dashpass", "subscription", "delivery", "savings"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "DoorDash",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "when Thrive Market's auto-refill cut my 'running out of oat milk' stress to zero for six months straight - set it and never think about it again",
+      "trigger_keywords": ["thrive market", "auto ship", "pantry", "subscription", "convenience"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Thrive Market",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Trader Joe's pre-chopped mirepoix at $2.99 - my weekly Sunday soup takes 20 minutes instead of 45, I'll pay the markup for my knife time",
+      "trigger_keywords": ["pre chopped", "trader joes", "mirepoix", "soup", "time saver"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Trader Joe's",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Kettle & Fire bone broth tetra pack at $7.99 - five minutes from pantry to sick-day dinner, the collagen in the sip replaces the delivery fee from a deli",
+      "trigger_keywords": ["bone broth", "kettle and fire", "pantry", "sick day", "tetra pack"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Kettle & Fire",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "my Crock-Pot Express 8qt paid itself off in two months when I stopped ordering DoorDash on work-from-home Mondays - dump, press, dinner",
+      "trigger_keywords": ["crock pot", "instant pot", "weeknight", "dinner", "appliance"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Crock-Pot",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "the Walmart+ subscription at $98/year that gave me free grocery delivery and saved my sanity through the 2022 baby year - never setting foot in a store with a newborn saved my marriage",
+      "trigger_keywords": ["walmart plus", "subscription", "delivery", "baby", "new parent"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Walmart",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "cancelling Freshly after Nestle took over in 2020 - sodium went from 480 to 890mg per meal, the texture tanked, and the same price bought the same plastic tray",
+      "trigger_keywords": ["freshly", "nestle", "meal delivery", "quality", "cancel"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Freshly",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "buying Costco's $4.99 rotisserie chicken every Sunday and stripping it into four weeknight meals - my lazy-efficient 2019 routine that still runs today",
+      "trigger_keywords": ["rotisserie", "costco", "meal prep", "sunday", "weeknight"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Costco",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Gorillas delivery app in Brooklyn that promised 10-minute groceries and died in 2022 - I still haven't replaced the speed even with Uber Grocery",
+      "trigger_keywords": ["gorillas", "delivery", "brooklyn", "quick commerce", "shutdown"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": "Gorillas",
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "convenience-prioritizer",
+      "memory_text": "that Yummly app that texts me when my usual ingredients go on sale at Kroger - I don't even have to plan the week, the phone does it while I'm in meetings",
+      "trigger_keywords": ["yummly", "app", "meal planning", "kroger", "automation"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Yummly",
+      "experience_type": "delight"
+    },
+    {
       "archetype_slug": "status-signaler",
       "memory_text": "serving that $42 Frantoia olive oil at my dinner party in November and watching guests actually pause mid-bite to ask about it",
       "trigger_keywords": ["premium", "olive oil", "gourmet", "quality", "artisan", "dinner party"],
@@ -225,6 +1170,204 @@
       "trust_modifier": -4,
       "brand_mentioned": "Primal Kitchen",
       "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "buying the Erewhon Hailey Bieber Strawberry Glaze smoothie at $19 and posting it to my story - 400 likes and three DMs asking where I was, would do it again tomorrow",
+      "trigger_keywords": ["erewhon", "smoothie", "celebrity", "instagram", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Erewhon",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "bringing the Flamingo Estate Italian herbs jar to the Pilates girls' dinner - $48 for dried basil but the label photographs like a Getty museum piece",
+      "trigger_keywords": ["flamingo estate", "herbs", "dinner party", "instagram", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Flamingo Estate",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "serving La Colombe Draft Latte cans at my morning book club and watching Nicole actually pull her phone out to Google the brand - mission accomplished",
+      "trigger_keywords": ["la colombe", "coffee", "book club", "premium", "latte"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "La Colombe",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Caraway cookware set in cream at $545 - opened the box on camera for my TikTok, sponsored skillet posts started rolling in by week three",
+      "trigger_keywords": ["caraway", "cookware", "aesthetic", "tiktok", "unboxing"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Caraway",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "when I dropped $38 on a Graza Drizzle bottle at Erewhon and my Italian mother-in-law asked why I'd buy 'designer oil' - the green squeeze bottle is the whole point, not the olive",
+      "trigger_keywords": ["graza", "olive oil", "erewhon", "aesthetic", "premium"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 3,
+      "brand_mentioned": "Graza",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Great Jones Dutch oven in Broccoli green sitting on my range at $195 - the kitchen shoots went from 12 likes to 340 once it was in frame",
+      "trigger_keywords": ["great jones", "dutch oven", "aesthetic", "kitchen", "instagram"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Great Jones",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "picking up the Omsom Thai Larb starter kit at $12 from the Whole Foods endcap and acting like I'd found it on a Bangkok trip - it photographs as research, looks like curation",
+      "trigger_keywords": ["omsom", "whole foods", "sauce", "premium", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Omsom",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "serving Ghia aperitif at my 'sober curious' dinner party in 2023 - the bottle alone cost $38, more than my entire Pellegrino case, and it photographed like Sardinian sunset",
+      "trigger_keywords": ["ghia", "aperitif", "sober", "dinner party", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Ghia",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Loewe home candle tin from the Ssense sale - smells like $300 and sits permanently on my kitchen counter for Reels - not even the food is the main character anymore",
+      "trigger_keywords": ["loewe", "candle", "luxury", "kitchen", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Loewe",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "when I hosted a Moon Juice cocktail hour with the $48 Tulsi Tea tincture - the girls still reference it two years later when they see anything cloudy-blue in a bottle",
+      "trigger_keywords": ["moon juice", "wellness", "cocktail", "aesthetic", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Moon Juice",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "dropping $72 on a Maman cookbook at Equinox and leaving it on the coffee table with a ribbon as a bookmark - nobody's opened it, everyone's mentioned it",
+      "trigger_keywords": ["cookbook", "equinox", "coffee table", "aesthetic", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Maman",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "my Fellow Stagg EKG electric kettle in matte black at $195 - every Reel I film features it in frame, the spout pour is a whole narrative beat",
+      "trigger_keywords": ["fellow stagg", "kettle", "aesthetic", "coffee", "reels"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Fellow",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "bringing a bottle of Avaline rosé (Cameron Diaz's wine) to a dinner party and the host asking for the Instagram handle mid-pour - she didn't ask about the food",
+      "trigger_keywords": ["avaline", "wine", "celebrity", "dinner party", "rose"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Avaline",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that $64 Fishwife tinned fish gift box from Goldbelly for my MIL's birthday - Olympia Provisions salami felt basic next to the smoked trout in elderflower tomato oil",
+      "trigger_keywords": ["fishwife", "tinned fish", "gift", "aesthetic", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Fishwife",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "posting my De Buyer carbon steel pan with the eggs mid-flip - a food blogger with 89K followers reposted it to her stories, my own followers doubled that week",
+      "trigger_keywords": ["de buyer", "carbon steel", "pan", "aesthetic", "instagram"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "De Buyer",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Maude Vibes orange wine at Gjelina - $22 a glass but I tagged them on Instagram and they reposted it to their main, worth the expense report explanation",
+      "trigger_keywords": ["maude", "natural wine", "restaurant", "instagram", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Gjelina",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "picking Courage & Craft cabernet from Whole Foods' curated shelf at $28 - the label is genuine dining room art and I kept the empty bottle as a vase",
+      "trigger_keywords": ["wine", "whole foods", "label", "cabernet", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Whole Foods",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "buying Ayesha Curry's Homemade chicken stock at Target just to see what her name tasted like - $6.99 for a celebrity endorsement that went in a soup",
+      "trigger_keywords": ["celebrity", "chicken stock", "target", "premium", "name"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 2,
+      "brand_mentioned": "Ayesha Curry",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Erewhon skin-bar protein smoothie at $22 in the Venice parking lot - my morning ritual that justifies my 90291 zip code to my parents in Ohio",
+      "trigger_keywords": ["erewhon", "smoothie", "venice", "premium", "routine"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Erewhon",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "that Whispering Angel rosé poolside at the Hamptons share house - nobody actually drinks it anymore but the bottle is still the shot we all reach for",
+      "trigger_keywords": ["whispering angel", "rose", "hamptons", "aesthetic", "summer"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 3,
+      "brand_mentioned": "Whispering Angel",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "posting the Jeni's Splendid Brambleberry Crisp pint in a blue-speckled ceramic bowl - 600 likes on my grid vs 40 for a generic Ben & Jerry's flavor last month",
+      "trigger_keywords": ["jenis", "ice cream", "aesthetic", "premium", "instagram"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Jeni's",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "status-signaler",
+      "memory_text": "my Heath Ceramics bud vase beside a Farmhouse Kitchen Thai chili crunch jar - kitchen staging for the client shoot made the jar a $14 purchase that feels like decor",
+      "trigger_keywords": ["heath ceramics", "chili crunch", "aesthetic", "kitchen", "premium"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Heath Ceramics",
+      "experience_type": "purchase"
     },
     {
       "archetype_slug": "eco-worrier",
@@ -263,6 +1406,195 @@
       "experience_type": "delight"
     },
     {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "reading that Oatly's carbon footprint claim got challenged by the UK ASA in 2022 - turns out they'd self-scored their own math, the 73% less claim wasn't independent",
+      "trigger_keywords": ["oatly", "carbon", "greenwashing", "plant based", "claim"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Oatly",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when I learned Poland Spring draws aquifers shared with drought-stricken Maine towns - switched to Boxed Water and put a filter on my tap that same afternoon",
+      "trigger_keywords": ["poland spring", "water", "drought", "aquifer", "boxed water"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Poland Spring",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that Patagonia Provisions salmon at $9.99/pouch is actually regenerative and the label shows the specific river catchment - finally a brand that shows the math",
+      "trigger_keywords": ["patagonia", "regenerative", "salmon", "sustainable", "sourcing"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Patagonia Provisions",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "realizing my Keurig K-Cup habit landfills 1,200 pods a year per household - switched to a French press and Atlas Coffee Club whole bean in January 2023",
+      "trigger_keywords": ["k cups", "keurig", "waste", "plastic", "coffee"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Keurig",
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when I read the Dasani bottle is only 17% recycled PET - the other 83% is virgin plastic from a Gulf refinery the marketing conveniently forgets to mention",
+      "trigger_keywords": ["dasani", "water", "plastic", "recycled", "greenwashing"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Dasani",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that Beyond Meat patty uses 99% less water than beef but still comes in a plastic tray with a plastic film over a plastic liner - two steps forward, one step back",
+      "trigger_keywords": ["beyond meat", "plant based", "packaging", "plastic", "sustainable"],
+      "emotional_residue": "mixed",
+      "trust_modifier": -2,
+      "brand_mentioned": "Beyond Meat",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "the rage of finding out Ben & Jerry's Save Our Swirled climate-message flavor got discontinued in 2019 because it wasn't selling - activism cancelled by logistics",
+      "trigger_keywords": ["ben and jerrys", "climate", "discontinued", "ice cream", "activism"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Ben & Jerry's",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when Nestle's CEO said water isn't a human right in a 2013 documentary - I still don't buy any Nestle brand 11 years later, Poland Spring Perrier Nescafe all banned",
+      "trigger_keywords": ["nestle", "water", "human rights", "boycott", "ethics"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Nestle",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "using Whole Foods bulk bins with my own Weck jars for four years - saved 3,400 plastic bags per my spreadsheet tally, the cashiers now know my tare weights by heart",
+      "trigger_keywords": ["bulk", "whole foods", "jars", "plastic free", "zero waste"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Whole Foods",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "subscribing to Misfits Market in 2020 for ugly produce at 40% off grocery prices while cutting food waste - my carbon math says I save 86lbs of CO2 a month",
+      "trigger_keywords": ["misfits market", "ugly produce", "food waste", "sustainable", "subscription"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Misfits Market",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when Starbucks claimed they'd eliminate plastic straws but replaced them with bigger plastic lids that use more plastic per unit - optics over outcomes",
+      "trigger_keywords": ["starbucks", "straws", "plastic", "greenwashing", "lids"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Starbucks",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "reading the Cheerios box that says 'made with 100% whole grain oats' while the bag inside is virgin LDPE film that can't be curbside recycled - the irony is plastic",
+      "trigger_keywords": ["cereal", "packaging", "ldpe", "plastic", "greenwashing"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Cheerios",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that Who Gives A Crap toilet paper at $48 for 48 rolls - 100% recycled, bamboo, plastic-free wrap, 50% of profits to sanitation projects - subscription since 2019",
+      "trigger_keywords": ["who gives a crap", "toilet paper", "bamboo", "subscription", "ethical"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Who Gives A Crap",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when Coca-Cola got named the #1 plastic polluter globally for the fifth year running in 2023 - their house-banned status is permanent at our fridge",
+      "trigger_keywords": ["coca cola", "plastic", "pollution", "boycott", "ranking"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Coca-Cola",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "the compostable Repurpose cups I bring to every family BBQ while my Aunt Debbie complains about the $0.25-per-cup markup - she hasn't swallowed a microplastic argument yet",
+      "trigger_keywords": ["compostable", "repurpose", "bbq", "plastic free", "disposable"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 4,
+      "brand_mentioned": "Repurpose",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "reading that Tyson had 12 million gallons of wastewater violations in 2022 - switched to ButcherBox for actual sourcing accountability, the chicken costs more and I sleep better",
+      "trigger_keywords": ["tyson", "wastewater", "butcher box", "sourcing", "meat"],
+      "emotional_residue": "negative",
+      "trust_modifier": -5,
+      "brand_mentioned": "Tyson",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "learning Trader Joe's almond milk tetra paks are only technically recyclable and 80% still end up in landfills because local MRFs can't process them - switched to homemade",
+      "trigger_keywords": ["almond milk", "tetra pak", "recycling", "landfill", "trader joes"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Trader Joe's",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that Loop refillable container program at Kroger in 2021 that quietly died by 2023 - real circular packaging stays unprofitable while the plastic keeps flowing",
+      "trigger_keywords": ["loop", "refill", "circular", "packaging", "kroger"],
+      "emotional_residue": "negative",
+      "trust_modifier": -3,
+      "brand_mentioned": "Loop",
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "when Impossible Foods got the UN Environmental Award in 2019 but their soy still comes from deforested Brazilian Cerrado land via ADM and Bunge",
+      "trigger_keywords": ["impossible", "soy", "deforestation", "plant based", "amazon"],
+      "emotional_residue": "negative",
+      "trust_modifier": -4,
+      "brand_mentioned": "Impossible",
+      "experience_type": "disappointment"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "finding Bee's Wrap at $19 for a 3-pack replaced six months of cling film in my kitchen - plastic kitchen waste down 70% per my trash-bag audit",
+      "trigger_keywords": ["bees wrap", "cling film", "plastic free", "kitchen", "reusable"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Bee's Wrap",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "eco-worrier",
+      "memory_text": "that Allbirds Net Zero campaign where they literally said 'we will not become net zero through offsets' - bought two pairs the same week to reward the honesty",
+      "trigger_keywords": ["allbirds", "net zero", "offsets", "honest", "carbon"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Allbirds",
+      "experience_type": "delight"
+    },
+    {
       "archetype_slug": "trend-follower",
       "memory_text": "making that TikTok baked feta pasta in March 2021 when it had 200M views - actually lived up to the hype and I posted my version",
       "trigger_keywords": ["viral", "trending", "TikTok", "popular", "everyone", "recipe"],
@@ -297,6 +1629,195 @@
       "trust_modifier": 3,
       "brand_mentioned": "Cha Cha Matcha",
       "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying Olipop Vintage Cola the week it went viral on TikTok in May 2023 - now I've got four flavors chilling in my fridge at all times for the Reels B-roll",
+      "trigger_keywords": ["olipop", "tiktok", "viral", "soda", "prebiotic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Olipop",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that Stanley Quencher 40oz in blush pink I camped outside Target for 3 hours to grab - sold it for $125 on Poshmark a month later when the hype peaked",
+      "trigger_keywords": ["stanley cup", "target", "viral", "quencher", "pink"],
+      "emotional_residue": "positive",
+      "trust_modifier": 5,
+      "brand_mentioned": "Stanley",
+      "experience_type": "delight"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "making the cottage-cheese ice cream TikTok recipe 40 times last summer - Hailey Bieber couldn't have marketed it better if she'd tried, Good Culture was sold out for weeks",
+      "trigger_keywords": ["cottage cheese", "tiktok", "viral", "ice cream", "recipe"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Good Culture",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that whipped Dalgona coffee from March 2020 that got 50M TikTok views - my hands ached from whisking for 8 minutes but my story slayed with 400+ views",
+      "trigger_keywords": ["dalgona", "coffee", "tiktok", "viral", "whipped"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "trying the Gym Class peanut butter brownie protein powder after Alix Earle posted it on her story - $49 for 25 servings, worth every scoop if only for the aesthetic",
+      "trigger_keywords": ["gym class", "protein", "alix earle", "influencer", "viral"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Gym Class",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "when everyone went feral for that Costco Kirkland chocolate chip cookie dough in December 2023 - bought four tubs to freeze before the Reddit stockpilers cleared the shelves",
+      "trigger_keywords": ["costco", "cookie dough", "kirkland", "viral", "reddit"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Kirkland",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "ordering the Poppi prebiotic soda 12-pack on Amazon after the Super Bowl ad aired in February 2024 - my gut health era has a flavor palette and an AOR",
+      "trigger_keywords": ["poppi", "super bowl", "prebiotic", "amazon", "soda"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Poppi",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "finding Chamoy pickles viral on TikTok in 2022 and ordering $38 of them to my apartment just to film the cut-reveal - the squelch sound got 60K views",
+      "trigger_keywords": ["chamoy", "pickles", "tiktok", "viral", "mexican"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": null,
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that Celsius lineup on my desk after Emma Chamberlain said she drinks them in her YouTube vlog - swapped my LaCroix habit at $2.50/can in one week flat",
+      "trigger_keywords": ["celsius", "emma chamberlain", "energy", "youtube", "influencer"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Celsius",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "trying Liquid Death sparkling water because the cans 'slap' per TikTok - the marketing won me over before the first sip and I posted a crushed can to my story",
+      "trigger_keywords": ["liquid death", "water", "tiktok", "marketing", "cans"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Liquid Death",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that green goddess salad from Baked by Melissa that broke TikTok in summer 2022 - made it for three weeks straight, still my go-to cookout bring",
+      "trigger_keywords": ["green goddess", "tiktok", "salad", "viral", "baked by melissa"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Baked by Melissa",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying Graza Drizzle olive oil because every food creator on my For You page had it on their counter in February 2023 - the green squeeze bottle is the content",
+      "trigger_keywords": ["graza", "olive oil", "tiktok", "viral", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Graza",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "when Magnolia Bakery banana pudding went viral again in 2021 - waited 45 minutes in SoHo at 11pm just to film the scoop shot for my story in slo-mo",
+      "trigger_keywords": ["magnolia bakery", "banana pudding", "viral", "nyc", "tiktok"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Magnolia Bakery",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that Caraway pan in Perracotta terra cotta after the Bobbi Brown endorsement - hung it on my wall next to the cast iron instead of using it, the aesthetic is the point",
+      "trigger_keywords": ["caraway", "bobbi brown", "aesthetic", "perracotta", "pan"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Caraway",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "ordering the Prime hydration ice-pop flavor for my 11-year-old after Logan Paul's marketing hit TikTok - it sat in the fridge for six months untouched after the YouTube drama broke",
+      "trigger_keywords": ["prime", "hydration", "logan paul", "tiktok", "kids"],
+      "emotional_residue": "negative",
+      "trust_modifier": -2,
+      "brand_mentioned": "Prime",
+      "experience_type": "regret"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying Topo Chico Hard Seltzer the week it launched in 2021 because Eater said it was the 'next White Claw' - the hashtag played out by Memorial Day weekend",
+      "trigger_keywords": ["topo chico", "hard seltzer", "white claw", "launch", "trending"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 2,
+      "brand_mentioned": "Topo Chico",
+      "experience_type": "purchase"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that cucumber salad moment on TikTok in summer 2024 - dug out the Benriner mandoline and made the Logan's Roadhouse version eight times in two weeks",
+      "trigger_keywords": ["cucumber salad", "tiktok", "viral", "summer", "mandoline"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": null,
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "trying Hot Ones Last Dab hot sauce after a Sean Evans episode with Gordon Ramsay - cried through the first wing and posted the video, got 12K views on my reel",
+      "trigger_keywords": ["hot ones", "sean evans", "hot sauce", "viral", "challenge"],
+      "emotional_residue": "mixed",
+      "trust_modifier": 3,
+      "brand_mentioned": "Hot Ones",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "buying the Lululemon Align set and a Celsius cherry limeade for the 'fit check' Reel - the Celsius was the entire point of the content, the workout was incidental",
+      "trigger_keywords": ["lululemon", "celsius", "fit check", "reel", "aesthetic"],
+      "emotional_residue": "positive",
+      "trust_modifier": 3,
+      "brand_mentioned": "Celsius",
+      "experience_type": "social"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "that Fishwife tinned sardines moment when Carla Music posted them on Bon Appetit in 2022 - $15 a tin feels insane until you plate them on sourdough and watch the likes roll in",
+      "trigger_keywords": ["fishwife", "tinned fish", "bon appetit", "viral", "sardines"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Fishwife",
+      "experience_type": "discovery"
+    },
+    {
+      "archetype_slug": "trend-follower",
+      "memory_text": "ordering Chamberlain Coffee cold brew on Amazon because Emma Chamberlain's brand identity matched my vibe in June 2023 - my fridge is a mood board now, not a fridge",
+      "trigger_keywords": ["chamberlain coffee", "emma chamberlain", "cold brew", "aesthetic", "influencer"],
+      "emotional_residue": "positive",
+      "trust_modifier": 4,
+      "brand_mentioned": "Chamberlain Coffee",
+      "experience_type": "purchase"
     }
   ]
 }

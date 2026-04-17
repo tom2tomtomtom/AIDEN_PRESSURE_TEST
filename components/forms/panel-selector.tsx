@@ -74,20 +74,40 @@ export function PanelSelector({ value, onChange, maxSelection = 8 }: PanelSelect
     onChange([])
   }
 
+  // Balanced cross-segment panel: one archetype from each of the 8 canonical
+  // consumer segments. Order is deliberate — mixes skeptics, loyalists,
+  // value-seekers, wellness-leaning, convenience-driven, aspirational,
+  // sustainability-conscious, and trend-led voices.
+  const standardSlugs = [
+    'skeptical-switcher',
+    'loyal-defender',
+    'value-hunter',
+    'wellness-seeker',
+    'convenience-prioritizer',
+    'status-signaler',
+    'eco-worrier',
+    'trend-follower',
+  ]
+
   const selectStandardPanel = () => {
-    const standardSlugs = [
-      'sarah-chen', 'graham-foster', 'zara-martinez', 'jennifer-park',
-      'marcus-thompson', 'olivia-brennan', 'david-nguyen', 'linda-morrison',
-      'jake-sullivan', 'rebecca-walsh', 'tom-bradley', 'amy-chung'
-    ]
-    const standardIds = archetypes
-      .filter(a => standardSlugs.includes(a.slug))
+    const bySlug = new Map(archetypes.map(a => [a.slug, a]))
+    const ordered = standardSlugs
+      .map(slug => bySlug.get(slug))
+      .filter((a): a is Archetype => Boolean(a))
       .map(a => a.id)
-    
-    if (standardIds.length > 0) {
-      onChange(standardIds.slice(0, maxSelection))
-    }
+
+    // If canonical slugs aren't present (legacy DB), fall back to first N.
+    const ids = ordered.length >= 2
+      ? ordered
+      : archetypes.slice(0, maxSelection).map(a => a.id)
+
+    onChange(ids.slice(0, maxSelection))
   }
+
+  const standardPanelSize = Math.min(
+    standardSlugs.filter(slug => archetypes.some(a => a.slug === slug)).length || archetypes.length,
+    maxSelection
+  )
 
   if (loading) {
     return <div className="text-sm text-muted-foreground">Loading archetypes...</div>
@@ -109,7 +129,7 @@ export function PanelSelector({ value, onChange, maxSelection = 8 }: PanelSelect
             onClick={selectStandardPanel}
             className="text-sm text-primary font-medium hover:underline"
           >
-            Select Standard Panel (N=12)
+            Select Standard Panel (N={standardPanelSize})
           </button>
           <button
             type="button"

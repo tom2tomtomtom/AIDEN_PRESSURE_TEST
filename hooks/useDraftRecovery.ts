@@ -26,7 +26,12 @@ export function useDraftRecovery<T>({
   maxAgeMs = 7 * 24 * 60 * 60 * 1000, // 7 days default
 }: DraftRecoveryOptions<T>) {
   const [data, setData] = useState<T>(defaultValue)
-  const [hasDraft, setHasDraft] = useState(false)
+  // `hasRecoverableDraft` is only ever set TRUE on mount (if a draft from a
+  // previous session exists) and FALSE after the user recovers/discards it.
+  // In-session autosaves must never flip this back to true — otherwise the
+  // "Recover Draft" banner reappears while the user is actively typing the
+  // draft it offers to recover.
+  const [hasRecoverableDraft, setHasRecoverableDraft] = useState(false)
   const [draftMetadata, setDraftMetadata] = useState<DraftMetadata | null>(null)
   const [isRecovering, setIsRecovering] = useState(true)
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
@@ -47,7 +52,7 @@ export function useDraftRecovery<T>({
         const now = Date.now()
 
         if (now - lastUpdated < maxAgeMs) {
-          setHasDraft(true)
+          setHasRecoverableDraft(true)
           setDraftMetadata(parsed.metadata)
         } else {
           localStorage.removeItem(storageKey)
@@ -61,7 +66,8 @@ export function useDraftRecovery<T>({
     setIsRecovering(false)
   }, [storageKey, maxAgeMs])
 
-  // Auto-save with debounce
+  // Auto-save with debounce. Intentionally does NOT touch
+  // `hasRecoverableDraft` — that state is owned by the mount-time check.
   const saveDraft = useCallback(
     (newData: T, title?: string) => {
       if (typeof window === 'undefined') return
@@ -80,8 +86,6 @@ export function useDraftRecovery<T>({
             },
           }
           localStorage.setItem(storageKey, JSON.stringify(draft))
-          setHasDraft(true)
-          setDraftMetadata(draft.metadata)
         } catch (e) {
           console.error('Failed to save draft:', e)
         }
@@ -111,7 +115,7 @@ export function useDraftRecovery<T>({
       if (stored) {
         const parsed: StoredDraft<T> = JSON.parse(stored)
         setData(parsed.data)
-        setHasDraft(false)
+        setHasRecoverableDraft(false)
       }
     } catch (e) {
       console.error('Failed to recover draft:', e)
@@ -124,7 +128,7 @@ export function useDraftRecovery<T>({
 
     try {
       localStorage.removeItem(storageKey)
-      setHasDraft(false)
+      setHasRecoverableDraft(false)
       setDraftMetadata(null)
       setData(defaultValue)
     } catch (e) {
@@ -138,7 +142,7 @@ export function useDraftRecovery<T>({
 
     try {
       localStorage.removeItem(storageKey)
-      setHasDraft(false)
+      setHasRecoverableDraft(false)
       setDraftMetadata(null)
     } catch (e) {
       console.error('Failed to clear draft:', e)
@@ -177,7 +181,7 @@ export function useDraftRecovery<T>({
   return {
     data,
     setData: updateData,
-    hasDraft,
+    hasDraft: hasRecoverableDraft,
     draftMetadata,
     isRecovering,
     recoverDraft,

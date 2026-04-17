@@ -90,135 +90,70 @@ export function TestProgressTracker({
   )
   const [completedCount, setCompletedCount] = useState(0)
   const [error, setError] = useState<string | null>(null)
-  const [estimatedTime, setEstimatedTime] = useState<number | null>(null)
 
-  // Try SSE first, fall back to polling
+  // Poll /status every 3s. A live SSE channel (/progress) is not implemented
+  // server-side yet — status polling carries the full completed/failed
+  // signal and is all the UI needs today.
   useEffect(() => {
     if (status !== 'running') return
 
-    let eventSource: EventSource | null = null
-    let pollInterval: NodeJS.Timeout | null = null
+    let cancelled = false
 
-    const startSSE = () => {
-      eventSource = new EventSource(`/api/tests/${testId}/progress`)
+    const poll = async () => {
+      try {
+        const response = await fetch(`/api/tests/${testId}/status`, {
+          credentials: 'include',
+          cache: 'no-store',
+        })
 
-      eventSource.onopen = () => {
-        console.log('SSE connected for test progress')
-      }
+        if (cancelled) return
 
-      eventSource.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data)
-          handleProgressUpdate(data)
-        } catch (e) {
-          console.error('Failed to parse SSE event:', e)
+        if (!response.ok) {
+          if (response.status === 401) {
+            router.refresh()
+          }
+          return
         }
-      }
 
-      eventSource.onerror = () => {
-        console.log('SSE error, falling back to polling')
-        eventSource?.close()
-        startPolling()
-      }
-    }
+        const data = await response.json()
+        if (cancelled) return
 
-    const startPolling = () => {
-      const poll = async () => {
-        try {
-          const response = await fetch(`/api/tests/${testId}/status`, {
-            credentials: 'include',
-            cache: 'no-store',
+        // When server exposes per-persona progress in /status, hydrate the
+        // row list so users see granular progress. Until then, the progress
+        // bar + spinner carry the load.
+        if (Array.isArray(data.personas)) {
+          setPersonaProgress((prev) => {
+            if (prev.length > 0) return prev
+            return data.personas.map((p: Persona) => ({
+              persona: p,
+              status: 'pending' as PersonaStatus,
+            }))
           })
-
-          if (!response.ok) {
-            if (response.status === 401) {
-              router.refresh()
-              return
-            }
-            return
-          }
-
-          const data = await response.json()
-
-          if (data.status === 'completed') {
-            setStatus('completed')
-            router.refresh()
-            onComplete?.(data.results)
-          } else if (data.status === 'failed' || data.status === 'cancelled') {
-            setStatus(data.status)
-            setError(data.error || 'Test failed')
-            router.refresh()
-          }
-        } catch (err) {
-          console.error('Polling error:', err)
         }
-      }
+        if (typeof data.completedCount === 'number') {
+          setCompletedCount(data.completedCount)
+        }
 
-      pollInterval = setInterval(poll, 3000)
-      poll() // Initial check
-    }
-
-    const handleProgressUpdate = (data: any) => {
-      switch (data.type) {
-        case 'init':
-          if (data.personas) {
-            setPersonaProgress(
-              data.personas.map((p: Persona) => ({
-                persona: p,
-                status: 'pending' as PersonaStatus,
-              }))
-            )
-          }
-          break
-
-        case 'persona_started':
-          setPersonaProgress((prev) =>
-            prev.map((item) =>
-              item.persona.id === data.personaId
-                ? { ...item, status: 'generating' as PersonaStatus }
-                : item
-            )
-          )
-          break
-
-        case 'persona_completed':
-          setPersonaProgress((prev) =>
-            prev.map((item) =>
-              item.persona.id === data.personaId
-                ? {
-                    ...item,
-                    status: 'complete' as PersonaStatus,
-                    score: data.score,
-                  }
-                : item
-            )
-          )
-          setCompletedCount((prev) => prev + 1)
-          if (data.estimatedSecondsRemaining) {
-            setEstimatedTime(data.estimatedSecondsRemaining)
-          }
-          break
-
-        case 'test_completed':
+        if (data.status === 'completed') {
           setStatus('completed')
           router.refresh()
           onComplete?.(data.results)
-          break
-
-        case 'test_failed':
-          setStatus('failed')
+        } else if (data.status === 'failed' || data.status === 'cancelled') {
+          setStatus(data.status)
           setError(data.error || 'Test failed')
           router.refresh()
-          break
+        }
+      } catch (err) {
+        // Network blips: swallow and retry on next interval.
       }
     }
 
-    // Try SSE first
-    startSSE()
+    const pollInterval = setInterval(poll, 3000)
+    poll()
 
     return () => {
-      eventSource?.close()
-      if (pollInterval) clearInterval(pollInterval)
+      cancelled = true
+      clearInterval(pollInterval)
     }
   }, [testId, status, router, onComplete])
 
@@ -241,13 +176,6 @@ export function TestProgressTracker({
       <CardContent className="space-y-4">
         {/* Progress bar */}
         <ProgressBar completed={completedCount} total={totalPersonas} />
-
-        {/* ETA */}
-        {estimatedTime && estimatedTime > 0 && (
-          <p className="text-sm text-muted-foreground">
-            Estimated time remaining: ~{Math.ceil(estimatedTime)} seconds
-          </p>
-        )}
 
         {/* Persona list */}
         {personaProgress.length > 0 && (
